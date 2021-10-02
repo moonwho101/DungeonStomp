@@ -15,6 +15,7 @@ If you have any questions email me at mlongo@aptisense.com or visit www.aptisens
 
 Happy Dungeon Stomping!
 
+Visit https://www.aptisense.com to download game.  YouTube walktnough here: https://www.youtube.com/watch?v=jPV37c0ISJQ&list=PLWxxFLhdiIWTFg72fKw-OiMSJ1_UBzx0T&ab_channel=MarkLongo
 
 
 MD2 Models and Credits
