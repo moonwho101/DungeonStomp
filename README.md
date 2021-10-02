@@ -1,5 +1,7 @@
 # Dungeon Stomp
 
+![Dungeon Stomp](../textures/screenshot.jpg)
+
 Dungeon Stomp is a DirectX 3D dungeon game that uses Direct3D, DirectInput and DirectSound.
 Dungeon Stomp was started it 2001.   The first beta was released in Aug of 2002.
 It is now 2021 - This is an updated version compiled with a more modern compiler.
