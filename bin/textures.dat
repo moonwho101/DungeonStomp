@@ -1,0 +1,1145 @@
+AddTexture  ..\textures\dice\die10r1.bmp
+Alias  1   die10r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10r2.bmp
+Alias  2   die10r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10r3.bmp
+Alias  3   die10r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10r4.bmp
+Alias  4   die10r4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10r5.bmp
+Alias  5   die10r5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s1.bmp
+Alias  6   die10s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s10.bmp
+Alias  7   die10s10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s2.bmp
+Alias  8   die10s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s3.bmp
+Alias  9   die10s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s4.bmp
+Alias  10   die10s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s5.bmp
+Alias  11   die10s5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s6.bmp
+Alias  12   die10s6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s7.bmp
+Alias  13   die10s7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s8.bmp
+Alias  14   die10s8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die10s9.bmp
+Alias  15   die10s9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12r1.bmp
+Alias  16   die12r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12r2.bmp
+Alias  17   die12r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12r3.bmp
+Alias  18   die12r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12r4.bmp
+Alias  19   die12r4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s1.bmp
+Alias  20   die12s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s10.bmp
+Alias  21   die12s10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s11.bmp
+Alias  22   die12s11           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s12.bmp
+Alias  23   die12s12           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s2.bmp
+Alias  24   die12s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s3.bmp
+Alias  25   die12s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s4.bmp
+Alias  26   die12s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s5.bmp
+Alias  27   die12s5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s6.bmp
+Alias  28   die12s6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s7.bmp
+Alias  29   die12s7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s8.bmp
+Alias  30   die12s8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die12s9.bmp
+Alias  31   die12s9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20r1.bmp
+Alias  32   die20r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20r2.bmp
+Alias  33   die20r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20r3.bmp
+Alias  34   die20r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20r4.bmp
+Alias  35   die20r4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20r5.bmp
+Alias  36   die20r5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s1.bmp
+Alias  37   die20s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s10.bmp
+Alias  38   die20s10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s11.bmp
+Alias  39   die20s11           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s12.bmp
+Alias  40   die20s12           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s13.bmp
+Alias  41   die20s13           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s14.bmp
+Alias  42   die20s14           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s15.bmp
+Alias  43   die20s15           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s16.bmp
+Alias  44   die20s16           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s17.bmp
+Alias  45   die20s17           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s18.bmp
+Alias  46   die20s18           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s19.bmp
+Alias  47   die20s19           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s2.bmp
+Alias  48   die20s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s20.bmp
+Alias  49   die20s20           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s3.bmp
+Alias  50   die20s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s4.bmp
+Alias  51   die20s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s5.bmp
+Alias  52   die20s5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s6.bmp
+Alias  53   die20s6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s7.bmp
+Alias  54   die20s7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s8.bmp
+Alias  55   die20s8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die20s9.bmp
+Alias  56   die20s9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4r1.bmp
+Alias  57   die4r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4r2.bmp
+Alias  58   die4r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4r3.bmp
+Alias  59   die4r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4s1.bmp
+Alias  60   die4s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4s2.bmp
+Alias  61   die4s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4s3.bmp
+Alias  62   die4s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die4s4.bmp
+Alias  63   die4s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6r1.bmp
+Alias  64   die6r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6r2.bmp
+Alias  65   die6r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6r3.bmp
+Alias  66   die6r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6r4.bmp
+Alias  67   die6r4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s1.bmp
+Alias  68   die6s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s2.bmp
+Alias  69   die6s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s3.bmp
+Alias  70   die6s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s4.bmp
+Alias  71   die6s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s5.bmp
+Alias  72   die6s5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die6s6.bmp
+Alias  73   die6s6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8r1.bmp
+Alias  74   die8r1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8r2.bmp
+Alias  75   die8r2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8r3.bmp
+Alias  76   die8r3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8r4.bmp
+Alias  77   die8r4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8r5.bmp
+Alias  78   die8r5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s1.bmp
+Alias  79   die8s1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s2.bmp
+Alias  80   die8s2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s3.bmp
+Alias  81   die8s3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s4.bmp
+Alias  82   die8s4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s5.bmp
+Alias  83   die8s5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s6.bmp
+Alias  84   die8s6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s7.bmp
+Alias  85   die8s7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\die8s8.bmp
+Alias  86   die8s8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieblank.bmp
+Alias  87   dieblank           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFr1.bmp
+Alias  88   dieFr1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFr2.bmp
+Alias  89   dieFr2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFr3.bmp
+Alias  90   dieFr3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFr4.bmp
+Alias  91   dieFr4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFs-1.bmp
+Alias  92   dieFs-1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFs0.bmp
+Alias  93   dieFs0           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dice\dieFs1.bmp
+Alias  94   dieFs1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flame1\flame@1.bmp
+Alias  95   flame@1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@2.bmp
+Alias  96   flame@2           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@3.bmp
+Alias  97   flame@3           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@4.bmp
+Alias  98   flame@4           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@5.bmp
+Alias  99   flame@5           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@6.bmp
+Alias  100   flame@6           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@7.bmp
+Alias  101   flame@7           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flame1\flame@8.bmp
+Alias  102   flame@8           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\fonts\font.bmp
+Alias  103   font           OPAQUE  WHOLE
+
+AddTexture  ..\textures\fonts\fontA.bmp
+Alias  104   fontA           OPAQUE  WHOLE
+
+AddTexture  ..\textures\fonts\font_big.bmp
+Alias  105   font_big           OPAQUE  WHOLE
+
+AddTexture  ..\textures\fonts\font_med.bmp
+Alias  106   font_med           OPAQUE  WHOLE
+
+AddTexture  ..\textures\fonts\font_small.bmp
+Alias  107   font_small           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\bauul.bmp
+Alias  108   bauul           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\corpse.bmp
+Alias  109   corpse           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\demoness.bmp
+Alias  110   demoness           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\Faerie.bmp
+Alias  111   Faerie           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\goblin.bmp
+Alias  112   goblin           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\knight.BMP
+Alias  113   knight           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\ogre.bmp
+Alias  114   ogre           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\ogro.bmp
+Alias  115   ogro           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\phantom.bmp
+Alias  116   phantom           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\phantomw.bmp
+Alias  117   phantomw           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\skeleton2.bmp
+Alias  118   skeleton2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\Sorcerer.bmp
+Alias  119   Sorcerer           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\tentacle.bmp
+Alias  120   tentacle           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\WEAPONwraith.bmp
+Alias  121   WEAPONwraith           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\wraith.bmp
+Alias  122   wraith           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\screen1\button1.bmp
+Alias  123   button1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\button2.bmp
+Alias  124   button2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\button3.bmp
+Alias  125   button3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\dungeont.bmp
+Alias  126   dungeont           OPAQUE  WHOLE
+
+AddTexture  ..\textures\treasure\coin.bmp
+Alias  127   coin           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\axe.bmp
+Alias  128   axe           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\bastard_sword.bmp
+Alias  129   bastard_sword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\battleaxe.bmp
+Alias  130   battleaxe           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\flamesword.bmp
+Alias  131   flamesword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\icesword.bmp
+Alias  132   icesword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\knight.BMP
+Alias  133   knight           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\lightning_sword.bmp
+Alias  134   lightning_sword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\morning_star.bmp
+Alias  135   morning_star           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\spiked_flail.bmp
+Alias  136   spiked_flail           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\split_sword.bmp
+Alias  137   split_sword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\super_flamesword.bmp
+Alias  138   super_flamesword           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weaponbauul.bmp
+Alias  139   weaponbauul           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weapondemoness.bmp
+Alias  140   weapondemoness           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weapongoblin.bmp
+Alias  141   weapongoblin           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\Weaponsorcerer.bmp
+Alias  142   Weaponsorcerer           OPAQUE  WHOLE
+
+AddTexture  ..\textures\background.bmp
+Alias  143   background           OPAQUE  WHOLE
+
+AddTexture  ..\textures\bluetile1.bmp
+Alias  144   bluetile1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\box.bmp
+Alias  145   box           OPAQUE  WHOLE
+
+AddTexture  ..\textures\brbrik3.bmp
+Alias  146   brbrik3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\brelab.bmp
+Alias  147   brelab           OPAQUE  WHOLE
+
+AddTexture  ..\textures\brick.bmp
+Alias  148   brick           OPAQUE  WHOLE
+
+AddTexture  ..\textures\brick4.bmp
+Alias  149   brick4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\BRIKS.bmp
+Alias  150   BRIKS           OPAQUE  WHOLE
+
+AddTexture  ..\textures\building3.bmp
+Alias  151   building3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\ceiling.bmp
+Alias  152   ceiling           OPAQUE  WHOLE
+
+AddTexture  ..\textures\chbrick4.bmp
+Alias  153   chbrick4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\chbrick5.bmp
+Alias  154   chbrick5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\checkfloor.bmp
+Alias  155   checkfloor           OPAQUE  WHOLE
+
+AddTexture  ..\textures\chem1.bmp
+Alias  156   chem1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\cloud1.bmp
+Alias  157   cloud1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\coble10.bmp
+Alias  158   coble10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\crdfloor1.bmp
+Alias  159   crdfloor1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\curb.bmp
+Alias  160   curb           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dimond.bmp
+Alias  161   dimond           OPAQUE  WHOLE
+
+AddTexture  ..\textures\door1.bmp
+Alias  162   door1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\dungeonp.bmp
+Alias  163   dungeonp           OPAQUE  WHOLE
+
+AddTexture  ..\textures\eye.bmp
+Alias  164   eye           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flrtile1.bmp
+Alias  165   flrtile1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\Goldplai.bmp
+Alias  166   Goldplai           OPAQUE  WHOLE
+
+AddTexture  ..\textures\grass.bmp
+Alias  167   grass           OPAQUE  WHOLE
+
+AddTexture  ..\textures\grass1.bmp
+Alias  168   grass1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\grass2.bmp
+Alias  169   grass2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\hex2b.bmp
+Alias  170   hex2b           OPAQUE  WHOLE
+
+AddTexture  ..\textures\ik_concr1.bmp
+Alias  171   ik_concr1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\magicbrick1.bmp
+Alias  172   magicbrick1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\magicceiling1.bmp
+Alias  173   magicceiling1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\magictile1.bmp
+Alias  174   magictile1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\mahog.bmp
+Alias  175   mahog           OPAQUE  WHOLE
+
+AddTexture  ..\textures\masphalt.bmp
+Alias  176   masphalt           OPAQUE  WHOLE
+
+AddTexture  ..\textures\mossybri.bmp
+Alias  177   mossybri           OPAQUE  WHOLE
+
+AddTexture  ..\textures\mtl10.bmp
+Alias  178   mtl10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\pave1.bmp
+Alias  179   pave1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\PECAN2.bmp
+Alias  180   PECAN2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\planks1.bmp
+Alias  181   planks1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\potion.bmp
+Alias  182   potion           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\redbrick.bmp
+Alias  183   redbrick           OPAQUE  WHOLE
+
+AddTexture  ..\textures\redbrick1.bmp
+Alias  184   redbrick1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\redtile1.bmp
+Alias  185   redtile1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\road1.bmp
+Alias  186   road1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\rock6a.bmp
+Alias  187   rock6a           OPAQUE  WHOLE
+
+AddTexture  ..\textures\temple3.bmp
+Alias  188   temple3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\tilez2.bmp
+Alias  189   tilez2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\wall1.bmp
+Alias  190   wall1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\water15.bmp
+Alias  191   water15           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\water9.bmp
+Alias  192   water9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\window.bmp
+Alias  193   window           OPAQUE  WHOLE
+
+AddTexture  ..\textures\wood2.bmp
+Alias  194   wood2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\woodfrnt.bmp
+Alias  195   woodfrnt           OPAQUE  WHOLE
+
+AddTexture  ..\textures\woodlock.bmp
+Alias  196   woodlock           OPAQUE  WHOLE
+
+AddTexture  ..\textures\woodside.bmp
+Alias  197   woodside           OPAQUE  WHOLE
+
+AddTexture  ..\textures\yellowbrick1.bmp
+Alias  198   yellowbrick1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\yellowtile1.bmp
+Alias  199   yellowtile1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\zoo1.bmp
+Alias  200   zoo1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\_lava1.bmp
+Alias  201   _lava1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\slave.BMP
+Alias  202   slave           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\wolf.BMP
+Alias  203   wolf           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\button4.bmp
+Alias  204   button4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\lightmap.bmp
+Alias  205   lightmap@1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flare0.bmp
+Alias  206   flare@1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flare1.bmp
+Alias  207   flare@2           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flare2.bmp
+Alias  208   flare@3           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flare3.bmp
+Alias  209   flare@4           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\flare4.bmp
+Alias  210   flare@5           AlphaTransparent  WHOLE
+
+AddTexture  ..\Models\3ds\logs\BarkDark.bmp
+Alias  211   BarkDark           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\logs\Rings2.bmp
+Alias  212   Rings2           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\OrnateBox\metal20.bmp
+Alias  213   metal20           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\OrnateBox\chest2.bmp
+Alias  214   chest2           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\Goblet\goblet.bmp
+Alias  215   GOBLET           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\Goblet\gobjwl.bmp
+Alias  216   gobjwl           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\bucket\bucket.bmp
+Alias  217   bucket           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\bucket\oldmetal.bmp
+Alias  218   oldmetal           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\blanket\blanket.bmp
+Alias  219   blanket           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\eat\ceramic1.bmp
+Alias  220 ceramic1           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\eat\woodbowl.bmp
+Alias  221 woodbowl           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\eat\woodcup.bmp
+Alias  222 woodcup           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\trough\twood.bmp
+Alias  223 twood           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\broom\brmstrw.bmp
+Alias  224 brmstrw           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\broom\brmh.bmp
+Alias  225 brmh           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\crock\ceramic5.bmp
+Alias  226 ceramic5           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\crock\ceramic6.bmp
+Alias  227 ceramic6           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\bread\bread.bmp
+Alias  228 bread           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\bread\cheese.bmp
+Alias  229 cheese           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\basket1\weave4.bmp
+Alias  230 weave4           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\basket2\weave2.bmp
+Alias  231 weave2           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\metalbox\boxmetal.bmp
+Alias  232 boxmetal           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\circle\ruins.bmp
+Alias  233 ruins           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\circle\ruinstn.bmp
+Alias  234 ruinstn           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\banner\banner1.bmp
+Alias  235 banner1           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\Stone\stones1.bmp
+Alias  236 stones1           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\Stone\stones2.bmp
+Alias  237 stones2           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\Stone\stones3.bmp
+Alias  238 stones3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\ruin1.bmp
+Alias  239 ruin1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\a.bmp
+Alias  240 ali           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\insect.BMP
+Alias  241   insect           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\massm.BMP
+Alias  242   massm           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\oluve.BMP
+Alias  243   oluve           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\goblin2.bmp
+Alias  244   goblin2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\goblin3.bmp
+Alias  245   goblin3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\goblin4.bmp
+Alias  246   goblin4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\mummy.bmp
+Alias  247   mummy           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\weaponmummy.bmp
+Alias  248   weaponmummy           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\bucket\bucketi.bmp
+Alias  249   bucketi           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\buttoncopy.bmp
+Alias  250   buttoncopy           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\hydra.bmp
+Alias  251   hydra           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\hydraweapon.bmp
+Alias  252   hydraweapon           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\imp.bmp
+Alias  253   imp           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\necromancer.bmp
+Alias  254   necromancer           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\demon.bmp
+Alias  255   demon           OPAQUE  WHOLE
+
+AddTexture  ..\textures\cfloor.bmp
+Alias  256   cfloor           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\fulimo.bmp
+Alias  257   fulimo           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door2.bmp
+Alias  258   door2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door3.bmp
+Alias  259   door3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door4.bmp
+Alias  260   door4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door5.bmp
+Alias  261   door5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door6.bmp
+Alias  262   door6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door7.bmp
+Alias  263   door7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\crate\crate1.bmp
+Alias  264   crate1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door8.bmp
+Alias  265   door8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door9.bmp
+Alias  266   door9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door10.bmp
+Alias  267   door10           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door11.bmp
+Alias  268   door11           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door12.bmp
+Alias  269   door12           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door13.bmp
+Alias  270   door13           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door14.bmp
+Alias  271   door14           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door15.bmp
+Alias  272   door15           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door16.bmp
+Alias  273   door16           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door17.bmp
+Alias  274   door17           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door18.bmp
+Alias  275   door18           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door19.bmp
+Alias  276   door19           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door20.bmp
+Alias  277   door20           OPAQUE  WHOLE
+
+AddTexture  ..\textures\doors\door21.bmp
+Alias  278   door21           OPAQUE  WHOLE
+
+
+AddTexture  ..\textures\flare\shine@1.bmp
+Alias  279   shine@1           OPAQUE  WHOLE
+
+
+AddTexture  ..\textures\flare\shine@2.bmp
+Alias  280   shine@2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@3.bmp
+Alias  281   shine@3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@4.bmp
+Alias  282   shine@4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@5.bmp
+Alias  283   shine@5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@6.bmp
+Alias  284   shine@6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@7.bmp
+Alias  285   shine@7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@8.bmp
+Alias  286   shine@8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@9.bmp
+Alias  287  shine@9           OPAQUE  WHOLE
+
+AddTexture  ..\textures\flare\shine@10.bmp
+Alias  288   shine@10           OPAQUE  WHOLE
+
+
+AddTexture  ..\textures\explosion\explod@1.bmp
+Alias  289   explod@1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@2.bmp
+Alias  290   explod@2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@3.bmp
+Alias  291   explod@3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@4.bmp
+Alias  292   explod@4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@5.bmp
+Alias  293   explod@5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@6.bmp
+Alias  294   explod@6          OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@7.bmp
+Alias  295   explod@7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\explosion\explod@8.bmp
+Alias  296  explod@8           OPAQUE  WHOLE
+
+
+AddTexture  ..\textures\missle1.bmp
+Alias  297  missle1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\missle2.bmp
+Alias  298  missle2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\missle3.bmp
+Alias  299  missle3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\missle4.bmp
+Alias  300  missle4           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\scroll\scroll1.bmp
+Alias  301   scroll1           OPAQUE  WHOLE
+
+AddTexture  ..\Models\3ds\scroll\scroll2.bmp
+Alias  302   scroll2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house1\housef.bmp
+Alias  303   housef           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house1\houser.bmp
+Alias  304  houser           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house1\houset.bmp
+Alias  305  houset           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house1\housel.bmp
+Alias  306  housel           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house2\h2back.bmp
+Alias  307  h2back           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house2\h2frt.bmp
+Alias  308  h2frt           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house2\h2sidel.bmp
+Alias  309  h2sidel           OPAQUE  WHOLE
+
+AddTexture  ..\textures\house2\h2sider.bmp
+Alias  310  h2sider           OPAQUE  WHOLEs
+
+
+AddTexture  ..\textures\background2.bmp
+Alias  311   background2           OPAQUE  WHOLE
+
+
+AddTexture  ..\textures\crosshair.bmp
+Alias  312   crosshair           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb1.bmp
+Alias  313   pb1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb2.bmp
+Alias  314   pb2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb3.bmp
+Alias  315   pb3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb4.bmp
+Alias  316   pb4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb5.bmp
+Alias  317   pb5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb6.bmp
+Alias  318   pb6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb7.bmp
+Alias  319   pb7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb8.bmp
+Alias  320   pb8           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pb0.bmp
+Alias  321   pb0           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po1.bmp
+Alias  322   po1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po2.bmp
+Alias  323   po2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po3.bmp
+Alias  324   po3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po4.bmp
+Alias  325   po4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po5.bmp
+Alias  326   po5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po6.bmp
+Alias  327   po6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\po7.bmp
+Alias  328   po7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\barrel\woodf.bmp
+Alias  329   woodf           OPAQUE  WHOLE
+
+AddTexture  ..\textures\barrel\rust.bmp
+Alias  330   rust           OPAQUE  WHOLE
+
+AddTexture  ..\textures\box1.bmp
+Alias  331   box1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\book\bookc.bmp
+Alias  332   bookc           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm1.bmp
+Alias  333   pbm1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm2.bmp
+Alias  334   pbm2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm3.bmp
+Alias  335   pbm3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo1.bmp
+Alias  336   pbmo1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo2.bmp
+Alias  337   pbmo2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo3.bmp
+Alias  338   pbmo3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm0.bmp
+Alias  339   pbm0           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo0.bmp
+Alias  340   pbmo0           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\cobra2.bmp
+Alias  341   cobra           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\dragon.bmp
+Alias  342   dragon           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weapondragon.bmp
+Alias  343   weapondragon           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weaponcobra.bmp
+Alias  344   weaponcobra           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\centaur.bmp
+Alias  345   centaur           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\craz.bmp
+Alias  346   craz           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weaponcraz.bmp
+Alias  347   weaponcraz           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\rider.bmp
+Alias  348   rider           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\okta.bmp
+Alias  349   okta           OPAQUE  WHOLE
+
+AddTexture  ..\textures\weapons\weaponsorb.bmp
+Alias  350   weaponsorb           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm4.bmp
+Alias  351   pbm4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo4.bmp
+Alias  352   pbmo4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm5.bmp
+Alias  353   pbm5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo5.bmp
+Alias  354   pbmo5           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\dungeonmaster.bmp
+Alias  355   dungeonmaster           OPAQUE  WHOLE
+
+AddTexture  ..\textures\box2.bmp
+Alias  356   box2           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\screen1\pbm6.bmp
+Alias  357   pbm6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo6.bmp
+Alias  358   pbmo6           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbm7.bmp
+Alias  359   pbm7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\screen1\pbmo7.bmp
+Alias  360   pbmo7           OPAQUE  WHOLE
+
+AddTexture  ..\textures\background3.bmp
+Alias  361   background3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\ewall1.bmp
+Alias  362   ewall1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\ewall2.bmp
+Alias  363   ewall2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\ewall3.bmp
+Alias  364   ewall3           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\eceiling1.bmp
+Alias  365   eceiling1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\efloor.bmp
+Alias  366   efloor1           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\efloor2.bmp
+Alias  367   efloor2           OPAQUE  WHOLE
+
+AddTexture  ..\textures\egypt\ewall4.bmp
+Alias  368   ewall4           OPAQUE  WHOLE
+
+AddTexture  ..\textures\monster\sorb.bmp
+Alias  369   sorb           OPAQUE  WHOLE
+
+AddTexture  ..\textures\blood\blood@1.bmp
+Alias  370   blood@1           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@2.bmp
+Alias  371   blood@2           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@3.bmp
+Alias  372   blood@3           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@4.bmp
+Alias  373   blood@4           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@5.bmp
+Alias  374   blood@5           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@6.bmp
+Alias  375   blood@6           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@7.bmp
+Alias  376   blood@7           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@8.bmp
+Alias  377   blood@8           AlphaTransparent  WHOLE
+
+AddTexture  ..\textures\blood\blood@9.bmp
+Alias  378   blood@9           AlphaTransparent  WHOLE
+
+
+END_FILE
+
+** EVERYTHING BELOW "END_FILE" IS IGNORED **
+
