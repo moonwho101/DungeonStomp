@@ -30,6 +30,7 @@ OutputBaseFilename=ds180
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+OutputDir=.\180
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
