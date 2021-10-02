@@ -22,7 +22,7 @@ To execute a secret command press the / key and the chat will open.
 Enter one of the following commands:
 
 * -breeyark This will enable the in game debug menus.
-* -yyz This will enable the in game debug menus.
+* -yyz This will give your player all weapons and spells (RUSH YYZ!).
 * -bigmoney This will give you a bunch of gold.
 
 ## MD2 Models
