@@ -7,8 +7,8 @@ It also lets you to see, in real time, your dice attack rolls.
 It will compile using Microsoft Visual Studio 2019 community edition.
 
 ## Compile Notes
-* Set VC++ INCLUDE directory to dx7asdk\include
-* Set VC++ LIB directory to dx7asdk\lib
+* Confirm VC++ INCLUDE directory has ..\dx7asdk\include
+* Confirm VC++ LIB directory has ..\dx7asdk\lib
 
 ## Contact
 If you have any questions email me at info@aptisense.com or visit www.aptisense.com to download game installer.
