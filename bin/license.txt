@@ -1,75 +1,21 @@
-Dungeon Stomp Ver 1.80
-Copyright 2001-2021, Aptisense
-Programmed By Mark Longo
+The MIT License (MIT)
 
-All Rights Reserved
+Copyright (c) 2018 Richard Davey, Photon Storm Ltd.
 
-License Agreement
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-You should carefully read the following terms and conditions
-before using this software.  Unless you have a different license
-agreement signed by Calamity Software. your use of this
-software indicates your acceptance of this license agreement and
-warranty.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Registered Version
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-One registered copy of Dungeon Stomp may either be used by a single
-person who uses the software personally on one or more computers,
-or installed on a single workstation used nonsimultaneously by
-multiple people, but not both.
-
-No registered user may alter or modify Dungeon Stomp.  You cannot give anyone
-else permission to modify Dungeon Stomp.
-
-The Dungeon Stomp Shareware Version must be redistributed with it's
-original form intacted.  
-
-Governing Law
-
-This agreement shall be governed by the laws of the Province of
-Ontario.
-
-Disclaimer of Warranty
-
-THIS SOFTWARE AND THE ACCOMPANYING FILES ARE SOLD "AS IS" AND
-WITHOUT WARRANTIES AS TO PERFORMANCE OR MERCHANTABILITY OR ANY
-OTHER WARRANTIES WHETHER EXPRESSED OR IMPLIED.   Because of the
-various hardware and software environments into which Dungeon Stomp may
-be put, NO WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE IS
-OFFERED.
-
-The user must assume the entire risk of using the program.  ANY
-LIABILITY OF THE SELLER WILL BE LIMITED EXCLUSIVELY TO PRODUCT
-REPLACEMENT OR REFUND OF PURCHASE PRICE.
-
-Evaluation Version
-
-Evaluation and Registration
-
-This is not free software.  Subject to the terms below, you are
-hereby licensed to use this software for evaluation purposes
-without charge for a period of 30 days.  If you use this software
-after the 30 day evaluation period a registration fee of $10.00 is
-required.  Payments must be in US dollars. Credit card ordering and quantity
-discounts are available, via http://www.aptisense.com .  When payment is 
-received you will be sent a registered key.
-
-
-Unregistered use of Dungeon Stomp after the 30-day evaluation period is in violation of U.S.
-,Canada and international copyright laws.
-
-Distribution
-
-Provided that you verify that you are distributing the evaluation
-version  you are hereby licensed to make as many copies of the
-evaluation version of this software and documentation as you wish;
-give exact copies of the original evaluation version to anyone;
-and distribute the evaluation version of the software and
-documentation in its unmodified form via electronic means.
-There is no charge for any of the above.
-
-You are specifically prohibited from charging, or requesting
-donations, for any such copies, however made; and from
-distributing the software and/or documentation with other products
-(commercial or otherwise) without prior written permission.
