@@ -11,7 +11,7 @@ Compile notes:
 Set INCLUDE directory to dx7asdk\include 
 Set LIB directory to dx7asdk\lib
 
-If you have any questions email me at mlongo@aptisense.com or visit www.aptisense.com to download game installer.
+If you have any questions email me at info@aptisense.com or visit www.aptisense.com to download game installer.
 
 Happy Dungeon Stomping!
 
