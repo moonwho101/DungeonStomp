@@ -132,7 +132,7 @@ int merchantcurrent = 0;
 int merchantfound = 0;
 
 //Mouse
-int mousefilter = 1;
+int mousefilter = 0;
 
 //Directx
 RadixSort RS;
