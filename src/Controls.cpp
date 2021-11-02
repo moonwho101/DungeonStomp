@@ -711,9 +711,10 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 	{
 		if (mousefilter)
 		{
-			MouseFilter(filterx, filtery);
-			angy += finalX;
-			look_up_ang += finalY;
+			//MouseFilter(filterx, filtery);
+			smooth_mouse(elapsegametimersave, filterx, filtery);
+			angy += filterx;
+			look_up_ang += filtery;
 		}
 		else
 		{
@@ -728,6 +729,25 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 			look_up_ang = 89.0f;
 	}
 }
+
+float springiness = 40.0f;
+float use_x=0;
+float use_y = 0;
+
+
+void CMyD3DApplication::smooth_mouse(float time_d, float realx, float realy) {
+	
+	double d = 1 - exp(log(0.5) * springiness * time_d);
+
+	use_x += (realx - use_x) * d;
+	use_y += (realy - use_y) * d;
+
+	filterx = use_x;
+	filtery = use_y;
+}
+
+
+
 
 VOID CMyD3DApplication::SelectCharacterMode(CONTROLS* Controls)
 {

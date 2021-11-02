@@ -169,6 +169,7 @@ HRESULT FadeIn();
 	HRESULT SetGammaFadeOut() ;
 	HRESULT SetGammaFadeIn() ;
 	VOID MouseFilter(float deltaMouseX,float deltaMouseY) ;
+	void smooth_mouse(float time_d, float realx, float realy);
 	void ApplyMissleDamage(int playernum);
 	LONGLONG DSTimer();
 	void SwitchGun(int gun);	
