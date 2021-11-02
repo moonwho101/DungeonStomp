@@ -109,6 +109,10 @@ float mousediv = 5.0f;
 FLOAT talkgametimer = 0;
 FLOAT talkgametimerlast = 0;
 
+float springiness = 5.0f;
+float use_x = 0;
+float use_y = 0;
+
 //-----------------------------------------------------------------------------
 // Name: MovePlayer
 // Desc: This method handles showing the scores for our game.
@@ -729,10 +733,6 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 			look_up_ang = 89.0f;
 	}
 }
-
-float springiness = 40.0f;
-float use_x=0;
-float use_y = 0;
 
 
 void CMyD3DApplication::smooth_mouse(float time_d, float realx, float realy) {
