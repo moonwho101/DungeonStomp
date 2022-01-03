@@ -109,7 +109,7 @@ float mousediv = 5.0f;
 FLOAT talkgametimer = 0;
 FLOAT talkgametimerlast = 0;
 
-float springiness = 5.0f;
+float springiness = 10.0f;
 float use_x = 0;
 float use_y = 0;
 
