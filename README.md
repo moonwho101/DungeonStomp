@@ -8,6 +8,7 @@ It is now 2021 - This is an updated version compiled with a more modern compiler
 The game still runs! It also lets you to see, in real time, your dice attack/damage rolls.
 
 It will compile using Microsoft Visual Studio 2019 community edition.
+The Dungeon Stomp DirectX11 is here https://github.com/moonwho101/DungeonStompDirectX11PixelShader
 
 ## Compile Notes
 * Confirm VC++ INCLUDE directory has ..\dx7asdk\include
