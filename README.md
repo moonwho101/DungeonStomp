@@ -15,7 +15,7 @@ The Dungeon Stomp DirectX11 is here https://github.com/moonwho101/DungeonStompDi
 * Confirm VC++ LIB directory has ..\dx7asdk\lib
 
 ## Contact
-If you have any questions email me at info@aptisense.com or visit www.aptisense.com to download game installer.
+If you have any questions email me at mlongo@aptisense.com or visit www.aptisense.com to download game installer.
 Happy Dungeon Stomping - Breeyark!
 
 ## Secret Commands
