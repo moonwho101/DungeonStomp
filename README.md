@@ -6,6 +6,7 @@
 * Dungeon Stomp for DirectX12 is here https://github.com/moonwho101/DungeonStompDirectX12
 * Dungeon Stomp for DirectX11 is here https://github.com/moonwho101/DungeonStompDirectX11PixelShader
 
+## Dungeon Stomp DirectX7
 Dungeon Stomp is a DirectX 3D dungeon game that uses Direct3D, DirectInput and DirectSound.
 Dungeon Stomp was started it 2001.   The first beta was released in Aug of 2002.
 It is now 2021 - This is an updated version compiled with a more modern compiler.
