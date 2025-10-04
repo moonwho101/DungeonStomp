@@ -14,6 +14,8 @@ The game still runs! It also lets you to see, in real time, your dice attack/dam
 
 It will compile using Microsoft Visual Studio 2019 community edition.
 
+Run DungeonStomp.exe from the bin directory to try the game.
+
 ## Compile Notes
 * Confirm VC++ INCLUDE directory has ..\dx7asdk\include
 * Confirm VC++ LIB directory has ..\dx7asdk\lib
