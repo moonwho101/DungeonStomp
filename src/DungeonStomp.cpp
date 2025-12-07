@@ -639,7 +639,9 @@ CMyD3DApplication::CMyD3DApplication()
 	Z_FAR = D3DVAL(4000.0);
 
 	Z_FAR = D3DVAL(54000.0);
-	FOV = D3DVAL((pi / 2.0f)); // Field Of View set to 90 degrees
+
+	float angle = 50.0f;
+	FOV =  angle * D3DVAL((pi / 180.0f)); // Field Of View set to 90 degrees
 
 	// Move the camera position around
 	D3DVECTOR vFrom(700.0f, 22.0f, 700.0f);
@@ -4308,7 +4310,13 @@ void CMyD3DApplication::InitRRvariables()
 
 	dx = (float)(szClient.right - szClient.left);
 	dy = (float)(szClient.bottom - szClient.top);
-	ASPECT_RATIO = 1.0f;
+
+
+	D3DVIEWPORT7 vp;
+	m_pd3dDevice->GetViewport(&vp);
+	ASPECT_RATIO = ((FLOAT)vp.dwHeight) / vp.dwWidth;
+
+	
 
 	PrintMessage(NULL, "CMyD3DApplication::InitRRvariables - starting", NULL, LOGFILE_ONLY);
 	gammafadeout = 0;
@@ -8895,7 +8903,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Size the background
 	D3DVIEWPORT7 vp;
 	m_pd3dDevice->GetViewport(&vp);
-	FLOAT fAspect = ((FLOAT)vp.dwHeight) / vp.dwWidth;
+	ASPECT_RATIO = ((FLOAT)vp.dwHeight) / vp.dwWidth;
 	m_pBackground[0].sy = (FLOAT)((vp.dwHeight / 2.0) + 30.0);
 	m_pBackground[2].sy = (FLOAT)((vp.dwHeight / 2.0) + 30.0);
 	m_pBackground[2].sx = (FLOAT)vp.dwWidth;
@@ -8928,7 +8936,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 	// Set the transform matrices
 	D3DUtil_SetIdentityMatrix(matWorld);
-	D3DUtil_SetProjectionMatrix(matProj, 1.57f, 1.0f, 1.0f, 900.0f);
+	D3DUtil_SetProjectionMatrix(matProj, 1.57f, ASPECT_RATIO, 1.0f, 900.0f);
 	m_pd3dDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &matWorld);
 	m_pd3dDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &matProj);
 
