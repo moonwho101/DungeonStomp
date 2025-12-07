@@ -104,12 +104,12 @@ struct diceroll
 extern struct diceroll dice[50];
 extern int numdice;
 
-float mousediv = 5.0f;
+float mousediv = 10.0f;
 
 FLOAT talkgametimer = 0;
 FLOAT talkgametimerlast = 0;
 
-float springiness = 10.0f;
+float springiness = 9.0f;
 float use_x = 0;
 float use_y = 0;
 
@@ -726,11 +726,11 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 
 			look_up_ang += filtery;
 		}
-		if (look_up_ang <= -90.0f)
+		/*if (look_up_ang <= -90.0f)
 			look_up_ang = -89.0f;
 
 		if (look_up_ang >= 90.0f)
-			look_up_ang = 89.0f;
+			look_up_ang = 89.0f;*/
 	}
 }
 

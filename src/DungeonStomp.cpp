@@ -116,8 +116,8 @@ int direction = 0;
 int directionlast = 0;
 int savelastmove = 0;
 int savelaststrifemove = 0;
-float playerspeedmax = 180.0f;
-float playerspeedlevel = 180.0f;
+float playerspeedmax = 340.0f;
+float playerspeedlevel = 340.0f;
 float movespeed = 0.0f;
 float movespeedold = 0.0f;
 float movespeedsave = 0.0f;
@@ -639,7 +639,9 @@ CMyD3DApplication::CMyD3DApplication()
 	Z_FAR = D3DVAL(4000.0);
 
 	Z_FAR = D3DVAL(54000.0);
-	FOV = D3DVAL((pi / 2.0f)); // Field Of View set to 90 degrees
+
+	float angle = 50.0f;
+	FOV =  angle * D3DVAL((pi / 180.0f)); // Field Of View set to 90 degrees
 
 	// Move the camera position around
 	D3DVECTOR vFrom(700.0f, 22.0f, 700.0f);
@@ -4308,7 +4310,13 @@ void CMyD3DApplication::InitRRvariables()
 
 	dx = (float)(szClient.right - szClient.left);
 	dy = (float)(szClient.bottom - szClient.top);
-	ASPECT_RATIO = 1.0f;
+
+
+	D3DVIEWPORT7 vp;
+	m_pd3dDevice->GetViewport(&vp);
+	ASPECT_RATIO = ((FLOAT)vp.dwHeight) / vp.dwWidth;
+
+	
 
 	PrintMessage(NULL, "CMyD3DApplication::InitRRvariables - starting", NULL, LOGFILE_ONLY);
 	gammafadeout = 0;
@@ -5513,8 +5521,19 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey)
 
 	modellocation = m_vEyePt;
 
+
+
+	if (look_up_ang < -89.3f)
+		look_up_ang = -89.3f;
+
+	if (look_up_ang > 89.3f)
+		look_up_ang = 89.3f;
+
+
 	float newangle = 0;
 	newangle = fixangle(look_up_ang, 90);
+
+
 
 	m_vLookatPt.x = m_vEyePt.x + cameradist * sinf(newangle * k) * sinf(angy * k);
 	m_vLookatPt.y = m_vEyePt.y + cameradist * cosf(newangle * k);
@@ -8895,7 +8914,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Size the background
 	D3DVIEWPORT7 vp;
 	m_pd3dDevice->GetViewport(&vp);
-	FLOAT fAspect = ((FLOAT)vp.dwHeight) / vp.dwWidth;
+	ASPECT_RATIO = ((FLOAT)vp.dwHeight) / vp.dwWidth;
 	m_pBackground[0].sy = (FLOAT)((vp.dwHeight / 2.0) + 30.0);
 	m_pBackground[2].sy = (FLOAT)((vp.dwHeight / 2.0) + 30.0);
 	m_pBackground[2].sx = (FLOAT)vp.dwWidth;
@@ -8928,7 +8947,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 	// Set the transform matrices
 	D3DUtil_SetIdentityMatrix(matWorld);
-	D3DUtil_SetProjectionMatrix(matProj, 1.57f, 1.0f, 1.0f, 900.0f);
+	D3DUtil_SetProjectionMatrix(matProj, 1.57f, ASPECT_RATIO, 1.0f, 900.0f);
 	m_pd3dDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, &matWorld);
 	m_pd3dDevice->SetTransform(D3DTRANSFORMSTATE_PROJECTION, &matProj);
 
@@ -12709,10 +12728,10 @@ HRESULT CMyD3DApplication::FrameMoveOpeningScreen(FLOAT fTimeKey)
 	m_vEyePt.y = m_vLookatPt.y + cameradist * sinf(look_up_ang * k);
 	m_vEyePt.z = m_vLookatPt.z + cameradist * -cosf(angy * k);
 
-	savevelocity.x = r * 12 * sinf(angy * k);
+	savevelocity.x = r * 20 * sinf(angy * k);
 
 	savevelocity.y = 70.0f;
-	savevelocity.z = r * 12 * cosf(angy * k);
+	savevelocity.z = r * 20 * cosf(angy * k);
 
 	eRadius = D3DVECTOR(5.0f, 5.0f, 5.0f);
 
