@@ -116,8 +116,8 @@ int direction = 0;
 int directionlast = 0;
 int savelastmove = 0;
 int savelaststrifemove = 0;
-float playerspeedmax = 380.0f;
-float playerspeedlevel = 380.0f;
+float playerspeedmax = 340.0f;
+float playerspeedlevel = 340.0f;
 float movespeed = 0.0f;
 float movespeedold = 0.0f;
 float movespeedsave = 0.0f;
@@ -12728,10 +12728,10 @@ HRESULT CMyD3DApplication::FrameMoveOpeningScreen(FLOAT fTimeKey)
 	m_vEyePt.y = m_vLookatPt.y + cameradist * sinf(look_up_ang * k);
 	m_vEyePt.z = m_vLookatPt.z + cameradist * -cosf(angy * k);
 
-	savevelocity.x = r * 12 * sinf(angy * k);
+	savevelocity.x = r * 20 * sinf(angy * k);
 
 	savevelocity.y = 70.0f;
-	savevelocity.z = r * 12 * cosf(angy * k);
+	savevelocity.z = r * 20 * cosf(angy * k);
 
 	eRadius = D3DVECTOR(5.0f, 5.0f, 5.0f);
 
