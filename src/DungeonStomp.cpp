@@ -5521,8 +5521,19 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey)
 
 	modellocation = m_vEyePt;
 
+
+
+	if (look_up_ang < -89.3f)
+		look_up_ang = -89.3f;
+
+	if (look_up_ang > 89.3f)
+		look_up_ang = 89.3f;
+
+
 	float newangle = 0;
 	newangle = fixangle(look_up_ang, 90);
+
+
 
 	m_vLookatPt.x = m_vEyePt.x + cameradist * sinf(newangle * k) * sinf(angy * k);
 	m_vLookatPt.y = m_vEyePt.y + cameradist * cosf(newangle * k);
