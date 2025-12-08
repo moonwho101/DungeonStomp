@@ -24,7 +24,6 @@ It will compile using Microsoft Visual Studio 2019 community edition.
 * SPACE to open doors
 * Q/Z to cycle weapons/spells
 * Left mouse button to attack, right mouse button to move forward
-* Maximize screen then press ALT+ENTER to enter FULLSCREEN mode
 * Press F2 to Load game, F3 to Save game
 
 ## Compile Notes
