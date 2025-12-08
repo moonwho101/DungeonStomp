@@ -1457,8 +1457,8 @@ LRESULT CMyD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		if (wParam == ANIMATION_TIMER) {
 			if (GetFramework() && GetbActive() && GetbReady() && m_bWindowed) {
 
-				if (IsRenderingOk == TRUE && dialogpause == 0)
-					AnimateCharacters();
+				//if (IsRenderingOk == TRUE && dialogpause == 0)
+				//	AnimateCharacters();
 			}
 		}
 		if (wParam == GUN_TIMER) {
@@ -2483,7 +2483,9 @@ void CMyD3DApplication::AddPlayerLightSource(int player_num, float x, float y, f
 	num_light_sources++;
 }
 
-void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag) {
+extern float gametimerAnimation;
+
+void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
 
@@ -2544,6 +2546,27 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			v_index = pmdata[pmodel_id].f[i_count];
 
 			tp = &pmdata[pmodel_id].w[curr_frame][v_index];
+
+			
+			float x, y, z;
+			if (nextFrame != -1) {
+				const vert_ptr tpNextFrame = &pmdata[pmodel_id].w[nextFrame][v_index];
+				const float t = (gametimerAnimation > 0.0f && gametimerAnimation < 1.0f) ? gametimerAnimation : 0.0f;
+
+				if (t > 0.0f) {
+					x = tp->x + t * (tpNextFrame->x - tp->x);
+					z = tp->y + t * (tpNextFrame->y - tp->y);
+					y = tp->z + t * (tpNextFrame->z - tp->z);
+				} else {
+					x = tp->x;
+					z = tp->y;
+					y = tp->z;
+				}
+			} else {
+				x = tp->x;
+				z = tp->y;
+				y = tp->z;
+			}
 
 			if (weapondrop == 1) {
 				x = tp->x + x_off;
@@ -3393,6 +3416,10 @@ void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_i
 	return;
 }
 
+
+int maingameloop3 = 0;
+float gametimerAnimation = 0;
+
 //-----------------------------------------------------------------------------
 // Name: Render3DEnvironment()
 // Desc: Draws the scene.
@@ -3475,6 +3502,44 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 		}
 		return hr;
 	}
+
+
+		static LARGE_INTEGER frequency = { 0 };
+	static LARGE_INTEGER lastTime = { 0 };
+	static float elapsedTime = 0.0f;
+	float kAnimationSpeed = 7.0f;
+
+	// Initialize frequency and lastTime on first call
+	if (frequency.QuadPart == 0) {
+		QueryPerformanceFrequency(&frequency);
+		QueryPerformanceCounter(&lastTime);
+	}
+
+	LARGE_INTEGER currentTime;
+	QueryPerformanceCounter(&currentTime);
+
+	// Calculate elapsed time in milliseconds
+	elapsedTime = (float)((currentTime.QuadPart - lastTime.QuadPart) * 1000.0 / frequency.QuadPart);
+
+	// To find the current t we divide the elapsed time by the ratio of 1 second / our anim speed.
+	// Since we aren't using 1 second as our t = 1, we need to divide the speed by 1000
+	// milliseconds to get our new ratio, which is a 5th of a second.
+	float t = elapsedTime / (1000.0f / kAnimationSpeed);
+	gametimerAnimation = t;
+
+	// If our elapsed time goes over a 5th of a second, we start over and go to the next key frame
+	if (elapsedTime >= (1000.0f / kAnimationSpeed)) {
+		// Animation Cycle
+		maingameloop3 = 1;
+		QueryPerformanceCounter(&lastTime);
+	} else {
+		maingameloop3 = 0;
+	}
+
+	if (maingameloop3) {
+		AnimateCharacters();
+	}
+
 
 	if (gametimerdoor)
 		fTimeKeyscroll = DSTimer();
