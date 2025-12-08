@@ -186,7 +186,7 @@ class CMyD3DApplication : public CD3DApplication {
 	void ResetMainPlayer();
 	void ResetDeadPlayer();
 	void FirePlayerMissle(float x, float y, float z, float angy, int owner, int shoot, D3DVECTOR velocity, float lookangy);
-	void PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag);
+	void PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame = -1);
 	void PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag);
 	void ObjectToD3DVertList(int ob_type, int angle, int oblist_index);
 	void SetMapLights(int ob_type, int angle, int oblist_index);
@@ -253,6 +253,11 @@ class CMyD3DApplication : public CD3DApplication {
 
 	void merchantnextitem();
 	void merchantprevitem();
+
+	
+	int GetNextFrame(int monsterId);
+	int GetNextFramePlayer();
+
 	D3DVALUE merchantangy;
 	int merchantlistcount;
 	int merchantmode;

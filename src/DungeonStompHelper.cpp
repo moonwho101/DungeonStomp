@@ -2310,6 +2310,7 @@ int CMyD3DApplication::initDSTimer() {
 	LONGLONG count;
 	int a = 0;
 
+
 	if (QueryPerformanceFrequency((LARGE_INTEGER *)&perf_cnt) && highperftimer == 1) {
 		// yes, timer choice flag
 		perf_flag = TRUE;

@@ -1457,8 +1457,8 @@ LRESULT CMyD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		if (wParam == ANIMATION_TIMER) {
 			if (GetFramework() && GetbActive() && GetbReady() && m_bWindowed) {
 
-				if (IsRenderingOk == TRUE && dialogpause == 0)
-					AnimateCharacters();
+				//if (IsRenderingOk == TRUE && dialogpause == 0)
+				//	AnimateCharacters();
 			}
 		}
 		if (wParam == GUN_TIMER) {
@@ -2483,7 +2483,11 @@ void CMyD3DApplication::AddPlayerLightSource(int player_num, float x, float y, f
 	num_light_sources++;
 }
 
-void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag) {
+extern float gametimerAnimation;
+
+
+
+void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
 
@@ -2545,14 +2549,29 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 
 			tp = &pmdata[pmodel_id].w[curr_frame][v_index];
 
-			if (weapondrop == 1) {
-				x = tp->x + x_off;
-				z = tp->y + y_off;
-				y = (tp->z + z_off) - 40.0f;
+			
+			float x, y, z;
+			if (nextFrame != -1) {
+				const vert_ptr tpNextFrame = &pmdata[pmodel_id].w[nextFrame][v_index];
+				const float t = (gametimerAnimation > 0.0f && gametimerAnimation < 1.0f) ? gametimerAnimation : 0.0f;
+
+				if (t > 0.0f) {
+					x = tp->x + t * (tpNextFrame->x - tp->x);
+					z = tp->y + t * (tpNextFrame->y - tp->y);
+					y = tp->z + t * (tpNextFrame->z - tp->z);
+				} else {
+					x = tp->x;
+					z = tp->y;
+					y = tp->z;
+				}
 			} else {
-				x = tp->x + x_off;
-				z = tp->y + y_off;
-				y = (tp->z + z_off);
+				x = tp->x;
+				z = tp->y;
+				y = tp->z;
+			}
+
+			if (weapondrop == 1) {
+				y -= 40.0f;
 			}
 
 			if (weapondrop == 0) {
@@ -3393,6 +3412,10 @@ void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_i
 	return;
 }
 
+
+int maingameloop3 = 0;
+float gametimerAnimation = 0;
+
 //-----------------------------------------------------------------------------
 // Name: Render3DEnvironment()
 // Desc: Draws the scene.
@@ -3475,6 +3498,44 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 		}
 		return hr;
 	}
+
+
+		static LARGE_INTEGER frequency = { 0 };
+	static LARGE_INTEGER lastTime = { 0 };
+	static float elapsedTime = 0.0f;
+	float kAnimationSpeed = 7.0f;
+
+	// Initialize frequency and lastTime on first call
+	if (frequency.QuadPart == 0) {
+		QueryPerformanceFrequency(&frequency);
+		QueryPerformanceCounter(&lastTime);
+	}
+
+	LARGE_INTEGER currentTime;
+	QueryPerformanceCounter(&currentTime);
+
+	// Calculate elapsed time in milliseconds
+	elapsedTime = (float)((currentTime.QuadPart - lastTime.QuadPart) * 1000.0 / frequency.QuadPart);
+
+	// To find the current t we divide the elapsed time by the ratio of 1 second / our anim speed.
+	// Since we aren't using 1 second as our t = 1, we need to divide the speed by 1000
+	// milliseconds to get our new ratio, which is a 5th of a second.
+	float t = elapsedTime / (1000.0f / kAnimationSpeed);
+	gametimerAnimation = t;
+
+	// If our elapsed time goes over a 5th of a second, we start over and go to the next key frame
+	if (elapsedTime >= (1000.0f / kAnimationSpeed)) {
+		// Animation Cycle
+		maingameloop3 = 1;
+		QueryPerformanceCounter(&lastTime);
+	} else {
+		maingameloop3 = 0;
+	}
+
+	if (maingameloop3) {
+		AnimateCharacters();
+	}
+
 
 	if (gametimerdoor)
 		fTimeKeyscroll = DSTimer();
@@ -7060,6 +7121,10 @@ void CMyD3DApplication::DrawPlayerGun() {
 				wz = GunTruesave.z;
 			}
 
+			//int nextFrame = GetNextFramePlayer();
+
+
+
 			PlayerToD3DVertList(ob_type,
 			                    current_frame,
 			                    angle,
@@ -7159,10 +7224,12 @@ void CMyD3DApplication::DrawMonsters() {
 					use_player_skins_flag = 0;
 					current_frame = monster_list[i].current_frame;
 
+					int nextFrame = GetNextFrame(i);
+
 					PlayerToD3DVertList(monster_list[i].model_id,
 					                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
 					                    monster_list[i].skin_tex_id,
-					                    USE_PLAYERS_SKIN);
+					                    USE_PLAYERS_SKIN, nextFrame);
 
 					for (int q = 0; q < countmodellist; q++) {
 
@@ -7177,7 +7244,7 @@ void CMyD3DApplication::DrawMonsters() {
 						PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
 						                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
 						                    FindGunTexture(model_list[getgunid].monsterweapon),
-						                    USE_PLAYERS_SKIN);
+						                    USE_PLAYERS_SKIN, nextFrame);
 					}
 				} else {
 				}
@@ -15126,6 +15193,47 @@ int CMyD3DApplication::LevelUp(int xp) {
 	}
 
 	return xp;
+}
+
+int CMyD3DApplication::GetNextFrame(int monsterId) {
+
+	int mod_id = monster_list[monsterId].model_id;
+	int curr_frame = monster_list[monsterId].current_frame;
+	int sequence = monster_list[monsterId].current_sequence;
+	int stop_frame = pmdata[mod_id].sequence_stop_frame[monster_list[monsterId].current_sequence];
+	int startframe = pmdata[mod_id].sequence_start_frame[monster_list[monsterId].current_sequence];
+	int nextFrame = 0;
+
+	if (monster_list[monsterId].bStopAnimating)
+		return -1;
+
+	if (curr_frame >= stop_frame) {
+
+		nextFrame = pmdata[mod_id].sequence_start_frame[sequence];
+
+	} else {
+		nextFrame = curr_frame + 1;
+	}
+
+	return nextFrame;
+}
+
+int CMyD3DApplication::GetNextFramePlayer() {
+
+	int mod_id = player_list[trueplayernum].model_id;
+	int curr_frame = player_list[trueplayernum].current_frame;
+	int stop_frame = pmdata[mod_id].sequence_stop_frame[player_list[trueplayernum].current_sequence];
+	int startframe = pmdata[mod_id].sequence_start_frame[player_list[trueplayernum].current_sequence];
+	int nextFrame = 0;
+
+	if (curr_frame >= stop_frame) {
+		int curr_seq = player_list[trueplayernum].current_sequence;
+		nextFrame = pmdata[mod_id].sequence_start_frame[curr_seq];
+		player_list[trueplayernum].animationdir = 1;
+	} else {
+		nextFrame = curr_frame + 1;
+	}
+	return nextFrame;
 }
 
 int CMyD3DApplication::FindModelID(char *p) {
