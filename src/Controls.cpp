@@ -17,15 +17,15 @@
 #include <io.h>
 #include <math.h>
 #include <windows.h>
-extern CMyD3DApplication* pCMyApp;
+extern CMyD3DApplication *pCMyApp;
 #define FORWARD_GEAR 0
 #define REVERSE_GEAR 1
 
 #define SND_ENGINE_REV 1
 
-VOID WalkMode(CONTROLS* Controls);
-VOID DriveMode(CONTROLS* Controls);
-VOID SelectCharacterMode(CONTROLS* Controls);
+VOID WalkMode(CONTROLS *Controls);
+VOID DriveMode(CONTROLS *Controls);
+VOID SelectCharacterMode(CONTROLS *Controls);
 BOOL set_firing_timer_flag = FALSE;
 
 extern FLOAT elapsegametimersave;
@@ -71,9 +71,7 @@ float finalY = 0;
 float filterx = 0;
 float filtery = 0;
 
-
-struct gametext
-{
+struct gametext {
 
 	int textnum;
 	int type;
@@ -83,12 +81,10 @@ struct gametext
 
 extern struct gametext gtext[200];
 
-
 extern int dialogpause;
 extern int dialognum;
 
-struct diceroll
-{
+struct diceroll {
 
 	char name[40];
 	char monster[50];
@@ -121,24 +117,18 @@ float use_y = 0;
 //		 we are moving.
 //		 Finally, it handles input controls for driving or walking.
 //-----------------------------------------------------------------------------
-VOID CMyD3DApplication::MovePlayer(CONTROLS* Controls)
-{
+VOID CMyD3DApplication::MovePlayer(CONTROLS *Controls) {
 	// Update the variables for the player
 
-	if ((Controls->bScores == TRUE) && (DelayKey2[DIK_S] == FALSE))
-	{
+	if ((Controls->bScores == TRUE) && (DelayKey2[DIK_S] == FALSE)) {
 		display_scores = !display_scores;
 		DelayKey2[DIK_S] = TRUE;
 	}
 
-	if (MyHealth > 0)
-	{
-		if (openingscreen == 1)
-		{
+	if (MyHealth > 0) {
+		if (openingscreen == 1) {
 			SelectCharacterMode(Controls);
-		}
-		else
-		{
+		} else {
 			WalkMode(Controls);
 		}
 	}
@@ -148,8 +138,7 @@ VOID CMyD3DApplication::MovePlayer(CONTROLS* Controls)
 // Name: CMyD3DApplication::ResetChatString
 // Desc: This method resets the chat count to 0
 //-----------------------------------------------------------------------------
-VOID CMyD3DApplication::ResetChatString()
-{
+VOID CMyD3DApplication::ResetChatString() {
 	chat_msg_cnt = 0;
 }
 
@@ -161,8 +150,7 @@ VOID CMyD3DApplication::ResetChatString()
 //		 session.  If they type 'kill', they will be re-started at the
 //		 starting position.
 //-----------------------------------------------------------------------------
-VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
-{
+VOID CMyD3DApplication::HandleTalkMode(BYTE *diks) {
 	int i;
 	int player_num;
 	char ch;
@@ -173,7 +161,7 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 	int caption = 0;
 	char buf[256];
 	char buf2[256];
-	FILE* fp;
+	FILE *fp;
 
 	if (!bInTalkMode)
 		return;
@@ -182,32 +170,24 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 		shift = TRUE;
 
 	int hitkey = 0;
-	for (i = 0; i < 256; i++)
-	{
+	for (i = 0; i < 256; i++) {
 
-		if ((diks[i] && 0x80))
-		{
+		if ((diks[i] && 0x80)) {
 			hitkey = 1;
 		}
-		if (i == delayon && maingameloop)
-		{
+		if (i == delayon && maingameloop) {
 
-			if (DelayKey2Pause[i] > 0)
-			{
+			if (DelayKey2Pause[i] > 0) {
 				DelayKey2Pause[i]++;
 			}
 
-			if (DelayKey2Pause[i] > 15)
-			{
+			if (DelayKey2Pause[i] > 15) {
 				DelayKey2[i] = FALSE;
 				delayon = -1;
 
-				if ((diks[i] && 0x80))
-				{
+				if ((diks[i] && 0x80)) {
 					DelayKey2Pause[i] = 99;
-				}
-				else
-				{
+				} else {
 					DelayKey2Pause[i] = 0;
 				}
 			}
@@ -217,13 +197,10 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 	if (hitkey == 0)
 		delayon = -1;
 
-	for (i = 0; i < 256; i++)
-	{
+	for (i = 0; i < 256; i++) {
 
-		if ((diks[i] && 0x80) && (DelayKey2[i] == FALSE) && delayon == -1)
-		{
-			if ((i <= 58) && (i != DIK_RETURN))
-			{
+		if ((diks[i] && 0x80) && (DelayKey2[i] == FALSE) && delayon == -1) {
+			if ((i <= 58) && (i != DIK_RETURN)) {
 				DelayKey2[i] = TRUE;
 
 				if (DelayKey2Pause[i] == 99)
@@ -235,19 +212,14 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				else
 					ch = dik_to_char_lower_case[i];
 
-				if ((diks[DIK_BACK] && 0x80) == FALSE)
-				{
-					if (ch != 0)
-					{
-						if (chat_msg_cnt < 1000)
-						{
+				if ((diks[DIK_BACK] && 0x80) == FALSE) {
+					if (ch != 0) {
+						if (chat_msg_cnt < 1000) {
 							chat_message[chat_msg_cnt] = ch;
 							chat_msg_cnt++;
 						}
 					}
-				}
-				else
-				{
+				} else {
 					delayon = i;
 					chat_msg_cnt--;
 					if (chat_msg_cnt < 0)
@@ -274,15 +246,12 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 
 	int secret = 0;
 
-	if ((diks[DIK_RETURN] && 0x80) && (DelayKey2[DIK_RETURN] == FALSE))
-	{
+	if ((diks[DIK_RETURN] && 0x80) && (DelayKey2[DIK_RETURN] == FALSE)) {
 		DelayKey2[DIK_RETURN] = TRUE;
 
-		if (chat_message[0] == '-')
-		{
+		if (chat_message[0] == '-') {
 
-			if (strstr(chat_message, "debugt") != NULL)
-			{
+			if (strstr(chat_message, "debugt") != NULL) {
 
 				if (debugtimer == 1)
 					debugtimer = 0;
@@ -290,8 +259,7 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 					debugtimer = 1;
 			}
 
-			if (strstr(chat_message, "debugs") != NULL)
-			{
+			if (strstr(chat_message, "debugs") != NULL) {
 
 				if (debugscreensize == 1)
 					debugscreensize = 0;
@@ -299,17 +267,14 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 					debugscreensize = 1;
 			}
 
-			if (strstr(chat_message, "bigmoney") != NULL)
-			{
+			if (strstr(chat_message, "bigmoney") != NULL) {
 
 				player_list[0].gold = 100000000;
 			}
 
-			if (strstr(chat_message, "breeyark") != NULL)
-			{
+			if (strstr(chat_message, "breeyark") != NULL) {
 
-				if (betamode == 0)
-				{
+				if (betamode == 0) {
 					betamode = 1;
 					player_list[0].keys = 99;
 					SetMenu(m_hWnd, gmenuhandle);
@@ -317,9 +282,7 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 					UpdateScrollList(0, 245, 255);
 
 					secret = 1;
-				}
-				else
-				{
+				} else {
 
 					betamode = 0;
 
@@ -330,18 +293,16 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				}
 			}
 
-			if (strstr(chat_message, "yyz") != NULL)
-			{
+			if (strstr(chat_message, "yyz") != NULL) {
 
 				sprintf_s(gActionMessage, "Giving all weapons...");
 				UpdateScrollList(0, 245, 255);
 				GiveWeapons();
 				secret = 1;
 			}
-			if (strstr(chat_message, "dsload") != NULL)
-			{
+			if (strstr(chat_message, "dsload") != NULL) {
 
-				char* getnamelen;
+				char *getnamelen;
 				getnamelen = (strstr(chat_message, "dsload"));
 				int getnamelenend = (strlen(chat_message));
 
@@ -349,13 +310,11 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				getnamelen = getnamelen + 7;
 				int flag = 0;
 
-				while (flag == 0)
-				{
+				while (flag == 0) {
 
 					if (*getnamelen == '\0' || *getnamelen == ' ' || *getnamelen == 13)
 						flag = 1;
-					else
-					{
+					else {
 						buf[count++] = *getnamelen;
 
 						getnamelen++;
@@ -366,18 +325,14 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				strcpy_s(buf2, buf);
 				strcat_s(buf2, ".map");
 
-				if (fopen_s(&fp, buf2, "r") != 0)
-				{
+				if (fopen_s(&fp, buf2, "r") != 0) {
 				}
 
-				if (fp == NULL)
-				{
+				if (fp == NULL) {
 					strcpy_s(gActionMessage, "File not found");
 					UpdateScrollList(0, 245, 255);
 					return;
-				}
-				else
-				{
+				} else {
 
 					strcpy_s(levelname, buf);
 
@@ -404,10 +359,9 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				}
 			}
 
-			if (strstr(chat_message, "load") != NULL)
-			{
+			if (strstr(chat_message, "load") != NULL) {
 
-				char* getnamelen;
+				char *getnamelen;
 				getnamelen = (strstr(chat_message, "load"));
 				int getnamelenend = (strlen(chat_message));
 
@@ -415,13 +369,11 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				getnamelen = getnamelen + 5;
 				int flag = 0;
 
-				while (flag == 0)
-				{
+				while (flag == 0) {
 
 					if (*getnamelen == '\0' || *getnamelen == ' ' || *getnamelen == 13)
 						flag = 1;
-					else
-					{
+					else {
 						buf[count++] = *getnamelen;
 
 						getnamelen++;
@@ -432,20 +384,16 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				strcpy_s(buf2, buf);
 				strcat_s(buf2, ".sav");
 
-				//fp = fopen(buf2,"r");
+				// fp = fopen(buf2,"r");
 
-				if (fopen_s(&fp, buf2, "r") != 0)
-				{
+				if (fopen_s(&fp, buf2, "r") != 0) {
 				}
 
-				if (fp == NULL)
-				{
+				if (fp == NULL) {
 					strcpy_s(gActionMessage, "File not found");
 					UpdateScrollList(0, 245, 255);
 					return;
-				}
-				else
-				{
+				} else {
 
 					load_game(buf2);
 
@@ -453,10 +401,9 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				}
 			}
 
-			if (strstr(chat_message, "save") != NULL)
-			{
+			if (strstr(chat_message, "save") != NULL) {
 
-				char* getnamelen;
+				char *getnamelen;
 				getnamelen = (strstr(chat_message, "save"));
 				int getnamelenend = (strlen(chat_message));
 
@@ -464,13 +411,11 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 				getnamelen = getnamelen + 5;
 				int flag = 0;
 
-				while (flag == 0)
-				{
+				while (flag == 0) {
 
 					if (*getnamelen == '\0' || *getnamelen == ' ' || *getnamelen == 13)
 						flag = 1;
-					else
-					{
+					else {
 						buf[count++] = *getnamelen;
 
 						getnamelen++;
@@ -484,8 +429,7 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 			}
 		}
 
-		if (caption == 0 && secret == 0)
-		{
+		if (caption == 0 && secret == 0) {
 			strcpy_s(gActionMessage, dp_chat_msg);
 			UpdateScrollList(0, 245, 255);
 		}
@@ -500,8 +444,7 @@ VOID CMyD3DApplication::HandleTalkMode(BYTE* diks)
 //		 mode and adjusts the associated variables accordingly - e.g.,
 //		 switching weapons, turning, moving, etc.
 //-----------------------------------------------------------------------------
-VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
-{
+VOID CMyD3DApplication::WalkMode(CONTROLS *Controls) {
 	int i = 0;
 	float speed = 8.0f;
 
@@ -518,13 +461,11 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 	FLOAT fTime = timeGetTime() * 0.001f; // Get current time in seconds
 
 	// Update the frame rate once per second
-	if (fTime - fLastGunFireTime > .3f)
-	{
+	if (fTime - fLastGunFireTime > .3f) {
 		firepause = 0;
 	}
 
-	if (Controls->spell && player_list[trueplayernum].firespeed == 0 && usespell == 1)
-	{
+	if (Controls->spell && player_list[trueplayernum].firespeed == 0 && usespell == 1) {
 		int pspeed = (18 - player_list[trueplayernum].hd);
 		if (pspeed < 6)
 			pspeed = 6;
@@ -533,22 +474,19 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 		firemissle = 1;
 	}
 
-	if (Controls->bCameraleft)
-	{
+	if (Controls->bCameraleft) {
 
-		//rotate_camera+=5.0f;
+		// rotate_camera+=5.0f;
 		rotate_camera += 105 * elapsegametimersave;
 	}
 
-	if (Controls->bCameraright)
-	{
+	if (Controls->bCameraright) {
 
-		//rotate_camera-=5.0f;
+		// rotate_camera-=5.0f;
 		rotate_camera -= 105 * elapsegametimersave;
 	}
 
-	if (Controls->missle && jump == 0 && nojumpallow == 0 && !bInTalkMode)
-	{
+	if (Controls->missle && jump == 0 && nojumpallow == 0 && !bInTalkMode) {
 
 		jump = 1;
 		if (perspectiveview == 1)
@@ -563,30 +501,22 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 	}
 
 	// turn left
-	if (Controls->bLeft && !bInTalkMode)
-	{
+	if (Controls->bLeft && !bInTalkMode) {
 		playermove = 2;
-		if (g_bUseMouse)
-		{
+		if (g_bUseMouse) {
 			filterx = (float)Controls->bLeft / (float)mousediv;
-		}
-		else
-		{
+		} else {
 			angy -= 105 * elapsegametimersave;
 			have_i_moved_flag = TRUE;
 		}
 	}
 
 	// turn right
-	if (Controls->bRight && !bInTalkMode)
-	{
+	if (Controls->bRight && !bInTalkMode) {
 		playermove = 3;
-		if (g_bUseMouse)
-		{
+		if (g_bUseMouse) {
 			filterx = (float)Controls->bRight / (float)mousediv;
-		}
-		else
-		{
+		} else {
 			angy += 105 * elapsegametimersave;
 			have_i_moved_flag = TRUE;
 		}
@@ -594,16 +524,14 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 	// move forward
 	runflag = 0;
 
-	if ( (Controls->bForward || Controls->bForwardButton) && !bInTalkMode)
-	{
+	if ((Controls->bForward || Controls->bForwardButton) && !bInTalkMode) {
 		playermove = 1;
 		have_i_moved_flag = TRUE;
 		runflag = 1;
 	}
 
 	// move backward
-	if (Controls->bBackward && !bInTalkMode)
-	{
+	if (Controls->bBackward && !bInTalkMode) {
 		runflag = 1;
 		playermove = 4;
 		have_i_moved_flag = TRUE;
@@ -619,55 +547,43 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 
 	// fire gun
 	if ((Controls->bFire == TRUE) && (MyHealth > 0 && jump == 0) && (player_list[trueplayernum].current_sequence != 2) && player_list[trueplayernum].bIsPlayerAlive == TRUE && usespell == 0 ||
-		(Controls->bFire2 == TRUE) && (MyHealth > 0) && jump == 0 && (player_list[trueplayernum].current_sequence != 2) && player_list[trueplayernum].bIsPlayerAlive == TRUE &&
-		usespell == 0)
-	{
+	    (Controls->bFire2 == TRUE) && (MyHealth > 0) && jump == 0 && (player_list[trueplayernum].current_sequence != 2) && player_list[trueplayernum].bIsPlayerAlive == TRUE &&
+	        usespell == 0) {
 
+		hitmonster = 0;
+		numdice = 2;
+		firing_gun_flag = TRUE;
+		SetPlayerAnimationSequence(trueplayernum, 2);
+		PlayWavSound(SoundID("knightattack"), 100);
 
-			hitmonster = 0;
-			numdice = 2;
-			firing_gun_flag = TRUE;
-			SetPlayerAnimationSequence(trueplayernum, 2);
-			PlayWavSound(SoundID("knightattack"), 100);
+		set_firing_timer_flag = TRUE;
+		fLastGunFireTime = timeGetTime() * 0.001f;
 
+		playermove = 5;
+		firepause = 1;
 
-			set_firing_timer_flag = TRUE;
-			fLastGunFireTime = timeGetTime() * 0.001f;
+		dice[0].roll = 1;
+		dice[1].roll = 1;
 
-			playermove = 5;
-			firepause = 1;
+		criticalhiton = 0;
 
-			dice[0].roll = 1;
-			dice[1].roll = 1;
-
-			criticalhiton = 0;
-
-	}
-	else
-	{
+	} else {
 		firing_gun_flag = FALSE;
 	}
 
-	if (Controls->opendoor)
-	{
+	if (Controls->opendoor) {
 		if (!bInTalkMode)
 			pressopendoor = 1;
-	}
-	else
-	{
+	} else {
 		pressopendoor = 0;
 	}
 
 	// tilt head upwards
-	if (Controls->bHeadDown)
-	{
+	if (Controls->bHeadDown) {
 
-		if (g_bUseMouse)
-		{
+		if (g_bUseMouse) {
 			filtery = (float)Controls->bHeadDown / (float)mousediv;
-		}
-		else
-		{
+		} else {
 			//	look_up_ang += 4;
 			look_up_ang += 105 * elapsegametimersave;
 			if (look_up_ang >= 90)
@@ -676,16 +592,12 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 	}
 
 	// tilt head downward
-	if (Controls->bHeadUp)
-	{
+	if (Controls->bHeadUp) {
 
-		if (g_bUseMouse)
-		{
-			//look_up_ang += (float)Controls->bHeadUp / (float)5;
+		if (g_bUseMouse) {
+			// look_up_ang += (float)Controls->bHeadUp / (float)5;
 			filtery = (float)Controls->bHeadUp / (float)mousediv;
-		}
-		else
-		{
+		} else {
 
 			look_up_ang -= 105 * elapsegametimersave;
 			//	look_up_ang -= 4;
@@ -693,72 +605,60 @@ VOID CMyD3DApplication::WalkMode(CONTROLS* Controls)
 				look_up_ang = -89;
 		}
 
-		//look_up_ang -= 4;
+		// look_up_ang -= 4;
 	}
 
 	// side step left
 
 	if (!bInTalkMode)
-		if (Controls->bStepLeft)
-		{
+		if (Controls->bStepLeft) {
 			playermovestrife = 6;
 		}
 
 	// side step right
 	if (!bInTalkMode)
-		if (Controls->bStepRight)
-		{
+		if (Controls->bStepRight) {
 			playermovestrife = 7;
 		}
 
-	if (g_bUseMouse)
-	{
-		if (mousefilter)
-		{
-			//MouseFilter(filterx, filtery);
+	if (g_bUseMouse) {
+		if (mousefilter) {
+			// MouseFilter(filterx, filtery);
 			smooth_mouse(elapsegametimersave, filterx, filtery);
 			angy += filterx;
 			look_up_ang += filtery;
-		}
-		else
-		{
+		} else {
 			angy += filterx;
 
 			look_up_ang += filtery;
 		}
 		/*if (look_up_ang <= -90.0f)
-			look_up_ang = -89.0f;
+		    look_up_ang = -89.0f;
 
 		if (look_up_ang >= 90.0f)
-			look_up_ang = 89.0f;*/
+		    look_up_ang = 89.0f;*/
 	}
 }
 
-
 void CMyD3DApplication::smooth_mouse(float time_d, float realx, float realy) {
-	
+
 	double d = 1 - exp(log(0.5) * springiness * time_d);
 
-	use_x += (realx - use_x) * d;
-	use_y += (realy - use_y) * d;
+	use_x += (realx - use_x) * (float) d;
+	use_y += (realy - use_y) * (float) d;
 
 	filterx = use_x;
 	filtery = use_y;
 }
 
-
-
-
-VOID CMyD3DApplication::SelectCharacterMode(CONTROLS* Controls)
-{
+VOID CMyD3DApplication::SelectCharacterMode(CONTROLS *Controls) {
 	int i = 0;
 	float speed = 8.0f;
 
 	return;
 
 	// turn left
-	if (Controls->bLeft)
-	{
+	if (Controls->bLeft) {
 
 		currentmodellist--;
 
@@ -770,8 +670,7 @@ VOID CMyD3DApplication::SelectCharacterMode(CONTROLS* Controls)
 	}
 
 	// turn right
-	if (Controls->bRight)
-	{
+	if (Controls->bRight) {
 
 		currentmodellist++;
 
@@ -781,13 +680,11 @@ VOID CMyD3DApplication::SelectCharacterMode(CONTROLS* Controls)
 		currentmodelid = model_list[currentmodellist].model_id;
 		currentskinid = model_list[currentmodellist].modeltexture;
 	}
-	if ((Controls->bFire == TRUE))
-	{
+	if ((Controls->bFire == TRUE)) {
 	}
 }
 
-VOID CMyD3DApplication::MouseFilter(float deltaMouseX, float deltaMouseY)
-{
+VOID CMyD3DApplication::MouseFilter(float deltaMouseX, float deltaMouseY) {
 
 	// Reposition the mouse to the center of our window
 
@@ -810,8 +707,7 @@ VOID CMyD3DApplication::MouseFilter(float deltaMouseX, float deltaMouseY)
 	float averageTot = 0;
 	float currentWeight = 1.0f;
 	float weightModifier = 0.3f;
-	for (int i = 0; i < historyBufferLength; ++i)
-	{
+	for (int i = 0; i < historyBufferLength; ++i) {
 		curAverageX += historyBufferX[i] * currentWeight;
 		curAverageY += historyBufferY[i] * currentWeight;
 

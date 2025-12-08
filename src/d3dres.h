@@ -31,7 +31,7 @@
 #define IDM_TOGGLESTART 40004      // Command to toggle frame animation
 #define IDM_SINGLESTEP 40005       // Command to single step frame animation
 #define IDM_EXIT 40006             // Command to exit the application
-#define IDM_LOADMAP 40018          //command to load map
+#define IDM_LOADMAP 40018          // command to load map
 #define IDM_RELOADMAP 40066
 #define IDM_LOADSPOT 40067
 #define IDM_SAVESPOT 40068

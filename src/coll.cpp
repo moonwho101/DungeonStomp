@@ -1,14 +1,14 @@
 #define DIRECTINPUT_VERSION 0x0700
 
 // ---------------------------------------------------------------------------------------------------------------------------------
-//   _____       _ _ _     _                                  
-//  / ____|     | | (_)   (_)                                 
-// | |      ___ | | |_ ___ _  ___  _ __       ___ _ __  _ __  
+//   _____       _ _ _     _
+//  / ____|     | | (_)   (_)
+// | |      ___ | | |_ ___ _  ___  _ __       ___ _ __  _ __
 // | |     / _ \| | | / __| |/ _ \| '_ \     / __| '_ \| '_ \ 
 // | |____| (_) | | | \__ \ | (_) | | | | _ | (__| |_) | |_) |
-//  \_____|\___/|_|_|_|___/_|\___/|_| |_|(_) \___| .__/| .__/ 
-//                                               | |   | |    
-//                                               |_|   |_|    
+//  \_____|\___/|_|_|_|___/_|\___/|_| |_|(_) \___| .__/| .__/
+//                                               | |   | |
+//                                               |_|   |_|
 //
 // Collision detection tutorial
 //
@@ -37,33 +37,32 @@
 #include "Coll.h"
 
 int countembedded = 0;
-const	FLT	EPSILON = (FLT)1.0e-5;
-static	vector<primitive<>*>	skipList;
+const FLT EPSILON = (FLT)1.0e-5;
+static vector<primitive<> *> skipList;
 extern int foundcollisiontrue;
 
-void	collision::traceCollision(CollisionList& cl)
-{
-	if (!cl.size()) return;
+void collision::traceCollision(CollisionList &cl) {
+	if (!cl.size())
+		return;
 
-	for (int i = 0; i < (int)cl.size(); i++)
-	{
-		const char* typeString = cl[i].collisionType == CT_SURFACE ? "surface" : cl[i].collisionType == CT_EDGE ? "edge" : cl[i].collisionType == CT_POINT ? "point" : "embedded";
+	for (int i = 0; i < (int)cl.size(); i++) {
+		const char *typeString = cl[i].collisionType == CT_SURFACE ? "surface" : cl[i].collisionType == CT_EDGE ? "edge"
+		                                                                     : cl[i].collisionType == CT_POINT  ? "point"
+		                                                                                                        : "embedded";
 	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-bool	collision::unitSphereIntersection(const point3& center, const ray3& r, FLT& time)
-{
-	vector3	q = center - r.origin();
-	FLT	c = q.length();
-	FLT	v = q ^ r.normal();
-	FLT	d = 1 - (c * c - v * v);
+bool collision::unitSphereIntersection(const point3 &center, const ray3 &r, FLT &time) {
+	vector3 q = center - r.origin();
+	FLT c = q.length();
+	FLT v = q ^ r.normal();
+	FLT d = 1 - (c * c - v * v);
 
 	// Was there an intersection?
 
-	if (d < 0)
-	{
+	if (d < 0) {
 		time = 0;
 		return false;
 	}
@@ -76,15 +75,15 @@ bool	collision::unitSphereIntersection(const point3& center, const ray3& r, FLT&
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-bool	collision::isEmbedded(const primitive<>& p, const point3& sphereCenter, point3& innerMostPoint)
-{
+bool collision::isEmbedded(const primitive<> &p, const point3 &sphereCenter, point3 &innerMostPoint) {
 	// How far is the sphere from the plane?
 
-	FLT	t = p.plane().distance(sphereCenter);
+	FLT t = p.plane().distance(sphereCenter);
 
 	// If the plane is farther than the radius of the sphere, it's not embedded
 
-	if (t > 1 - EPSILON) return false;
+	if (t > 1 - EPSILON)
+		return false;
 
 	// Find the closest point on the polygon to the center of the sphere
 
@@ -92,12 +91,12 @@ bool	collision::isEmbedded(const primitive<>& p, const point3& sphereCenter, poi
 
 	// If the closest point on the plane is within the polygon, the polygon is embedded
 
-	if (!p.inside(innerMostPoint))
-	{
-		point3	e0, e1;
-		bool	ef;
+	if (!p.inside(innerMostPoint)) {
+		point3 e0, e1;
+		bool ef;
 		innerMostPoint = p.closestPointOnPerimeter(innerMostPoint, e0, e1, ef);
-		if (innerMostPoint.distance(sphereCenter) > 1 - EPSILON) return false;
+		if (innerMostPoint.distance(sphereCenter) > 1 - EPSILON)
+			return false;
 	}
 
 	return true;
@@ -105,55 +104,55 @@ bool	collision::isEmbedded(const primitive<>& p, const point3& sphereCenter, poi
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const ray3& r)
-{
-	CollisionList	result;
+CollisionList collision::calcColliders(vector<primitive<>> &polygonList, const ray3 &r) {
+	CollisionList result;
 
 	result[0].collisionDistance;
 
 	// Go through our list of potential colliders
-	for (int i = 0; i < (int)polygonList.size(); i++)
-	{
+	for (int i = 0; i < (int)polygonList.size(); i++) {
 		// The goal through this loop is to calculate the collision plane
 
-		FLT		collisionDistance = 0;
-		plane3		collisionPlane;
-		CollisionType	collisionType = CT_NONE;
+		FLT collisionDistance = 0;
+		plane3 collisionPlane;
+		CollisionType collisionType = CT_NONE;
 
 		// Our current polygon
 
-		primitive<>& p = polygonList[i];
+		primitive<> &p = polygonList[i];
 
 		// Ignore polygons in the skip list
 
-		bool	skipMe = false;
-		for (int j = 0; j < (int)skipList.size(); j++)
-		{
-			if (skipList[j] == &p) skipMe = true;
+		bool skipMe = false;
+		for (int j = 0; j < (int)skipList.size(); j++) {
+			if (skipList[j] == &p)
+				skipMe = true;
 		}
-		if (skipMe) continue;
+		if (skipMe)
+			continue;
 
 		// Ignore back-facing polygons
 
-		if (p.plane().distance(r.origin()) <= 0) continue;
+		if (p.plane().distance(r.origin()) <= 0)
+			continue;
 
 		// Find the point on the sphere, that will eventually collide with the polygon's plane
 
-		point3	sphereIntersectionPoint = r.origin() - p.plane().normal();
+		point3 sphereIntersectionPoint = r.origin() - p.plane().normal();
 
 		// At this point, we know we're in front of the current plane, and we're heading toward it
 		//
 		// Trace a ray to the plane
 
-		ray3	sphereIntersectionRay(sphereIntersectionPoint, r.normal());
-		if (!p.plane().intersect(sphereIntersectionRay, collisionDistance)) continue;
+		ray3 sphereIntersectionRay(sphereIntersectionPoint, r.normal());
+		if (!p.plane().intersect(sphereIntersectionRay, collisionDistance))
+			continue;
 
 		// If the polygon is embedded, set the collision type, and define a collision plane that is perpendicular
 		// to the direction that the sphere must travel to be un-embedded
 
-		point3	innerMostPoint;
-		if (isEmbedded(p, r.origin(), innerMostPoint))
-		{
+		point3 innerMostPoint;
+		if (isEmbedded(p, r.origin(), innerMostPoint)) {
 			collisionDistance = innerMostPoint.distance(r.origin()) - 1;
 			collisionPlane.origin() = innerMostPoint;
 			collisionPlane.vector() = r.origin() - innerMostPoint;
@@ -167,15 +166,15 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 		{
 			// The plane intersection point
 
-			point3	planeIntersectionPoint = sphereIntersectionPoint + r.normal() * collisionDistance;
+			point3 planeIntersectionPoint = sphereIntersectionPoint + r.normal() * collisionDistance;
 
 			// Surface collision?
 
-			if (p.inside(planeIntersectionPoint, EPSILON))
-			{
+			if (p.inside(planeIntersectionPoint, EPSILON)) {
 				// Is this a valid collision?
 				// if (collisionDistance < -EPSILON ) continue;
-				if (collisionDistance < -EPSILON * (FLT)2) continue;
+				if (collisionDistance < -EPSILON * (FLT)2)
+					continue;
 
 				// Our collision plane is our polygon's plane
 
@@ -185,20 +184,19 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 
 			// Edge/Point collision
 
-			else
-			{
+			else {
 				// New collision plane origin
 
-				point3	e0, e1;
-				bool	edgeFlag;
+				point3 e0, e1;
+				bool edgeFlag;
 				collisionPlane.origin() = p.closestPointOnPerimeter(planeIntersectionPoint, e0, e1, edgeFlag);
 
 				// Point collision?
 
-				if (!edgeFlag)
-				{
-					ray3	toSphere(collisionPlane.origin(), -r.normal());
-					if (!unitSphereIntersection(r.origin(), toSphere, collisionDistance)) continue;
+				if (!edgeFlag) {
+					ray3 toSphere(collisionPlane.origin(), -r.normal());
+					if (!unitSphereIntersection(r.origin(), toSphere, collisionDistance))
+						continue;
 
 					// The collision plane
 
@@ -207,62 +205,68 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 
 					// Generate a vector that points from the vertex at the sphere
 
-					vector3	atSphere = r.origin() - collisionPlane.origin();
+					vector3 atSphere = r.origin() - collisionPlane.origin();
 
 					// We must be headed at the collision plane
 
-					if ((r.vector() ^ atSphere) > 0) continue;
+					if ((r.vector() ^ atSphere) > 0)
+						continue;
 
 					// The plane is not allowed to face away from the normal of the polygon
 
-					if ((collisionPlane.vector() ^ p.plane().vector()) < 0) continue;
+					if ((collisionPlane.vector() ^ p.plane().vector()) < 0)
+						continue;
 
 					// The plane is not allowed to face the interior of the polygon
 
-					if (collisionPlane.distance(e0) > 0) continue;
-					if (collisionPlane.distance(e1) > 0) continue;
+					if (collisionPlane.distance(e0) > 0)
+						continue;
+					if (collisionPlane.distance(e1) > 0)
+						continue;
 
 					collisionType = CT_POINT;
 				}
 
 				// Edge collision
 
-				else
-				{
+				else {
 					// Find the plane defined by the edge and the velocity vector (cross product)
 					//
 					// This plane will be used to bisect the sphere
 
-					vector3	edgeNormal = e1 - e0;
+					vector3 edgeNormal = e1 - e0;
 					edgeNormal.normalize();
-					plane3	bisectionPlane(e1, r.normal() % edgeNormal);
+					plane3 bisectionPlane(e1, r.normal() % edgeNormal);
 
 					// The intersection of a plane and a sphere is a disc. We want to find the center
 					// of that disc. The center of that disc is the closest point on the bisection plane
 					// to the center of the sphere.
 
-					point3	discCenter = bisectionPlane.closest(r.origin());
+					point3 discCenter = bisectionPlane.closest(r.origin());
 
 					// If the center of the disc is outside the sphere, then the sphere does not intersect
 					// the bisection plane and therefore, will never collide with the edge
 
-					if (discCenter.distance(r.origin()) > 1 - EPSILON) continue;
+					if (discCenter.distance(r.origin()) > 1 - EPSILON)
+						continue;
 
 					// Find the closest point on the edge to the center of the disc
 
-					point3	edgePoint = closestPointOnLine(e0, e1, discCenter, edgeFlag);
-					if (!edgeFlag) continue;
+					point3 edgePoint = closestPointOnLine(e0, e1, discCenter, edgeFlag);
+					if (!edgeFlag)
+						continue;
 
 					// Generate a ray that traces back toward the sphere
 
-					ray3	toSphere(edgePoint, discCenter - edgePoint);
+					ray3 toSphere(edgePoint, discCenter - edgePoint);
 
 					// Trace from the edgePoint back to the sphere.
 					//
 					// This will be the sphereIntersectionPoint
 
-					FLT	t;
-					if (!unitSphereIntersection(r.origin(), toSphere, t)) continue;
+					FLT t;
+					if (!unitSphereIntersection(r.origin(), toSphere, t))
+						continue;
 					sphereIntersectionPoint = toSphere.end(t);
 
 					// Our collision plane is the tangent plane at the sphereIntersectionPoint
@@ -271,16 +275,18 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 
 					// The plane is not allowed to face the interior of the polygon...
 
-					if (collisionPlane.distance(p.calcCenterOfMass()) > -0) continue;
+					if (collisionPlane.distance(p.calcCenterOfMass()) > -0)
+						continue;
 
 					// The plane is not allowed to face away from the normal of the polygon
 
-					if ((collisionPlane.normal() ^ p.plane().normal()) < 0) continue;
+					if ((collisionPlane.normal() ^ p.plane().normal()) < 0)
+						continue;
 
 					// Trace from the sphereIntersectionPoint to the plane to find the collisionDistance
 
-					ray3	fromSphere(sphereIntersectionPoint, r.normal());
-					//VERIFY(collisionPlane.intersect(fromSphere, collisionDistance));
+					ray3 fromSphere(sphereIntersectionPoint, r.normal());
+					// VERIFY(collisionPlane.intersect(fromSphere, collisionDistance));
 
 					collisionPlane.intersect(fromSphere, collisionDistance);
 					collisionType = CT_EDGE;
@@ -290,44 +296,44 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 
 		// Was it an actual collision?
 
-		if (collisionDistance > r.length()) continue;
+		if (collisionDistance > r.length())
+			continue;
 
 		// Ignore collision planes that we're traveling away from
 
-		if ((collisionPlane.normal() ^ r.normal()) >= 0) continue;
+		if ((collisionPlane.normal() ^ r.normal()) >= 0)
+			continue;
 
 		// Is it closer, farther away, or the same distance as what we've found so far?
 
-		if (result.size())
-		{
-			FLT	d = fabs(collisionDistance - result[0].collisionDistance);
-			if (d > EPSILON)
-			{
+		if (result.size()) {
+			FLT d = fabs(collisionDistance - result[0].collisionDistance);
+			if (d > EPSILON) {
 				// fixed this is wrong
-				if (collisionDistance < result[0].collisionDistance) result.clear();
-				else if (collisionDistance > result[0].collisionDistance) continue;
+				if (collisionDistance < result[0].collisionDistance)
+					result.clear();
+				else if (collisionDistance > result[0].collisionDistance)
+					continue;
 			}
 
 			// Make sure it's not already in the list (this plane's normal)
 
-			else
-			{
-				bool	skipMe = false;
-				for (int i = 0; i < (int)result.size(); i++)
-				{
-					if ((result[i].collisionPlane.normal() ^ collisionPlane.normal()) > 1 - EPSILON)
-					{
+			else {
+				bool skipMe = false;
+				for (int i = 0; i < (int)result.size(); i++) {
+					if ((result[i].collisionPlane.normal() ^ collisionPlane.normal()) > 1 - EPSILON) {
 						skipMe = true;
 						break;
 					}
 				}
-				if (skipMe) continue;
+				if (skipMe)
+					continue;
 			}
 		}
 
 		// Add this collider to the list
 
-		sCollision	nearest;
+		sCollision nearest;
 		nearest.collider = &p;
 		nearest.collisionDistance = collisionDistance;
 		nearest.collisionPlane = collisionPlane;
@@ -340,18 +346,15 @@ CollisionList collision::calcColliders(vector<primitive<> >& polygonList, const 
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-point3	collision::collideAndStop(const vector3& radiusVector, vector<primitive<> >& polygonList, const ray3& r)
-{
+point3 collision::collideAndStop(const vector3 &radiusVector, vector<primitive<>> &polygonList, const ray3 &r) {
 	// Scale our world according to the radius vector
 
-	matrix3	scaleMatrix = matrix3::scale((FLT)1 / radiusVector);
-	vector<primitive<> > scaledPolygons = polygonList;
+	matrix3 scaleMatrix = matrix3::scale((FLT)1 / radiusVector);
+	vector<primitive<>> scaledPolygons = polygonList;
 
-	for (vector<primitive<> >::iterator i = scaledPolygons.begin(); i != scaledPolygons.end(); ++i)
-	{
-		primitive<>& p = *i;
-		for (unsigned int j = 0; j < p.vertexCount(); j++)
-		{
+	for (vector<primitive<>>::iterator i = scaledPolygons.begin(); i != scaledPolygons.end(); ++i) {
+		primitive<> &p = *i;
+		for (unsigned int j = 0; j < p.vertexCount(); j++) {
 			p[j].world() = scaleMatrix >> p[j].world();
 		}
 
@@ -360,20 +363,19 @@ point3	collision::collideAndStop(const vector3& radiusVector, vector<primitive<>
 
 	// Scale our input & output rays
 
-	ray3	outputRay(r);
+	ray3 outputRay(r);
 	outputRay.vector() = scaleMatrix >> outputRay.vector();
 	outputRay.origin() = scaleMatrix >> outputRay.origin();
 
 	// Get the colliders
 
-	CollisionList	cl = calcColliders(scaledPolygons, outputRay);
+	CollisionList cl = calcColliders(scaledPolygons, outputRay);
 
-	point3	dest = outputRay.end();
+	point3 dest = outputRay.end();
 
 	// If we didn't collide, just go all the way
 
-	if (cl.size() && cl[0].collisionDistance < outputRay.length())
-	{
+	if (cl.size() && cl[0].collisionDistance < outputRay.length()) {
 		dest = outputRay.end(cl[0].collisionDistance);
 	}
 
@@ -385,22 +387,18 @@ point3	collision::collideAndStop(const vector3& radiusVector, vector<primitive<>
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<> >& polygonList, const ray3& r, vector3& lastDir, const bool filterPulseJumps)
-{
-	unsigned int	maxLoops = 10;
+point3 collision::collideAndSlide(const vector3 &radiusVector, vector<primitive<>> &polygonList, const ray3 &r, vector3 &lastDir, const bool filterPulseJumps) {
+	unsigned int maxLoops = 10;
 	lastDir = vector3::zero();
 
 	// Scale our world according to the radius vector
 
-
-	matrix3	scaleMatrix = matrix3::scale((FLT)1 / radiusVector);
-	vector<primitive<> > scaledPolygons = polygonList;
+	matrix3 scaleMatrix = matrix3::scale((FLT)1 / radiusVector);
+	vector<primitive<>> scaledPolygons = polygonList;
 	int count = 0;
-	for (vector<primitive<> >::iterator i = scaledPolygons.begin(); i != scaledPolygons.end(); ++i)
-	{
-		primitive<>& p = *i;
-		for (unsigned int j = 0; j < p.vertexCount(); j++)
-		{
+	for (vector<primitive<>>::iterator i = scaledPolygons.begin(); i != scaledPolygons.end(); ++i) {
+		primitive<> &p = *i;
+		for (unsigned int j = 0; j < p.vertexCount(); j++) {
 			p[j].world() = scaleMatrix >> p[j].world();
 		}
 		count++;
@@ -409,11 +407,11 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 
 	// Scale our input & output rays
 
-	ray3	outputRay(r);
+	ray3 outputRay(r);
 	outputRay.vector() = scaleMatrix >> outputRay.vector();
 	outputRay.origin() = scaleMatrix >> outputRay.origin();
 
-	ray3	inputRay(r);
+	ray3 inputRay(r);
 	inputRay.vector() = scaleMatrix >> inputRay.vector();
 	inputRay.origin() = scaleMatrix >> inputRay.origin();
 
@@ -423,15 +421,14 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 
 	// Skiding is an iterative process
 
-	while (maxLoops-- && outputRay.vector() != vector3::zero() && outputRay.length() > EPSILON)
-	{
+	while (maxLoops-- && outputRay.vector() != vector3::zero() && outputRay.length() > EPSILON) {
 		// This is handy
 
 		lastDir = outputRay.vector();
 
 		// Get the colliders
 
-		CollisionList	cl = calcColliders(scaledPolygons, outputRay);
+		CollisionList cl = calcColliders(scaledPolygons, outputRay);
 
 		// We can consider these polygons again
 
@@ -439,8 +436,7 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 
 		// If we didn't hit anything just return the destination
 
-		if (!cl.size())
-		{
+		if (!cl.size()) {
 			outputRay.origin() = outputRay.end();
 
 			break;
@@ -448,18 +444,14 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 
 		// Keep track of what's going on
 
-
 		foundcollisiontrue = 1;
 		// If it was embedded, push away
 
-		if (cl[0].collisionType == CT_EMBEDDED)
-		{
+		if (cl[0].collisionType == CT_EMBEDDED) {
 			// If it's embedded, back up along the collision plane normal
 			countembedded++;
 			outputRay.origin() -= cl[0].collisionPlane.normal() * (cl[0].collisionDistance);
-		}
-		else
-		{
+		} else {
 			// We hit something -- move as far as we can
 
 			outputRay.origin() += outputRay.normal() * cl[0].collisionDistance;
@@ -467,46 +459,39 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 			// If we hit two or more, find the two with the most "pressure"
 			int xx = cl.size();
 
-			if (cl.size() >= 2)
-			{
-				int	c0;
-				FLT	d0 = 2;
+			if (cl.size() >= 2) {
+				int c0;
+				FLT d0 = 2;
 
-				for (int i = 0; i < (int)cl.size(); i++)
-				{
-					FLT	dot = cl[i].collisionPlane.normal() ^ outputRay.normal();
-					if (dot < d0)
-					{
+				for (int i = 0; i < (int)cl.size(); i++) {
+					FLT dot = cl[i].collisionPlane.normal() ^ outputRay.normal();
+					if (dot < d0) {
 						d0 = dot;
 						c0 = i;
 					}
 				}
 
-				int	c1;
-				FLT	d1 = 2;
+				int c1;
+				FLT d1 = 2;
 
-				for (int j = 0; j < (int)cl.size(); j++)
-				{
-					if (j == c0) continue;
-					FLT	dot = cl[j].collisionPlane.normal() ^ outputRay.normal();
-					if (dot < d1)
-					{
+				for (int j = 0; j < (int)cl.size(); j++) {
+					if (j == c0)
+						continue;
+					FLT dot = cl[j].collisionPlane.normal() ^ outputRay.normal();
+					if (dot < d1) {
 						d1 = dot;
 						c1 = j;
 					}
 				}
 
-				vector3	perp(cl[c1].collisionPlane.normal() % cl[c0].collisionPlane.normal());
+				vector3 perp(cl[c1].collisionPlane.normal() % cl[c0].collisionPlane.normal());
 				perp.abs();
-
-
-
 
 				outputRay.vector() *= perp;
 
-				if (filterPulseJumps)
-				{
-					if ((outputRay.vector() ^ inputRay.vector()) < 0) outputRay.vector() = vector3::zero();
+				if (filterPulseJumps) {
+					if ((outputRay.vector() ^ inputRay.vector()) < 0)
+						outputRay.vector() = vector3::zero();
 				}
 
 				lastDir = outputRay.vector();
@@ -523,18 +508,18 @@ point3	collision::collideAndSlide(const vector3& radiusVector, vector<primitive<
 
 			// Otherwise we slide
 
-			point3	slideSrc = cl[0].collisionPlane.closest(outputRay.origin());
-			point3	slideDst = cl[0].collisionPlane.closest(outputRay.end());
+			point3 slideSrc = cl[0].collisionPlane.closest(outputRay.origin());
+			point3 slideDst = cl[0].collisionPlane.closest(outputRay.end());
 
-			//outputRay.vector() = (slideDst - slideSrc)/2;
+			// outputRay.vector() = (slideDst - slideSrc)/2;
 			outputRay.vector() = (slideDst - slideSrc);
 			ray3 checkit;
 
 			checkit = outputRay;
 
-			if (filterPulseJumps)
-			{
-				if ((outputRay.vector() ^ inputRay.vector()) < 0) outputRay.vector() = vector3::zero();
+			if (filterPulseJumps) {
+				if ((outputRay.vector() ^ inputRay.vector()) < 0)
+					outputRay.vector() = vector3::zero();
 			}
 
 			lastDir = outputRay.vector();

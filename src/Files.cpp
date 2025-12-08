@@ -29,153 +29,148 @@
 #include "Common.h"
 #include "Coll.h"
 extern HWND main_window_handle;
-extern CMyD3DApplication* pCMyApp;
-extern CLoadWorld* pCWorld;
+extern CMyD3DApplication *pCMyApp;
+extern CLoadWorld *pCWorld;
 //-----------------------------------------------------------------------------
 // Name: LoadFile()
 // Desc: Uses Windows' OpenFileName dialog to get the name of an X file to
 //       load, then proceeds to load that file.
 //-----------------------------------------------------------------------------
-void CMyD3DApplication::LoadFile()
-{
-    //	CD3DFile* m_pFileObject;
-    static TCHAR strInitialDir[512] = "";
-    static TCHAR strFileName[512];
-    TCHAR strCurrentName[512] = "*.map";
-    int filenamelen = 0;
-    int a = 0;
-    char cname[255];
-    char junk[255];
-    int truelevel = 0;
+void CMyD3DApplication::LoadFile() {
+	//	CD3DFile* m_pFileObject;
+	static TCHAR strInitialDir[512] = "";
+	static TCHAR strFileName[512];
+	TCHAR strCurrentName[512] = "*.map";
+	int filenamelen = 0;
+	int a = 0;
+	char cname[255];
+	char junk[255];
+	int truelevel = 0;
 
-    strcpy_s(strInitialDir, "..\\levels");
-    OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
-                        "Map Files (*.map)\0*.map\0\0",
-                        NULL, 0, 1, strCurrentName, 512, strFileName, 512,
-                        strInitialDir, "Open Map File", OFN_FILEMUSTEXIST, 0, 1,
-                        ".MAP", 0, NULL, NULL };
+	strcpy_s(strInitialDir, "..\\levels");
+	OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
+		                 "Map Files (*.map)\0*.map\0\0",
+		                 NULL, 0, 1, strCurrentName, 512, strFileName, 512,
+		                 strInitialDir, "Open Map File", OFN_FILEMUSTEXIST, 0, 1,
+		                 ".MAP", 0, NULL, NULL };
 
-    // Run the OpenFileName dialog.
-    if (FALSE == GetOpenFileName(&ofn))
-        return;
+	// Run the OpenFileName dialog.
+	if (FALSE == GetOpenFileName(&ofn))
+		return;
 
-    // Store the initial directory for next time
-    strcpy_s(strInitialDir, strCurrentName);
-    strstr(strInitialDir, strFileName)[0] = '\0';
-    strcpy_s(current_levelname, strCurrentName);
+	// Store the initial directory for next time
+	strcpy_s(strInitialDir, strCurrentName);
+	strstr(strInitialDir, strFileName)[0] = '\0';
+	strcpy_s(current_levelname, strCurrentName);
 
-    filenamelen = strlen(strFileName);
-    strcpy_s(levelname, strFileName);
-    levelname[filenamelen - 4] = '\0';
-    junk[0] = (levelname[strlen(levelname) - 1]);
-    junk[1] = '\0';
-    truelevel = atoi(junk);
-    current_level = truelevel;
-    pCMyApp->num_players2 = 0;
-    pCMyApp->itemlistcount = 0;
-    pCMyApp->num_monsters = 0;
+	filenamelen = strlen(strFileName);
+	strcpy_s(levelname, strFileName);
+	levelname[filenamelen - 4] = '\0';
+	junk[0] = (levelname[strlen(levelname) - 1]);
+	junk[1] = '\0';
+	truelevel = atoi(junk);
+	current_level = truelevel;
+	pCMyApp->num_players2 = 0;
+	pCMyApp->itemlistcount = 0;
+	pCMyApp->num_monsters = 0;
 
-    pCMyApp->ClearObjectList();
-    pCMyApp->ResetSound();
+	pCMyApp->ClearObjectList();
+	pCMyApp->ResetSound();
 
-    pCWorld->LoadSoundFiles(m_hWnd, "sounds.dat");
+	pCWorld->LoadSoundFiles(m_hWnd, "sounds.dat");
 
-    if (!pCWorld->LoadWorldMap(m_hWnd, pCMyApp->current_levelname))
-    {
-        //PrintMessage(m_hWnd, "LoadWorldMap failed", NULL, LOGFILE_ONLY);
-        //return FALSE;
-    }
-    pCMyApp->ResetPlayer();
-    strcpy_s(cname, pCMyApp->current_levelname);
-    a = strlen(cname);
+	if (!pCWorld->LoadWorldMap(m_hWnd, pCMyApp->current_levelname)) {
+		// PrintMessage(m_hWnd, "LoadWorldMap failed", NULL, LOGFILE_ONLY);
+		// return FALSE;
+	}
+	pCMyApp->ResetPlayer();
+	strcpy_s(cname, pCMyApp->current_levelname);
+	a = strlen(cname);
 
-    cname[a - 3] = 'c';
-    cname[a - 2] = 'm';
-    cname[a - 1] = 'p';
+	cname[a - 3] = 'c';
+	cname[a - 2] = 'm';
+	cname[a - 1] = 'p';
 
-    if (!pCWorld->InitPreCompiledWorldMap(m_hWnd, cname))
-    {
-        //PrintMessage(m_hWnd, "InitPreCompiledWorldMap failed", NULL, LOGFILE_ONLY);
-        //return FALSE;
-    }
+	if (!pCWorld->InitPreCompiledWorldMap(m_hWnd, cname)) {
+		// PrintMessage(m_hWnd, "InitPreCompiledWorldMap failed", NULL, LOGFILE_ONLY);
+		// return FALSE;
+	}
 
-    cname[a - 3] = 'm';
-    cname[a - 2] = 'o';
-    cname[a - 1] = 'd';
+	cname[a - 3] = 'm';
+	cname[a - 2] = 'o';
+	cname[a - 1] = 'd';
 
-    pCWorld->LoadMod(m_hWnd, cname);
-    sprintf_s(pCMyApp->gActionMessage, "Loading %s", pCMyApp->current_levelname);
-    pCMyApp->UpdateScrollList(0, 245, 255);
+	pCWorld->LoadMod(m_hWnd, cname);
+	sprintf_s(pCMyApp->gActionMessage, "Loading %s", pCMyApp->current_levelname);
+	pCMyApp->UpdateScrollList(0, 245, 255);
 
-    openingscreen = 0;
-    return;
+	openingscreen = 0;
+	return;
 }
 
-void CMyD3DApplication::LoadFileSpot()
-{
+void CMyD3DApplication::LoadFileSpot() {
 
-    static TCHAR strInitialDir2[512] = "";
-    static TCHAR strFileName2[512];
-    TCHAR strCurrentName2[512] = "*.spt";
-    int filenamelen = 0;
-    int a = 0;
+	static TCHAR strInitialDir2[512] = "";
+	static TCHAR strFileName2[512];
+	TCHAR strCurrentName2[512] = "*.spt";
+	int filenamelen = 0;
+	int a = 0;
 
-    strcpy_s(strInitialDir2, "..\\savegame");
-    OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
-                        "Spot Files (*.spt)\0*.spt\0\0",
-                        NULL, 0, 1, strCurrentName2, 512, strFileName2, 512,
-                        strInitialDir2, "Open Spot File", OFN_FILEMUSTEXIST, 0, 1,
-                        ".MAP", 0, NULL, NULL };
+	strcpy_s(strInitialDir2, "..\\savegame");
+	OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
+		                 "Spot Files (*.spt)\0*.spt\0\0",
+		                 NULL, 0, 1, strCurrentName2, 512, strFileName2, 512,
+		                 strInitialDir2, "Open Spot File", OFN_FILEMUSTEXIST, 0, 1,
+		                 ".MAP", 0, NULL, NULL };
 
-    // Run the OpenFileName dialog.
-    if (FALSE == GetOpenFileName(&ofn))
-        return;
+	// Run the OpenFileName dialog.
+	if (FALSE == GetOpenFileName(&ofn))
+		return;
 
-    // Store the initial directory for next time
-    strcpy_s(strInitialDir2, strCurrentName2);
-    strstr(strInitialDir2, strFileName2)[0] = '\0';
+	// Store the initial directory for next time
+	strcpy_s(strInitialDir2, strCurrentName2);
+	strstr(strInitialDir2, strFileName2)[0] = '\0';
 
-    filenamelen = strlen(strFileName2);
+	filenamelen = strlen(strFileName2);
 
-    load_game(strFileName2);
+	load_game(strFileName2);
 
-    sprintf_s(gActionMessage, "Loading %s", strFileName2);
-    UpdateScrollList(0, 245, 255);
+	sprintf_s(gActionMessage, "Loading %s", strFileName2);
+	UpdateScrollList(0, 245, 255);
 
-    // Return successful
-    openingscreen = 0;
-    return;
+	// Return successful
+	openingscreen = 0;
+	return;
 }
 
-void CMyD3DApplication::SaveFileSpot()
-{
+void CMyD3DApplication::SaveFileSpot() {
 
-    static TCHAR strInitialDir2[512] = "";
-    static TCHAR strFileName2[512];
-    TCHAR strCurrentName2[512] = "spot.spt";
-    int filenamelen = 0;
+	static TCHAR strInitialDir2[512] = "";
+	static TCHAR strFileName2[512];
+	TCHAR strCurrentName2[512] = "spot.spt";
+	int filenamelen = 0;
 
-    strcpy_s(strInitialDir2, "..\\savegame");
-    OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
-                        "Spot Files (*.spt)\0*.spt\0\0",
-                        NULL, 0, 1, strCurrentName2, 512, strFileName2, 512,
-                        strInitialDir2, "Open Spot File", OFN_FILEMUSTEXIST, 0, 1,
-                        ".MAP", 0, NULL, NULL };
+	strcpy_s(strInitialDir2, "..\\savegame");
+	OPENFILENAME ofn = { sizeof(OPENFILENAME), main_window_handle, NULL,
+		                 "Spot Files (*.spt)\0*.spt\0\0",
+		                 NULL, 0, 1, strCurrentName2, 512, strFileName2, 512,
+		                 strInitialDir2, "Open Spot File", OFN_FILEMUSTEXIST, 0, 1,
+		                 ".MAP", 0, NULL, NULL };
 
-    // Run the OpenFileName dialog.
-    if (FALSE == GetSaveFileName(&ofn))
-        return;
+	// Run the OpenFileName dialog.
+	if (FALSE == GetSaveFileName(&ofn))
+		return;
 
-    // Store the initial directory for next time
-    strcpy_s(strInitialDir2, strCurrentName2);
-    strstr(strInitialDir2, strFileName2)[0] = '\0';
+	// Store the initial directory for next time
+	strcpy_s(strInitialDir2, strCurrentName2);
+	strstr(strInitialDir2, strFileName2)[0] = '\0';
 
-    filenamelen = strlen(strFileName2);
+	filenamelen = strlen(strFileName2);
 
-    save_game(strFileName2);
+	save_game(strFileName2);
 
-    sprintf_s(gActionMessage, "Saving %s", strFileName2);
-    UpdateScrollList(0, 245, 255);
+	sprintf_s(gActionMessage, "Saving %s", strFileName2);
+	UpdateScrollList(0, 245, 255);
 
-    return;
+	return;
 }

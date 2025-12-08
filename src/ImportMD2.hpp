@@ -81,10 +81,9 @@ typedef struct
 	VERT v[600];
 } FRAME;
 
-class CMD2
-{
+class CMD2 {
 
-public:
+  public:
 	CMD2();
 
 	//	friend class CMyD3DApplication;

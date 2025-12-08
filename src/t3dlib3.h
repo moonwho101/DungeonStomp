@@ -9,7 +9,7 @@
 #define DM_NUM_SEGMENTS 64 // number of midi segments that can be cached in memory
 
 // midi object state defines
-#define MIDI_NULL 0	   // this midi object is not loaded
+#define MIDI_NULL 0    // this midi object is not loaded
 #define MIDI_LOADED 1  // this midi object is loaded
 #define MIDI_PLAYING 2 // this midi object is loaded and playing
 #define MIDI_STOPPED 3 // this midi object is loaded, but stopped
@@ -39,22 +39,20 @@
 // TYPES //////////////////////////////////////////////////
 
 // this holds a single sound
-typedef struct pcm_sound_typ
-{
+typedef struct pcm_sound_typ {
 	LPDIRECTSOUNDBUFFER dsbuffer; // the ds buffer containing the sound
-	int state;					  // state of the sound
-	int rate;					  // playback rate
-	int size;					  // size of sound
-	int id;						  // id number of the sound
+	int state;                    // state of the sound
+	int rate;                     // playback rate
+	int size;                     // size of sound
+	int id;                       // id number of the sound
 } pcm_sound, *pcm_sound_ptr;
 
 // directmusic MIDI segment
-typedef struct DMUSIC_MIDI_TYP
-{
-	IDirectMusicSegment *dm_segment;	   // the directmusic segment
+typedef struct DMUSIC_MIDI_TYP {
+	IDirectMusicSegment *dm_segment;       // the directmusic segment
 	IDirectMusicSegmentState *dm_segstate; // the state of the segment
-	int id;								   // the id of this segment
-	int state;							   // state of midi song
+	int id;                                // the id of this segment
+	int state;                             // state of midi song
 
 } DMUSIC_MIDI, *DMUSIC_MIDI_PTR;
 
@@ -96,18 +94,18 @@ extern HINSTANCE main_instance; // save the instance
 
 extern LPDIRECTSOUND lpds; // directsound interface pointer
 extern DSBUFFERDESC dsbd;  // directsound description
-extern DSCAPS dscaps;	   // directsound caps
+extern DSCAPS dscaps;      // directsound caps
 extern HRESULT dsresult;   // general directsound result
-extern DSBCAPS dsbcaps;	   // directsound buffer caps
+extern DSBCAPS dsbcaps;    // directsound buffer caps
 
 extern LPDIRECTSOUNDBUFFER lpdsbprimary; // the primary mixing buffer
-extern pcm_sound sound_fx[MAX_SOUNDS];	 // the array of secondary sound buffers
+extern pcm_sound sound_fx[MAX_SOUNDS];   // the array of secondary sound buffers
 
 extern WAVEFORMATEX pcmwf; // generic waveformat structure
 
 // direct music globals
 extern IDirectMusicPerformance *dm_perf; // the directmusic performance manager
-extern IDirectMusicLoader *dm_loader;	 // the directmusic loader
+extern IDirectMusicLoader *dm_loader;    // the directmusic loader
 
 // this hold all the directmusic midi objects
 extern DMUSIC_MIDI dm_midi[DM_NUM_SEGMENTS];

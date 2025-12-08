@@ -7,5 +7,5 @@
 #pragma inline_recursion( on )
 #pragma auto_inline( on )
 
-#define inline __forceinline 
+#define inline __forceinline
 */

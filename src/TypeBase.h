@@ -9,9 +9,8 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-class CTypeBase
-{
-public:
+class CTypeBase {
+  public:
 	CTypeBase();
 	virtual ~CTypeBase();
 };

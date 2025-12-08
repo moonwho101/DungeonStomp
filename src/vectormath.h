@@ -15,49 +15,43 @@
 #define ON_PLANE 0x000100
 
 // basic vector operations (inlined)
-inline float dot(D3DVECTOR &v1, D3DVECTOR &v2)
-{
-  return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+inline float dot(D3DVECTOR &v1, D3DVECTOR &v2) {
+	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-inline void normalizeVector(D3DVECTOR &v)
-{
-  float len = (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  v.x /= len;
-  v.y /= len;
-  v.z /= len;
+inline void normalizeVector(D3DVECTOR &v) {
+	float len = (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	v.x /= len;
+	v.y /= len;
+	v.z /= len;
 }
 
-inline double lengthOfVector(D3DVECTOR v)
-{
-  return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+inline double lengthOfVector(D3DVECTOR v) {
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
 
-inline void setLength(D3DVECTOR &v, float l)
-{
-  float len = (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  v.x *= l / len;
-  v.y *= l / len;
-  v.z *= l / len;
+inline void setLength(D3DVECTOR &v, float l) {
+	float len = (float)sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	v.x *= l / len;
+	v.y *= l / len;
+	v.z *= l / len;
 }
 
-inline BOOL isZeroVector(D3DVECTOR &v)
-{
-  if ((v.x == 0.0f) && (v.y == 0.0f) && (v.z == 0.0f))
-    return TRUE;
+inline BOOL isZeroVector(D3DVECTOR &v) {
+	if ((v.x == 0.0f) && (v.y == 0.0f) && (v.z == 0.0f))
+		return TRUE;
 
-  return FALSE;
+	return FALSE;
 }
 
-inline D3DVECTOR wedge(D3DVECTOR v1, D3DVECTOR v2)
-{
-  D3DVECTOR result;
+inline D3DVECTOR wedge(D3DVECTOR v1, D3DVECTOR v2) {
+	D3DVECTOR result;
 
-  result.x = (v1.y * v2.z) - (v2.y * v1.z);
-  result.y = (v1.z * v2.x) - (v2.z * v1.x);
-  result.z = (v1.x * v2.y) - (v2.x * v1.y);
+	result.x = (v1.y * v2.z) - (v2.y * v1.z);
+	result.y = (v1.z * v2.x) - (v2.z * v1.x);
+	result.z = (v1.x * v2.y) - (v2.x * v1.y);
 
-  return (result);
+	return (result);
 }
 
 // ray intersections. All return -1.0 if no intersection, otherwise the distance along the

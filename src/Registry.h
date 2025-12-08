@@ -9,9 +9,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CRegistry : public CObject
-{
-public:
+class CRegistry : public CObject {
+  public:
 	CRegistry(HKEY hKey = HKEY_CURRENT_USER);
 	virtual ~CRegistry();
 
@@ -39,8 +38,7 @@ public:
 
 	// Templates...
 	template <class T>
-	BOOL WriteType(LPCTSTR lpszKey, T &type)
-	{
+	BOOL WriteType(LPCTSTR lpszKey, T &type) {
 		ASSERT(lpszKey);
 
 		CMemFile file;
@@ -68,8 +66,7 @@ public:
 	}
 
 	template <class T>
-	BOOL ReadType(LPCTSTR lpszKey, T &type)
-	{
+	BOOL ReadType(LPCTSTR lpszKey, T &type) {
 		ASSERT(lpszKey);
 
 		DWORD dwType = -1;
@@ -82,8 +79,7 @@ public:
 			pszData = new UCHAR[dwSize];
 
 		lResult = RegQueryValueEx(m_hKey, lpszKey, NULL, &dwType, (BYTE *)pszData, &dwSize);
-		if (lResult == ERROR_SUCCESS && dwType == REG_BINARY)
-		{
+		if (lResult == ERROR_SUCCESS && dwType == REG_BINARY) {
 			CMemFile file(pszData, dwSize);
 			CArchive ar(&file, CArchive::load);
 
@@ -100,7 +96,7 @@ public:
 		return FALSE;
 	}
 
-protected:
+  protected:
 	HKEY m_hKey;
 	CString m_sPath;
 };

@@ -25,32 +25,31 @@
 // Name: struct D3DEnum_DeviceInfo
 // Desc: Structure to hold info about the enumerated Direct3D devices.
 //-----------------------------------------------------------------------------
-struct D3DEnum_DeviceInfo
-{
-    // D3D Device info
-    TCHAR strDesc[40];
-    GUID *pDeviceGUID;
-    D3DDEVICEDESC7 ddDeviceDesc;
-    BOOL bHardware;
+struct D3DEnum_DeviceInfo {
+	// D3D Device info
+	TCHAR strDesc[40];
+	GUID *pDeviceGUID;
+	D3DDEVICEDESC7 ddDeviceDesc;
+	BOOL bHardware;
 
-    // DDraw Driver info
-    GUID *pDriverGUID;
-    DDCAPS ddDriverCaps;
-    DDCAPS ddHELCaps;
+	// DDraw Driver info
+	GUID *pDriverGUID;
+	DDCAPS ddDriverCaps;
+	DDCAPS ddHELCaps;
 
-    // DDraw Mode Info
-    DDSURFACEDESC2 ddsdFullscreenMode;
-    BOOL bWindowed;
-    BOOL bStereo;
+	// DDraw Mode Info
+	DDSURFACEDESC2 ddsdFullscreenMode;
+	BOOL bWindowed;
+	BOOL bStereo;
 
-    // For internal use (apps should not need to use these)
-    GUID guidDevice;
-    GUID guidDriver;
-    DDSURFACEDESC2 *pddsdModes;
-    DWORD dwNumModes;
-    DWORD dwCurrentMode;
-    BOOL bDesktopCompatible;
-    BOOL bStereoCompatible;
+	// For internal use (apps should not need to use these)
+	GUID guidDevice;
+	GUID guidDriver;
+	DDSURFACEDESC2 *pddsdModes;
+	DWORD dwNumModes;
+	DWORD dwCurrentMode;
+	BOOL bDesktopCompatible;
+	BOOL bStereoCompatible;
 };
 
 // For code not yet switched to new struct name

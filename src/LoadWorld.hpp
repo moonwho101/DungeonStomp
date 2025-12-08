@@ -12,7 +12,7 @@
 class CLoadWorld //: public CMyD3DApplication
 {
 
-public:
+  public:
 	CLoadWorld();
 	BOOL LoadMerchantFiles(HWND hwnd, char *filename);
 	BOOL LoadWorldMap(HWND hwnd, char *filename);

@@ -1,12 +1,12 @@
 // ---------------------------------------------------------------------------------------------------------------------------------
-//  ____  _____  _    _ _   _ _                          
-// |___ \|  __ \| |  | | | (_) |                         
-//   __) | |  | | |  | | |_ _| |___      ___ _ __  _ __  
+//  ____  _____  _    _ _   _ _
+// |___ \|  __ \| |  | | | (_) |
+//   __) | |  | | |  | | |_ _| |___      ___ _ __  _ __
 //  |__ <| |  | | |  | | __| | / __|    / __| '_ \| '_ \ 
 //  ___) | |__| | |__| | |_| | \__ \ _ | (__| |_) | |_) |
-// |____/|_____/ \____/ \__|_|_|___/(_) \___| .__/| .__/ 
-//                                          | |   | |    
-//                                          |_|   |_|    
+// |____/|_____/ \____/ \__|_|_|___/(_) \___| .__/| .__/
+//                                          | |   | |
+//                                          |_|   |_|
 //
 // Utilitarian funcitons useful for 3D graphics
 //
@@ -40,8 +40,7 @@
 // Returns a random number between 0...1
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-FLT	frand()
-{
+FLT frand() {
 	return (FLT)rand() / (FLT)RAND_MAX;
 }
 
@@ -49,18 +48,19 @@ FLT	frand()
 // Returns the closest point on the line-segment, and sets the 'edge' flag if the point is not one of the endpoints
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-point3	closestPointOnLine(const point3& a, const point3& b, const point3& p, bool& edge)
-{
+point3 closestPointOnLine(const point3 &a, const point3 &b, const point3 &p, bool &edge) {
 	vector3 c = p - a;
 	vector3 v = b - a;
 	v.normalize();
 
 	edge = false;
-	FLT	t = v ^ c;
-	if (t < 0) return a;
+	FLT t = v ^ c;
+	if (t < 0)
+		return a;
 
-	FLT	d = b.distance(a);
-	if (t > d) return b;
+	FLT d = b.distance(a);
+	if (t > d)
+		return b;
 
 	edge = true;
 	return a + v * t;
@@ -69,6 +69,3 @@ point3	closestPointOnLine(const point3& a, const point3& b, const point3& p, boo
 // ---------------------------------------------------------------------------------------------------------------------------------
 // 3DUtils.cpp - End of file
 // ---------------------------------------------------------------------------------------------------------------------------------
-
-
-

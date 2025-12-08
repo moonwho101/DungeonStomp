@@ -13,9 +13,8 @@
 #define LINETYPE_RAY3D 2
 #define LINETYPE_SEGMENT3D 3
 
-class CLineBase
-{
-public:
+class CLineBase {
+  public:
 	int nLineType;
 	CLineBase();
 	virtual ~CLineBase();

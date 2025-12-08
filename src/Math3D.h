@@ -20,7 +20,7 @@
 #define VOID_BACKFACE_CULLING 2
 
 HRESULT ComputeNormals(D3DVERTEX *pVertices, WORD *pIndices,
-					   DWORD dwNumVertices, DWORD dwNumIndices);
+                       DWORD dwNumVertices, DWORD dwNumIndices);
 Vector3D GetPolygonNormal(Polygon3 *pPolygon);
 Plane GetPolygonPlane(Polygon3 *pPolygon);
 int GetSideOfPlane(Vector3D *pvPoint, Plane *pPlane);

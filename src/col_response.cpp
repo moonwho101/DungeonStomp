@@ -2,33 +2,32 @@
 
 #include "col_local.h"
 
-extern CollisionPacket collisionPackage; //Stores all the parameters and returnvalues
-extern int collisionRecursionDepth;		 //Internal variable tracking the recursion depth
+extern CollisionPacket collisionPackage; // Stores all the parameters and returnvalues
+extern int collisionRecursionDepth;      // Internal variable tracking the recursion depth
 
-float** triangle_pool; //Stores the pointers to the traingles used for collision detection
-int numtriangle;	   //Number of traingles in pool
+float **triangle_pool; // Stores the pointers to the traingles used for collision detection
+int numtriangle;       // Number of traingles in pool
 float unitsPerMeter;   // Set this to match application scale..
-VECTOR gravity;		   //Gravity
+VECTOR gravity;        // Gravity
 
-void checkTriangle(CollisionPacket* colPackage, VECTOR p1, VECTOR p2, VECTOR p3);
+void checkTriangle(CollisionPacket *colPackage, VECTOR p1, VECTOR p2, VECTOR p3);
 
 D3DVECTOR calculatemisslelength(D3DVECTOR velocity);
 
-CollisionTrace trace; //Output structure telling the application everything about the collision
+CollisionTrace trace; // Output structure telling the application everything about the collision
 
-void checkCollision()
-{
-	VECTOR P1, P2, P3;	  //Temporary variables holding the triangle in R3
-	VECTOR eP1, eP2, eP3; //Temporary variables holding the triangle in eSpace
+void checkCollision() {
+	VECTOR P1, P2, P3;    // Temporary variables holding the triangle in R3
+	VECTOR eP1, eP2, eP3; // Temporary variables holding the triangle in eSpace
 
-	for (int i = 0; i < numtriangle; i++) //Iterate trough the entire triangle pool
+	for (int i = 0; i < numtriangle; i++) // Iterate trough the entire triangle pool
 	{
-		//I'm sorry for my hard coding, but fill the traingle with the data from the pool
-		P1.set(*triangle_pool[i * 9], *triangle_pool[i * 9 + 1], *triangle_pool[i * 9 + 2]);	 //First vertex
-		P2.set(*triangle_pool[i * 9 + 3], *triangle_pool[i * 9 + 4], *triangle_pool[i * 9 + 5]); //Second vertex
-		P3.set(*triangle_pool[i * 9 + 6], *triangle_pool[i * 9 + 7], *triangle_pool[i * 9 + 8]); //Third vertex
+		// I'm sorry for my hard coding, but fill the traingle with the data from the pool
+		P1.set(*triangle_pool[i * 9], *triangle_pool[i * 9 + 1], *triangle_pool[i * 9 + 2]);     // First vertex
+		P2.set(*triangle_pool[i * 9 + 3], *triangle_pool[i * 9 + 4], *triangle_pool[i * 9 + 5]); // Second vertex
+		P3.set(*triangle_pool[i * 9 + 6], *triangle_pool[i * 9 + 7], *triangle_pool[i * 9 + 8]); // Third vertex
 
-		//Transform to eSpace
+		// Transform to eSpace
 		eP1 = P1 / collisionPackage.eRadius;
 		eP2 = P2 / collisionPackage.eRadius;
 		eP3 = P3 / collisionPackage.eRadius;
@@ -37,8 +36,7 @@ void checkCollision()
 	}
 }
 
-VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
-{
+VECTOR collideWithWorld(VECTOR pos, VECTOR vel) {
 	// All hard-coded distances in this function is
 	// scaled to fit the setting above..
 	float unitScale = unitsPerMeter / 100.0f;
@@ -62,8 +60,7 @@ VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
 	checkCollision();
 
 	// If no collision we just move along the velocity
-	if (collisionPackage.foundCollision == false)
-	{
+	if (collisionPackage.foundCollision == false) {
 		return pos + vel;
 	}
 
@@ -75,12 +72,11 @@ VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
 	// only update if we are not already very close
 	// and if so we only move very close to intersection..not
 	// to the exact spot.
-	if (collisionPackage.nearestDistance >= veryCloseDistance)
-	{
+	if (collisionPackage.nearestDistance >= veryCloseDistance) {
 		VECTOR V = vel;
 		V.SetLength(collisionPackage.nearestDistance - veryCloseDistance);
 		//		newSourcePoint = collisionPackage.sourcePoint + V;
-		//fixed by silencerex
+		// fixed by silencerex
 		newSourcePoint = collisionPackage.basePoint + V;
 
 		// Adjust polygon intersection point (so sliding
@@ -93,7 +89,7 @@ VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
 	// Determine the sliding plane
 	VECTOR slidePlaneOrigin = collisionPackage.intersectionPoint;
 	VECTOR slidePlaneNormal = newSourcePoint - collisionPackage.intersectionPoint;
-	//fixed by tele forgot to normalize slideplane
+	// fixed by tele forgot to normalize slideplane
 	slidePlaneNormal.normalize();
 
 	PLANE slidingPlane(slidePlaneOrigin, slidePlaneNormal);
@@ -107,8 +103,7 @@ VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
 
 	// Recurse:
 	// dont recurse if the new velocity is very small
-	if (newVelocityVector.length() < veryCloseDistance)
-	{
+	if (newVelocityVector.length() < veryCloseDistance) {
 		return newSourcePoint;
 	}
 
@@ -116,8 +111,7 @@ VECTOR collideWithWorld(VECTOR pos, VECTOR vel)
 	return collideWithWorld(newSourcePoint, newVelocityVector);
 }
 
-CollisionTrace* collideAndSlide(float* position, float* vel)
-{
+CollisionTrace *collideAndSlide(float *position, float *vel) {
 	// Do collision detection:
 	collisionPackage.R3Position.set(position[0], position[1], position[2]);
 	collisionPackage.R3Velocity.set(vel[0], vel[1], vel[2]);
@@ -144,39 +138,38 @@ CollisionTrace* collideAndSlide(float* position, float* vel)
 	finalPosition = finalPosition * collisionPackage.eRadius;
 	collisionPackage.intersectionPoint = collisionPackage.intersectionPoint * collisionPackage.eRadius;
 
-	//Output the results in the CollisionTrace structure
-	finalPosition.get((float**)&trace.finalPosition);
+	// Output the results in the CollisionTrace structure
+	finalPosition.get((float **)&trace.finalPosition);
 	trace.foundCollision = collisionPackage.foundCollision;
 	trace.nearestDistance = (collisionPackage.intersectionPoint - collisionPackage.R3Position).length();
-	collisionPackage.intersectionPoint.get((float**)&trace.intersectionPoint);
+	collisionPackage.intersectionPoint.get((float **)&trace.intersectionPoint);
 
-	return &trace; //Return the adress of the Trace structure to the application
+	return &trace; // Return the adress of the Trace structure to the application
 }
 /*
 extern "C" __declspec(dllexport) void colSetUnitsPerMeter(float UPM)
 {
-	unitsPerMeter=UPM;
+    unitsPerMeter=UPM;
 }
 
 extern "C" __declspec(dllexport) void colSetGravity(float* grav )
 {
-	gravity.set(grav[0], grav[1], grav[2]);
+    gravity.set(grav[0], grav[1], grav[2]);
 }
 
 extern "C" __declspec(dllexport) void colSetRadius(float radius)
 {
-	collisionPackage.eRadius=radius;
+    collisionPackage.eRadius=radius;
 }
 
 extern "C" __declspec(dllexport) void colSetTrianglePool(int numtri, float** pool)
 {
-	numtriangle=numtri;
-	triangle_pool=pool;
+    numtriangle=numtri;
+    triangle_pool=pool;
 }
 */
 
-D3DVECTOR calculatemisslelength(D3DVECTOR velocity)
-{
+D3DVECTOR calculatemisslelength(D3DVECTOR velocity) {
 
 	D3DVECTOR result;
 	VECTOR v;

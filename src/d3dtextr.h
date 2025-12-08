@@ -17,16 +17,15 @@
 
 #define MAX_NUM_TEXTURE_FORMATS 100
 
-typedef struct tagD3DAppTextureFormat
-{
-    DDSURFACEDESC2 ddsd; /* DDSURFACEDESC for complete information */
-    BOOL bPalettized;    /* is this format palettized */
-    BOOL bAlphaPixels;
-    int RedBPP;   /* number of red, */
-    int BlueBPP;  /*                blue, */
-    int GreenBPP; /*                      and green bits per pixel */
-    int IndexBPP; /* number of bits in palette index */
-    DWORD dwFlags;
+typedef struct tagD3DAppTextureFormat {
+	DDSURFACEDESC2 ddsd; /* DDSURFACEDESC for complete information */
+	BOOL bPalettized;    /* is this format palettized */
+	BOOL bAlphaPixels;
+	int RedBPP;   /* number of red, */
+	int BlueBPP;  /*                blue, */
+	int GreenBPP; /*                      and green bits per pixel */
+	int IndexBPP; /* number of bits in palette index */
+	DWORD dwFlags;
 } D3DAppTextureFormat;
 
 //-----------------------------------------------------------------------------

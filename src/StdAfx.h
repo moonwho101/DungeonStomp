@@ -10,13 +10,20 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-	#include <Stdlib.h>
-	#include <Stdio.h>
-	#include <String.h>
-	#include "IceTypes.h"
+#include <Stdlib.h>
+#include <Stdio.h>
+#include <String.h>
+#include "IceTypes.h"
 
-#define DELETEARRAY(x)	{ if (x != null) delete []x;	x = null; }
-#define CHECKALLOC(x)	if(!x) return false;
+#define DELETEARRAY(x)  \
+	{                   \
+		if (x != null)  \
+			delete[] x; \
+		x = null;       \
+	}
+#define CHECKALLOC(x) \
+	if (!x)           \
+		return false;
 
 //!	A function to clear a buffer.
 //!	\param	addr		buffer address
@@ -24,9 +31,11 @@
 //!	\see	FillMemory
 //!	\see	CopyMemory
 //!	\see	MoveMemory
-__forceinline void ZeroMemory(void* addr, udword size)					{ memset(addr, 0, size);		}
+__forceinline void ZeroMemory(void *addr, udword size) {
+	memset(addr, 0, size);
+}
 
-	#include "IceRevisitedRadix.h"
+#include "IceRevisitedRadix.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

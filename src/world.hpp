@@ -76,8 +76,7 @@
 #define DIRECTIONAL_LIGHT_SOURCE 2
 #define POINT_LIGHT_SOURCE 3
 
-typedef struct texturemapping_typ
-{
+typedef struct texturemapping_typ {
 	float tu[4];
 	float tv[4];
 	int texture;
@@ -86,16 +85,14 @@ typedef struct texturemapping_typ
 
 } TEXTUREMAPPING, *texturemapping_ptr;
 
-typedef struct tagD3DAppMode
-{
-	int w;				   /* width */
-	int h;				   /* height */
-	int bpp;			   /* bits per pixel */
+typedef struct tagD3DAppMode {
+	int w;                 /* width */
+	int h;                 /* height */
+	int bpp;               /* bits per pixel */
 	BOOL bThisDriverCanDo; /*can current D3D driver render in this mode?*/
 } D3DAppMode;
 
-typedef struct setupinfo_typ
-{
+typedef struct setupinfo_typ {
 	D3DAppMode vmode;
 	int screen;
 	int control;
@@ -103,24 +100,21 @@ typedef struct setupinfo_typ
 
 } SETUPINFO, *setupinfo_ptr;
 
-typedef struct vert_typ
-{
+typedef struct vert_typ {
 	float x;
 	float y;
 	float z;
 
 } VERT, *vert_ptr;
 
-typedef struct light_typ
-{
+typedef struct light_typ {
 	BYTE r;
 	BYTE g;
 	BYTE b;
 
 } LIGHT, *light_ptr;
 
-typedef struct lightsource_typ
-{
+typedef struct lightsource_typ {
 	BYTE r;
 	BYTE g;
 	BYTE b;
@@ -145,8 +139,7 @@ typedef struct lightsource_typ
 
 } LIGHTSOURCE, *lightsouce_ptr;
 
-typedef struct objectlist_typ
-{
+typedef struct objectlist_typ {
 	float x;
 	float y;
 	float z;
@@ -161,8 +154,7 @@ typedef struct objectlist_typ
 
 } OBJECTLIST, *objectlist_ptr;
 
-typedef struct dsonline_typ
-{
+typedef struct dsonline_typ {
 	char ds_name[50];
 	char ds_numplayers[50];
 	char ds_ipaddress[50];
@@ -175,8 +167,7 @@ typedef struct dsonline_typ
 	char ds_game[50];
 } DSONLINE, *dsonline_ptr;
 
-typedef struct soundlist_typ
-{
+typedef struct soundlist_typ {
 	int id;
 	char name[100];
 	char file[100];
@@ -185,15 +176,13 @@ typedef struct soundlist_typ
 	int dist;
 } SOUNDLIST, *soundlist_ptr;
 
-typedef struct dsini_typ
-{
+typedef struct dsini_typ {
 	int x;
 	int y;
 
 } DSINI, *dsini_ptr;
 
-typedef struct gunlist_typ
-{
+typedef struct gunlist_typ {
 	float x;
 	float y;
 	float z;
@@ -231,8 +220,7 @@ typedef struct gunlist_typ
 
 } GUNLIST, *gunlist_ptr;
 
-typedef struct player_typ
-{
+typedef struct player_typ {
 	float x;
 	float y;
 	float z;
@@ -299,8 +287,7 @@ typedef struct player_typ
 
 } PLAYER, *player_ptr;
 
-typedef struct pmdata_typ
-{
+typedef struct pmdata_typ {
 	VERT **w;
 	VERT *t;
 	int *f;
@@ -330,33 +317,32 @@ typedef struct pmdata_typ
 /*
 typedef struct objectdata_typ
 {
-	VERT v[2000]; // 6000
-	VERT t[2000]; // 6000
-	int f[2000];
-	int num_vert[2000];
-	D3DPRIMITIVETYPE poly_cmd[2000];
-	int tex[2000];
-	BOOL use_texmap[2000];
-	char name[256];
-	VERT connection[4];
-	char typedesc[255];
+    VERT v[2000]; // 6000
+    VERT t[2000]; // 6000
+    int f[2000];
+    int num_vert[2000];
+    D3DPRIMITIVETYPE poly_cmd[2000];
+    int tex[2000];
+    BOOL use_texmap[2000];
+    char name[256];
+    VERT connection[4];
+    char typedesc[255];
 
-	int hd;
-	int ac;
-	int hp;
-	int damage;
+    int hd;
+    int ac;
+    int hp;
+    int damage;
 
-	
+
 
 } OBJECTDATA,*objectdata_ptr;
 */
 
-typedef struct objectdata_typ
-{
+typedef struct objectdata_typ {
 
-	//watch this carefully .. ds.log
-	//v and t are vertices -
-	// everything else polygones
+	// watch this carefully .. ds.log
+	// v and t are vertices -
+	//  everything else polygones
 
 	VERT v[2900]; // 6000
 	VERT t[2900]; // 6000 //2200
@@ -375,8 +361,7 @@ typedef struct objectdata_typ
 	int damage;
 
 } OBJECTDATA, *objectdata_ptr;
-typedef struct modellistdisplay
-{
+typedef struct modellistdisplay {
 
 	int model_id;
 	int modeltexture;
@@ -387,8 +372,7 @@ typedef struct modellistdisplay
 
 } MODELLIST, *modellist_ptr;
 
-typedef struct LevelMod
-{
+typedef struct LevelMod {
 	int num;
 	int objectid;
 	int jump;
@@ -400,8 +384,7 @@ typedef struct LevelMod
 
 } LEVELMOD, *levelmod_ptr;
 
-typedef struct SwitchMod
-{
+typedef struct SwitchMod {
 	int num;
 	int count;
 	int objectid;
@@ -414,24 +397,21 @@ typedef struct SwitchMod
 
 } SWITCHMOD, *swithcmod_ptr;
 
-typedef struct DSRegistry
-{
+typedef struct DSRegistry {
 	char name[255];
 	char key[255];
 	char registered[255];
 
 } DSREGISTRY, *dsregistry_ptr;
 
-typedef struct DSServerInfo
-{
+typedef struct DSServerInfo {
 	char name[255];
 	char ipaddress[255];
 	char players[255];
 
 } DSSERVERINFO, *dsserverinfo_ptr;
 
-typedef struct Merchant
-{
+typedef struct Merchant {
 	int object;
 	int price;
 	float qty;

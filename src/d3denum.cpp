@@ -18,15 +18,14 @@
 #include <commctrl.h>
 char D3Ddevicename[256];
 
-extern CMyD3DApplication* pCMyApp;
-
+extern CMyD3DApplication *pCMyApp;
 
 extern int betamode;
 
 //-----------------------------------------------------------------------------
 // Global data for the enumerator functions
 //-----------------------------------------------------------------------------
-static HRESULT(*g_fnAppConfirmFn)(DDCAPS*, D3DDEVICEDESC7*) = NULL;
+static HRESULT (*g_fnAppConfirmFn)(DDCAPS *, D3DDEVICEDESC7 *) = NULL;
 
 static D3DEnum_DeviceInfo g_pDeviceList[20];
 static DWORD g_dwNumDevicesEnumerated = 0L;
@@ -36,211 +35,197 @@ static DWORD g_dwNumDevices = 0L;
 // Name: SortModesCallback()
 // Desc: Callback function for sorting display modes.
 //-----------------------------------------------------------------------------
-int SortModesCallback(const VOID* arg1, const VOID* arg2)
-{
-    DDSURFACEDESC2* p1 = (DDSURFACEDESC2*)arg1;
-    DDSURFACEDESC2* p2 = (DDSURFACEDESC2*)arg2;
+int SortModesCallback(const VOID *arg1, const VOID *arg2) {
+	DDSURFACEDESC2 *p1 = (DDSURFACEDESC2 *)arg1;
+	DDSURFACEDESC2 *p2 = (DDSURFACEDESC2 *)arg2;
 
-    if (p1->dwWidth < p2->dwWidth)
-        return -1;
-    if (p1->dwWidth > p2->dwWidth)
-        return +1;
+	if (p1->dwWidth < p2->dwWidth)
+		return -1;
+	if (p1->dwWidth > p2->dwWidth)
+		return +1;
 
-    if (p1->dwHeight < p2->dwHeight)
-        return -1;
-    if (p1->dwHeight > p2->dwHeight)
-        return +1;
+	if (p1->dwHeight < p2->dwHeight)
+		return -1;
+	if (p1->dwHeight > p2->dwHeight)
+		return +1;
 
-    if (p1->ddpfPixelFormat.dwRGBBitCount < p2->ddpfPixelFormat.dwRGBBitCount)
-        return -1;
-    if (p1->ddpfPixelFormat.dwRGBBitCount > p2->ddpfPixelFormat.dwRGBBitCount)
-        return +1;
+	if (p1->ddpfPixelFormat.dwRGBBitCount < p2->ddpfPixelFormat.dwRGBBitCount)
+		return -1;
+	if (p1->ddpfPixelFormat.dwRGBBitCount > p2->ddpfPixelFormat.dwRGBBitCount)
+		return +1;
 
-    return 0;
+	return 0;
 }
 
 //-----------------------------------------------------------------------------
 // Name: ModeEnumCallback()
 // Desc: Callback function for enumerating display modes.
 //-----------------------------------------------------------------------------
-static HRESULT WINAPI ModeEnumCallback(DDSURFACEDESC2* pddsd,
-    VOID* pParentInfo)
-{
-    D3DEnum_DeviceInfo* pDevice = (D3DEnum_DeviceInfo*)pParentInfo;
+static HRESULT WINAPI ModeEnumCallback(DDSURFACEDESC2 *pddsd,
+                                       VOID *pParentInfo) {
+	D3DEnum_DeviceInfo *pDevice = (D3DEnum_DeviceInfo *)pParentInfo;
 
-    // Reallocate storage for the modes
-    DDSURFACEDESC2* pddsdNewModes = new DDSURFACEDESC2[pDevice->dwNumModes + 1];
-    memcpy(pddsdNewModes, pDevice->pddsdModes,
-        pDevice->dwNumModes * sizeof(DDSURFACEDESC2));
-    delete pDevice->pddsdModes;
-    pDevice->pddsdModes = pddsdNewModes;
+	// Reallocate storage for the modes
+	DDSURFACEDESC2 *pddsdNewModes = new DDSURFACEDESC2[pDevice->dwNumModes + 1];
+	memcpy(pddsdNewModes, pDevice->pddsdModes,
+	       pDevice->dwNumModes * sizeof(DDSURFACEDESC2));
+	delete pDevice->pddsdModes;
+	pDevice->pddsdModes = pddsdNewModes;
 
-    // Add the new mode
-    pDevice->pddsdModes[pDevice->dwNumModes++] = (*pddsd);
+	// Add the new mode
+	pDevice->pddsdModes[pDevice->dwNumModes++] = (*pddsd);
 
-    return DDENUMRET_OK;
+	return DDENUMRET_OK;
 }
 
 //-----------------------------------------------------------------------------
 // Name: DeviceEnumCallback()
 // Desc: Callback function for enumerating devices
 //-----------------------------------------------------------------------------
-static HRESULT WINAPI DeviceEnumCallback(TCHAR* strDesc, TCHAR* strName,
-    D3DDEVICEDESC7* pDesc,
-    VOID* pParentInfo)
-{
-    // Keep track of # of devices that were enumerated
-    g_dwNumDevicesEnumerated++;
+static HRESULT WINAPI DeviceEnumCallback(TCHAR *strDesc, TCHAR *strName,
+                                         D3DDEVICEDESC7 *pDesc,
+                                         VOID *pParentInfo) {
+	// Keep track of # of devices that were enumerated
+	g_dwNumDevicesEnumerated++;
 
-    D3DEnum_DeviceInfo* pDriverInfo = (D3DEnum_DeviceInfo*)pParentInfo;
-    D3DEnum_DeviceInfo* pDeviceInfo = &g_pDeviceList[g_dwNumDevices];
-    ZeroMemory(pDeviceInfo, sizeof(D3DEnum_DeviceInfo));
+	D3DEnum_DeviceInfo *pDriverInfo = (D3DEnum_DeviceInfo *)pParentInfo;
+	D3DEnum_DeviceInfo *pDeviceInfo = &g_pDeviceList[g_dwNumDevices];
+	ZeroMemory(pDeviceInfo, sizeof(D3DEnum_DeviceInfo));
 
-    // Select either the HAL or HEL device desc:
-    pDeviceInfo->bHardware = pDesc->dwDevCaps & D3DDEVCAPS_HWRASTERIZATION;
-    memcpy(&pDeviceInfo->ddDeviceDesc, pDesc, sizeof(D3DDEVICEDESC7));
+	// Select either the HAL or HEL device desc:
+	pDeviceInfo->bHardware = pDesc->dwDevCaps & D3DDEVCAPS_HWRASTERIZATION;
+	memcpy(&pDeviceInfo->ddDeviceDesc, pDesc, sizeof(D3DDEVICEDESC7));
 
-    // Set up device info for this device
-    pDeviceInfo->bDesktopCompatible = pDriverInfo->bDesktopCompatible;
-    pDeviceInfo->ddDriverCaps = pDriverInfo->ddDriverCaps;
-    pDeviceInfo->ddHELCaps = pDriverInfo->ddHELCaps;
-    pDeviceInfo->guidDevice = pDesc->deviceGUID;
-    pDeviceInfo->pDeviceGUID = &pDeviceInfo->guidDevice;
-    pDeviceInfo->pddsdModes = new DDSURFACEDESC2[pDriverInfo->dwNumModes];
+	// Set up device info for this device
+	pDeviceInfo->bDesktopCompatible = pDriverInfo->bDesktopCompatible;
+	pDeviceInfo->ddDriverCaps = pDriverInfo->ddDriverCaps;
+	pDeviceInfo->ddHELCaps = pDriverInfo->ddHELCaps;
+	pDeviceInfo->guidDevice = pDesc->deviceGUID;
+	pDeviceInfo->pDeviceGUID = &pDeviceInfo->guidDevice;
+	pDeviceInfo->pddsdModes = new DDSURFACEDESC2[pDriverInfo->dwNumModes];
 
-    // Copy the driver GUID and description for the device
-    if (pDriverInfo->pDriverGUID)
-    {
-        pDeviceInfo->guidDriver = pDriverInfo->guidDriver;
-        pDeviceInfo->pDriverGUID = &pDeviceInfo->guidDriver;
-        lstrcpyn(pDeviceInfo->strDesc, pDriverInfo->strDesc, 39);
-    }
-    else
-    {
-        pDeviceInfo->pDriverGUID = NULL;
-        lstrcpyn(pDeviceInfo->strDesc, strName, 39);
-    }
+	// Copy the driver GUID and description for the device
+	if (pDriverInfo->pDriverGUID) {
+		pDeviceInfo->guidDriver = pDriverInfo->guidDriver;
+		pDeviceInfo->pDriverGUID = &pDeviceInfo->guidDriver;
+		lstrcpyn(pDeviceInfo->strDesc, pDriverInfo->strDesc, 39);
+	} else {
+		pDeviceInfo->pDriverGUID = NULL;
+		lstrcpyn(pDeviceInfo->strDesc, strName, 39);
+	}
 
-    // Avoid duplicates: only enum HW devices for secondary DDraw drivers.
-    if (NULL != pDeviceInfo->pDriverGUID && FALSE == pDeviceInfo->bHardware)
-        return D3DENUMRET_OK;
+	// Avoid duplicates: only enum HW devices for secondary DDraw drivers.
+	if (NULL != pDeviceInfo->pDriverGUID && FALSE == pDeviceInfo->bHardware)
+		return D3DENUMRET_OK;
 
-    // Give the app a chance to accept or reject this device.
-    if (g_fnAppConfirmFn)
-        if (FAILED(g_fnAppConfirmFn(&pDeviceInfo->ddDriverCaps,
-            &pDeviceInfo->ddDeviceDesc)))
-            return D3DENUMRET_OK;
+	// Give the app a chance to accept or reject this device.
+	if (g_fnAppConfirmFn)
+		if (FAILED(g_fnAppConfirmFn(&pDeviceInfo->ddDriverCaps,
+		                            &pDeviceInfo->ddDeviceDesc)))
+			return D3DENUMRET_OK;
 
-    // Build list of supported modes for the device
-    for (DWORD i = 0; i < pDriverInfo->dwNumModes; i++)
-    {
-        DDSURFACEDESC2 ddsdMode = pDriverInfo->pddsdModes[i];
-        DWORD dwRenderDepths = pDeviceInfo->ddDeviceDesc.dwDeviceRenderBitDepth;
-        DWORD dwDepth = ddsdMode.ddpfPixelFormat.dwRGBBitCount;
+	// Build list of supported modes for the device
+	for (DWORD i = 0; i < pDriverInfo->dwNumModes; i++) {
+		DDSURFACEDESC2 ddsdMode = pDriverInfo->pddsdModes[i];
+		DWORD dwRenderDepths = pDeviceInfo->ddDeviceDesc.dwDeviceRenderBitDepth;
+		DWORD dwDepth = ddsdMode.ddpfPixelFormat.dwRGBBitCount;
 
-        // Accept modes that are compatable with the device
-        if (((dwDepth == 32) && (dwRenderDepths & DDBD_32)) ||
-            ((dwDepth == 24) && (dwRenderDepths & DDBD_24)) ||
-            ((dwDepth == 16) && (dwRenderDepths & DDBD_16)))
-        {
-            // Copy compatible modes to the list of device-supported modes
-            pDeviceInfo->pddsdModes[pDeviceInfo->dwNumModes++] = ddsdMode;
+		// Accept modes that are compatable with the device
+		if (((dwDepth == 32) && (dwRenderDepths & DDBD_32)) ||
+		    ((dwDepth == 24) && (dwRenderDepths & DDBD_24)) ||
+		    ((dwDepth == 16) && (dwRenderDepths & DDBD_16))) {
+			// Copy compatible modes to the list of device-supported modes
+			pDeviceInfo->pddsdModes[pDeviceInfo->dwNumModes++] = ddsdMode;
 
-            // Record whether the device has any stereo modes
-            if (ddsdMode.ddsCaps.dwCaps2 & DDSCAPS2_STEREOSURFACELEFT)
-                pDeviceInfo->bStereoCompatible = TRUE;
-        }
-    }
+			// Record whether the device has any stereo modes
+			if (ddsdMode.ddsCaps.dwCaps2 & DDSCAPS2_STEREOSURFACELEFT)
+				pDeviceInfo->bStereoCompatible = TRUE;
+		}
+	}
 
-    // Bail if the device has no supported modes
-    if (0 == pDeviceInfo->dwNumModes)
-        return D3DENUMRET_OK;
-    pCMyApp->LoadDSini();
-    // Find a 640x480x16 mode for the default fullscreen mode
-    for (int i = 0; i < (int)pDeviceInfo->dwNumModes; i++)
-    {
-        if ((pDeviceInfo->pddsdModes[i].dwWidth == pCMyApp->dsinix) &&
-            (pDeviceInfo->pddsdModes[i].dwHeight == pCMyApp->dsiniy) &&
-            (pDeviceInfo->pddsdModes[i].ddpfPixelFormat.dwRGBBitCount == 16))
-        {
-            pDeviceInfo->ddsdFullscreenMode = pDeviceInfo->pddsdModes[i];
-            pDeviceInfo->dwCurrentMode = i;
-        }
-    }
+	// Bail if the device has no supported modes
+	if (0 == pDeviceInfo->dwNumModes)
+		return D3DENUMRET_OK;
+	pCMyApp->LoadDSini();
+	// Find a 640x480x16 mode for the default fullscreen mode
+	for (int i = 0; i < (int)pDeviceInfo->dwNumModes; i++) {
+		if ((pDeviceInfo->pddsdModes[i].dwWidth == pCMyApp->dsinix) &&
+		    (pDeviceInfo->pddsdModes[i].dwHeight == pCMyApp->dsiniy) &&
+		    (pDeviceInfo->pddsdModes[i].ddpfPixelFormat.dwRGBBitCount == 16)) {
+			pDeviceInfo->ddsdFullscreenMode = pDeviceInfo->pddsdModes[i];
+			pDeviceInfo->dwCurrentMode = i;
+		}
+	}
 
-    // Select whether the device is initially windowed
-    pDeviceInfo->bWindowed = pDeviceInfo->bDesktopCompatible;
+	// Select whether the device is initially windowed
+	pDeviceInfo->bWindowed = pDeviceInfo->bDesktopCompatible;
 
-    // Accept the device and return
-    g_dwNumDevices++;
+	// Accept the device and return
+	g_dwNumDevices++;
 
-    return D3DENUMRET_OK;
+	return D3DENUMRET_OK;
 }
 
 //-----------------------------------------------------------------------------
 // Name: DriverEnumCallback()
 // Desc: Callback function for enumerating drivers.
 //-----------------------------------------------------------------------------
-static BOOL WINAPI DriverEnumCallback(GUID* pGUID, TCHAR* strDesc,
-    TCHAR* strName, VOID*, HMONITOR)
-{
-    D3DEnum_DeviceInfo d3dDeviceInfo;
-    LPDIRECTDRAW7 pDD;
-    LPDIRECT3D7 pD3D;
-    HRESULT hr;
+static BOOL WINAPI DriverEnumCallback(GUID *pGUID, TCHAR *strDesc,
+                                      TCHAR *strName, VOID *, HMONITOR) {
+	D3DEnum_DeviceInfo d3dDeviceInfo;
+	LPDIRECTDRAW7 pDD;
+	LPDIRECT3D7 pD3D;
+	HRESULT hr;
 
-    // Use the GUID to create the DirectDraw object
-    hr = DirectDrawCreateEx(pGUID, (VOID**)&pDD, IID_IDirectDraw7, NULL);
-    if (FAILED(hr))
-    {
-        DEBUG_MSG(_T("Can't create DDraw during enumeration!"));
-        return D3DENUMRET_OK;
-    }
+	// Use the GUID to create the DirectDraw object
+	hr = DirectDrawCreateEx(pGUID, (VOID **)&pDD, IID_IDirectDraw7, NULL);
+	if (FAILED(hr)) {
+		DEBUG_MSG(_T("Can't create DDraw during enumeration!"));
+		return D3DENUMRET_OK;
+	}
 
-    // Create a D3D object, to enumerate the d3d devices
-    hr = pDD->QueryInterface(IID_IDirect3D7, (VOID**)&pD3D);
-    if (FAILED(hr))
-    {
-        pDD->Release();
-        DEBUG_MSG(_T("Can't query IDirect3D7 during enumeration!"));
-        return D3DENUMRET_OK;
-    }
+	// Create a D3D object, to enumerate the d3d devices
+	hr = pDD->QueryInterface(IID_IDirect3D7, (VOID **)&pD3D);
+	if (FAILED(hr)) {
+		pDD->Release();
+		DEBUG_MSG(_T("Can't query IDirect3D7 during enumeration!"));
+		return D3DENUMRET_OK;
+	}
 
-    // Copy data to a device info structure
-    ZeroMemory(&d3dDeviceInfo, sizeof(d3dDeviceInfo));
-    lstrcpyn(d3dDeviceInfo.strDesc, strDesc, 39);
-    d3dDeviceInfo.ddDriverCaps.dwSize = sizeof(DDCAPS);
-    d3dDeviceInfo.ddHELCaps.dwSize = sizeof(DDCAPS);
-    pDD->GetCaps(&d3dDeviceInfo.ddDriverCaps, &d3dDeviceInfo.ddHELCaps);
-    if (pGUID)
-    {
-        d3dDeviceInfo.guidDriver = (*pGUID);
-        d3dDeviceInfo.pDriverGUID = &d3dDeviceInfo.guidDriver;
-    }
+	// Copy data to a device info structure
+	ZeroMemory(&d3dDeviceInfo, sizeof(d3dDeviceInfo));
+	lstrcpyn(d3dDeviceInfo.strDesc, strDesc, 39);
+	d3dDeviceInfo.ddDriverCaps.dwSize = sizeof(DDCAPS);
+	d3dDeviceInfo.ddHELCaps.dwSize = sizeof(DDCAPS);
+	pDD->GetCaps(&d3dDeviceInfo.ddDriverCaps, &d3dDeviceInfo.ddHELCaps);
+	if (pGUID) {
+		d3dDeviceInfo.guidDriver = (*pGUID);
+		d3dDeviceInfo.pDriverGUID = &d3dDeviceInfo.guidDriver;
+	}
 
-    strcpy_s(D3Ddevicename, d3dDeviceInfo.strDesc);
+	strcpy_s(D3Ddevicename, d3dDeviceInfo.strDesc);
 
-    // Record whether the device can render into a desktop window
-    if (d3dDeviceInfo.ddDriverCaps.dwCaps2 & DDCAPS2_CANRENDERWINDOWED)
-        if (NULL == d3dDeviceInfo.pDriverGUID)
-            d3dDeviceInfo.bDesktopCompatible = TRUE;
+	// Record whether the device can render into a desktop window
+	if (d3dDeviceInfo.ddDriverCaps.dwCaps2 & DDCAPS2_CANRENDERWINDOWED)
+		if (NULL == d3dDeviceInfo.pDriverGUID)
+			d3dDeviceInfo.bDesktopCompatible = TRUE;
 
-    // Enumerate the fullscreen display modes.
-    pDD->EnumDisplayModes(0, NULL, &d3dDeviceInfo, ModeEnumCallback);
+	// Enumerate the fullscreen display modes.
+	pDD->EnumDisplayModes(0, NULL, &d3dDeviceInfo, ModeEnumCallback);
 
-    // Sort list of display modes
-    qsort(d3dDeviceInfo.pddsdModes, d3dDeviceInfo.dwNumModes,
-        sizeof(DDSURFACEDESC2), SortModesCallback);
+	// Sort list of display modes
+	qsort(d3dDeviceInfo.pddsdModes, d3dDeviceInfo.dwNumModes,
+	      sizeof(DDSURFACEDESC2), SortModesCallback);
 
-    // Now, enumerate all the 3D devices
-    pD3D->EnumDevices(DeviceEnumCallback, &d3dDeviceInfo);
+	// Now, enumerate all the 3D devices
+	pD3D->EnumDevices(DeviceEnumCallback, &d3dDeviceInfo);
 
-    // Clean up and return
-    SAFE_DELETE(d3dDeviceInfo.pddsdModes);
-    pD3D->Release();
-    pDD->Release();
+	// Clean up and return
+	SAFE_DELETE(d3dDeviceInfo.pddsdModes);
+	pD3D->Release();
+	pDD->Release();
 
-    return DDENUMRET_OK;
+	return DDENUMRET_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -249,55 +234,49 @@ static BOOL WINAPI DriverEnumCallback(GUID* pGUID, TCHAR* strDesc,
 //       called each device, to confirm that the device supports the feature
 //       set required by the app.
 //-----------------------------------------------------------------------------
-HRESULT D3DEnum_EnumerateDevices(HRESULT(*AppConfirmFn)(DDCAPS*, D3DDEVICEDESC7*))
-{
-    // Store the device enumeration callback function
-    g_fnAppConfirmFn = AppConfirmFn;
+HRESULT D3DEnum_EnumerateDevices(HRESULT (*AppConfirmFn)(DDCAPS *, D3DDEVICEDESC7 *)) {
+	// Store the device enumeration callback function
+	g_fnAppConfirmFn = AppConfirmFn;
 
-    // Enumerate drivers, devices, and modes
-    DirectDrawEnumerateEx(DriverEnumCallback, NULL,
-        DDENUM_ATTACHEDSECONDARYDEVICES |
-        DDENUM_DETACHEDSECONDARYDEVICES |
-        DDENUM_NONDISPLAYDEVICES);
+	// Enumerate drivers, devices, and modes
+	DirectDrawEnumerateEx(DriverEnumCallback, NULL,
+	                      DDENUM_ATTACHEDSECONDARYDEVICES |
+	                          DDENUM_DETACHEDSECONDARYDEVICES |
+	                          DDENUM_NONDISPLAYDEVICES);
 
-    // Make sure devices were actually enumerated
-    if (0 == g_dwNumDevicesEnumerated)
-    {
-        DEBUG_MSG(_T("No devices and/or modes were enumerated!"));
-        return D3DENUMERR_ENUMERATIONFAILED;
-    }
-    if (0 == g_dwNumDevices)
-    {
-        DEBUG_MSG(_T("No enumerated devices were accepted!"));
-        DEBUG_MSG(_T("Try enabling the D3D Reference Rasterizer."));
-        return D3DENUMERR_SUGGESTREFRAST;
-    }
+	// Make sure devices were actually enumerated
+	if (0 == g_dwNumDevicesEnumerated) {
+		DEBUG_MSG(_T("No devices and/or modes were enumerated!"));
+		return D3DENUMERR_ENUMERATIONFAILED;
+	}
+	if (0 == g_dwNumDevices) {
+		DEBUG_MSG(_T("No enumerated devices were accepted!"));
+		DEBUG_MSG(_T("Try enabling the D3D Reference Rasterizer."));
+		return D3DENUMERR_SUGGESTREFRAST;
+	}
 
-    return S_OK;
+	return S_OK;
 }
 
 //-----------------------------------------------------------------------------
 // Name: D3DEnum_FreeResources()
 // Desc: Cleans up any memory allocated during device enumeration
 //-----------------------------------------------------------------------------
-VOID D3DEnum_FreeResources()
-{
-    for (DWORD i = 0; i < g_dwNumDevices; i++)
-    {
-        SAFE_DELETE(g_pDeviceList[i].pddsdModes);
-    }
+VOID D3DEnum_FreeResources() {
+	for (DWORD i = 0; i < g_dwNumDevices; i++) {
+		SAFE_DELETE(g_pDeviceList[i].pddsdModes);
+	}
 }
 
 //-----------------------------------------------------------------------------
 // Name: D3DEnum_GetDevices()
 // Desc: Returns a ptr to the array of D3DEnum_DeviceInfo structures.
 //-----------------------------------------------------------------------------
-VOID D3DEnum_GetDevices(D3DEnum_DeviceInfo** ppDevices, DWORD* pdwCount)
-{
-    if (ppDevices)
-        (*ppDevices) = g_pDeviceList;
-    if (pdwCount)
-        (*pdwCount) = g_dwNumDevices;
+VOID D3DEnum_GetDevices(D3DEnum_DeviceInfo **ppDevices, DWORD *pdwCount) {
+	if (ppDevices)
+		(*ppDevices) = g_pDeviceList;
+	if (pdwCount)
+		(*pdwCount) = g_dwNumDevices;
 }
 
 //-----------------------------------------------------------------------------
@@ -305,113 +284,103 @@ VOID D3DEnum_GetDevices(D3DEnum_DeviceInfo** ppDevices, DWORD* pdwCount)
 // Desc: Builds the list of devices and modes for the combo boxes in the device
 //       select dialog box.
 //-----------------------------------------------------------------------------
-static VOID UpdateDialogControls(HWND hDlg, D3DEnum_DeviceInfo* pCurrentDevice,
-    DWORD dwCurrentMode, BOOL bWindowed,
-    BOOL bStereo)
-{
-    // Get access to the enumerated device list
-    D3DEnum_DeviceInfo* pDeviceList;
-    DWORD dwNumDevices;
-    D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
+static VOID UpdateDialogControls(HWND hDlg, D3DEnum_DeviceInfo *pCurrentDevice,
+                                 DWORD dwCurrentMode, BOOL bWindowed,
+                                 BOOL bStereo) {
+	// Get access to the enumerated device list
+	D3DEnum_DeviceInfo *pDeviceList;
+	DWORD dwNumDevices;
+	D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
 
-    // Access to UI controls
-    HWND hwndDevice = GetDlgItem(hDlg, IDC_DEVICE_COMBO);
-    HWND hwndMode = GetDlgItem(hDlg, IDC_MODE_COMBO);
-    HWND hwndWindowed = GetDlgItem(hDlg, IDC_WINDOWED_CHECKBOX);
-    HWND hwndStereo = GetDlgItem(hDlg, IDC_STEREO_CHECKBOX);
-    HWND hwndFullscreenText = GetDlgItem(hDlg, IDC_FULLSCREEN_TEXT);
+	// Access to UI controls
+	HWND hwndDevice = GetDlgItem(hDlg, IDC_DEVICE_COMBO);
+	HWND hwndMode = GetDlgItem(hDlg, IDC_MODE_COMBO);
+	HWND hwndWindowed = GetDlgItem(hDlg, IDC_WINDOWED_CHECKBOX);
+	HWND hwndStereo = GetDlgItem(hDlg, IDC_STEREO_CHECKBOX);
+	HWND hwndFullscreenText = GetDlgItem(hDlg, IDC_FULLSCREEN_TEXT);
 
-    // Reset the content in each of the combo boxes
-    ComboBox_ResetContent(hwndDevice);
-    ComboBox_ResetContent(hwndMode);
+	// Reset the content in each of the combo boxes
+	ComboBox_ResetContent(hwndDevice);
+	ComboBox_ResetContent(hwndMode);
 
-    // Don't let non-GDI devices be windowed
-    if (FALSE == pCurrentDevice->bDesktopCompatible)
-        bWindowed = FALSE;
+	// Don't let non-GDI devices be windowed
+	if (FALSE == pCurrentDevice->bDesktopCompatible)
+		bWindowed = FALSE;
 
+	// Add a list of devices to the device combo box
+	for (DWORD device = 0; device < dwNumDevices; device++) {
+		D3DEnum_DeviceInfo *pDevice = &pDeviceList[device];
 
+		// Add device name to the combo box
+		DWORD dwItem = ComboBox_AddString(hwndDevice, pDevice->strDesc);
 
-    // Add a list of devices to the device combo box
-    for (DWORD device = 0; device < dwNumDevices; device++)
-    {
-        D3DEnum_DeviceInfo* pDevice = &pDeviceList[device];
+		// Set the remaining UI states for the current device
+		if (pDevice == pCurrentDevice) {
+			// Set the combobox selection on the current device
+			ComboBox_SetCurSel(hwndDevice, dwItem);
 
-        // Add device name to the combo box
-        DWORD dwItem = ComboBox_AddString(hwndDevice, pDevice->strDesc);
+			// Enable/set the fullscreen checkbox, as appropriate
+			if (hwndWindowed) {
+				EnableWindow(hwndWindowed, true);
+				// EnableWindow(hwndWindowed, pDevice->bDesktopCompatible);
+				Button_SetCheck(hwndWindowed, bWindowed);
 
-        // Set the remaining UI states for the current device
-        if (pDevice == pCurrentDevice)
-        {
-            // Set the combobox selection on the current device
-            ComboBox_SetCurSel(hwndDevice, dwItem);
+				// Turn this on to prevent windowed mode in release mode
 
-            // Enable/set the fullscreen checkbox, as appropriate
-            if (hwndWindowed)
-            {
-                EnableWindow(hwndWindowed, true);
-                //EnableWindow(hwndWindowed, pDevice->bDesktopCompatible);
-                Button_SetCheck(hwndWindowed, bWindowed);
+				if (betamode || pCMyApp->dsiniwindowed) {
+					EnableWindow(hwndWindowed, true);
+				} else {
+					EnableWindow(hwndWindowed, false);
+				}
+			}
 
-                //Turn this on to prevent windowed mode in release mode
-                
-                if (betamode || pCMyApp->dsiniwindowed) {
-                    EnableWindow(hwndWindowed, true);
-                }
-                else {
-                    EnableWindow(hwndWindowed, false);
-                }
-                
-            }
+			// Enable/set the stereo checkbox, as appropriate
+			if (hwndStereo) {
+				EnableWindow(hwndStereo, pDevice->bStereoCompatible && !bWindowed);
+				Button_SetCheck(hwndStereo, bStereo);
+			}
 
-            // Enable/set the stereo checkbox, as appropriate
-            if (hwndStereo)
-            {
-                EnableWindow(hwndStereo, pDevice->bStereoCompatible && !bWindowed);
-                Button_SetCheck(hwndStereo, bStereo);
-            }
+			// Enable/set the fullscreen modes combo, as appropriate
+			EnableWindow(hwndMode, !bWindowed);
+			EnableWindow(hwndFullscreenText, !bWindowed);
 
-            // Enable/set the fullscreen modes combo, as appropriate
-            EnableWindow(hwndMode, !bWindowed);
-            EnableWindow(hwndFullscreenText, !bWindowed);
+			// Build the list of fullscreen modes
+			for (DWORD mode = 0; mode < pDevice->dwNumModes; mode++) {
+				DDSURFACEDESC2 *pddsdMode = &pDevice->pddsdModes[mode];
 
-            // Build the list of fullscreen modes
-            for (DWORD mode = 0; mode < pDevice->dwNumModes; mode++)
-            {
-                DDSURFACEDESC2* pddsdMode = &pDevice->pddsdModes[mode];
+				// DirectX 7.0 max resultion is 2048x1536, 2K
+				// Don't bother showing anything else because it will not work.
+				if (pddsdMode->dwWidth > 2048) {
+					continue;
+				}
 
-                //DirectX 7.0 max resultion is 2048x1536, 2K
-                //Don't bother showing anything else because it will not work.
-                if (pddsdMode->dwWidth > 2048) {
-                    continue;
-                }
+				// Skip non-stereo modes, if the device is in stereo mode
+				if (0 == (pddsdMode->ddsCaps.dwCaps2 & DDSCAPS2_STEREOSURFACELEFT))
+					if (bStereo)
+						continue;
 
-                // Skip non-stereo modes, if the device is in stereo mode
-                if (0 == (pddsdMode->ddsCaps.dwCaps2 & DDSCAPS2_STEREOSURFACELEFT))
-                    if (bStereo)
-                        continue;
+				TCHAR strMode[80];
+				wsprintf(strMode, _T("%ld x %ld x %ld"),
+				         pddsdMode->dwWidth, pddsdMode->dwHeight,
+				         pddsdMode->ddpfPixelFormat.dwRGBBitCount);
 
-                TCHAR strMode[80];
-                wsprintf(strMode, _T("%ld x %ld x %ld"),
-                    pddsdMode->dwWidth, pddsdMode->dwHeight,
-                    pddsdMode->ddpfPixelFormat.dwRGBBitCount);
+				// Add mode desc to the combo box
+				DWORD dwItem = ComboBox_AddString(hwndMode, strMode);
 
-                // Add mode desc to the combo box
-                DWORD dwItem = ComboBox_AddString(hwndMode, strMode);
+				// Set the item data to identify this mode
+				ComboBox_SetItemData(hwndMode, dwItem, mode);
 
-                // Set the item data to identify this mode
-                ComboBox_SetItemData(hwndMode, dwItem, mode);
+				// Set the combobox selection on the current mode
+				if (mode == dwCurrentMode)
+					ComboBox_SetCurSel(hwndMode, dwItem);
 
-                // Set the combobox selection on the current mode
-                if (mode == dwCurrentMode)
-                    ComboBox_SetCurSel(hwndMode, dwItem);
-
-                // Since not all modes support stereo, select a default mode in
-                // case none was chosen yet.
-                if (bStereo && (CB_ERR == ComboBox_GetCurSel(hwndMode)))
-                    ComboBox_SetCurSel(hwndMode, dwItem);
-            }
-        }
-    }
+				// Since not all modes support stereo, select a default mode in
+				// case none was chosen yet.
+				if (bStereo && (CB_ERR == ComboBox_GetCurSel(hwndMode)))
+					ComboBox_SetCurSel(hwndMode, dwItem);
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -419,316 +388,286 @@ static VOID UpdateDialogControls(HWND hDlg, D3DEnum_DeviceInfo* pCurrentDevice,
 // Desc: Windows message handling function for the device select dialog
 //-----------------------------------------------------------------------------
 static BOOL CALLBACK ChangeDeviceProc(HWND hDlg, UINT uiMsg, WPARAM wParam,
-    LPARAM lParam)
-{
-    static D3DEnum_DeviceInfo** ppDeviceArg;
-    static D3DEnum_DeviceInfo* pCurrentDevice;
-    static DWORD dwCurrentMode;
-    static BOOL bCurrentWindowed;
-    static BOOL bCurrentStereo;
-    HWND hwndGamma;
+                                      LPARAM lParam) {
+	static D3DEnum_DeviceInfo **ppDeviceArg;
+	static D3DEnum_DeviceInfo *pCurrentDevice;
+	static DWORD dwCurrentMode;
+	static BOOL bCurrentWindowed;
+	static BOOL bCurrentStereo;
+	HWND hwndGamma;
 
-    // Get access to the enumerated device list
-    D3DEnum_DeviceInfo* pDeviceList;
-    DWORD dwNumDevices;
-    D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
+	// Get access to the enumerated device list
+	D3DEnum_DeviceInfo *pDeviceList;
+	DWORD dwNumDevices;
+	D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
 
+	// Handle the initialization message
 
-    // Handle the initialization message
+	if (WM_HSCROLL == uiMsg) {
 
-    if (WM_HSCROLL == uiMsg)
-    {
+		SCROLLINFO si;
 
-        SCROLLINFO si;
+		// Initialize SCROLLINFO structure
 
-        // Initialize SCROLLINFO structure
+		ZeroMemory(&si, sizeof(si));
+		si.cbSize = sizeof(si);
+		si.fMask = SIF_TRACKPOS;
 
-        ZeroMemory(&si, sizeof(si));
-        si.cbSize = sizeof(si);
-        si.fMask = SIF_TRACKPOS;
+		// Call GetScrollInfo to get current tracking
+		//    position in si.nTrackPos
+		hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
+		// SetScrollInfo(hwndGamma,SB_CTL,&si,0);
+		GetScrollInfo(hwndGamma, SB_CTL, &si);
 
-        // Call GetScrollInfo to get current tracking
-        //    position in si.nTrackPos
-        hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
-        //SetScrollInfo(hwndGamma,SB_CTL,&si,0);
-        GetScrollInfo(hwndGamma, SB_CTL, &si);
+		int nCurPos = GetScrollPos(hwndGamma, SB_CTL);
 
-        int nCurPos = GetScrollPos(hwndGamma, SB_CTL);
+		nCurPos = HIWORD(wParam);
+		switch (LOWORD(wParam)) {
+			// case SB_LINEUP:
+			// case SB_LINEDOWN:
+			// case SB_PAGEUP:
+			// case SB_PAGEDOWN:
+		case SB_LINERIGHT:
 
-        nCurPos = HIWORD(wParam);
-        switch (LOWORD(wParam))
-        {
-            //case SB_LINEUP:
-            //case SB_LINEDOWN:
-            //case SB_PAGEUP:
-            //case SB_PAGEDOWN:
-        case SB_LINERIGHT:
+			pCMyApp->gammasetting = pCMyApp->gammasetting + 0.1f;
+			if (pCMyApp->gammasetting > 10.00) {
+				pCMyApp->gammasetting = 10.0f;
+			}
 
-            pCMyApp->gammasetting = pCMyApp->gammasetting + 0.1f;
-            if (pCMyApp->gammasetting > 10.00)
-            {
-                pCMyApp->gammasetting = 10.0f;
-            }
+			SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+			SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+			pCMyApp->SetGamma();
+			break;
+		case SB_PAGERIGHT:
 
-            SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
-            SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
-            pCMyApp->SetGamma();
-            break;
-        case SB_PAGERIGHT:
+			pCMyApp->gammasetting++;
+			if (pCMyApp->gammasetting > 10.00) {
+				pCMyApp->gammasetting = 10.0f;
+			}
 
-            pCMyApp->gammasetting++;
-            if (pCMyApp->gammasetting > 10.00)
-            {
-                pCMyApp->gammasetting = 10.0f;
-            }
+			SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+			SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+			pCMyApp->SetGamma();
 
-            SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
-            SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
-            pCMyApp->SetGamma();
+			break;
 
-            break;
+		case SB_LINELEFT:
 
-        case SB_LINELEFT:
+			pCMyApp->gammasetting = pCMyApp->gammasetting - 0.1f;
+			if (pCMyApp->gammasetting <= 0.00) {
+				pCMyApp->gammasetting = 0.0f;
+			}
 
-            pCMyApp->gammasetting = pCMyApp->gammasetting - 0.1f;
-            if (pCMyApp->gammasetting <= 0.00)
-            {
-                pCMyApp->gammasetting = 0.0f;
-            }
+			SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+			SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+			pCMyApp->SetGamma();
+			break;
+		case SB_PAGELEFT:
 
-            SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
-            SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
-            pCMyApp->SetGamma();
-            break;
-        case SB_PAGELEFT:
+			pCMyApp->gammasetting--;
+			if (pCMyApp->gammasetting <= 0.00) {
+				pCMyApp->gammasetting = 0.0f;
+			}
 
-            pCMyApp->gammasetting--;
-            if (pCMyApp->gammasetting <= 0.00)
-            {
-                pCMyApp->gammasetting = 0.0f;
-            }
+			SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+			SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+			pCMyApp->SetGamma();
 
-            SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
-            SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
-            pCMyApp->SetGamma();
+			break;
 
-            break;
+		case SB_THUMBPOSITION:
+		case SB_THUMBTRACK:
+			nCurPos = HIWORD(wParam);
+			hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
+			SetScrollPos(hwndGamma, SB_CTL, 10, TRUE);
 
-        case SB_THUMBPOSITION:
-        case SB_THUMBTRACK:
-            nCurPos = HIWORD(wParam);
-            hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
-            SetScrollPos(hwndGamma, SB_CTL, 10, TRUE);
+			pCMyApp->gammasetting = (float)(10.0f * nCurPos) / 1000.0f;
+			pCMyApp->SetGamma();
 
-            pCMyApp->gammasetting = (float)(10.0f * nCurPos) / 1000.0f;
-            pCMyApp->SetGamma();
+			break;
+		}
+	}
 
-            break;
-        }
-    }
+	if (WM_INITDIALOG == uiMsg) {
+		// Get the app's current device, passed in as an lParam argument
 
-    if (WM_INITDIALOG == uiMsg)
-    {
-        // Get the app's current device, passed in as an lParam argument
+		ppDeviceArg = (D3DEnum_DeviceInfo **)lParam;
+		if (NULL == ppDeviceArg)
+			return FALSE;
 
-        ppDeviceArg = (D3DEnum_DeviceInfo**)lParam;
-        if (NULL == ppDeviceArg)
-            return FALSE;
+		// Setup temp storage pointers for dialog
+		pCurrentDevice = (*ppDeviceArg);
+		dwCurrentMode = pCurrentDevice->dwCurrentMode;
+		bCurrentWindowed = pCurrentDevice->bWindowed;
+		bCurrentStereo = pCurrentDevice->bStereo;
 
-        // Setup temp storage pointers for dialog
-        pCurrentDevice = (*ppDeviceArg);
-        dwCurrentMode = pCurrentDevice->dwCurrentMode;
-        bCurrentWindowed = pCurrentDevice->bWindowed;
-        bCurrentStereo = pCurrentDevice->bStereo;
+		hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
+		//					int result = SetScrollRange(hwndGamma,SB_CTL,0,1000,FALSE);
+		//					 result = SetScrollPos(hwndGamma, SB_CTL,  100, TRUE);
 
-        hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
-        //					int result = SetScrollRange(hwndGamma,SB_CTL,0,1000,FALSE);
-        //					 result = SetScrollPos(hwndGamma, SB_CTL,  100, TRUE);
+		SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
 
-        SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+		SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
 
-        SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+		UpdateDialogControls(hDlg, pCurrentDevice, dwCurrentMode,
+		                     bCurrentWindowed, bCurrentStereo);
 
-        UpdateDialogControls(hDlg, pCurrentDevice, dwCurrentMode,
-            bCurrentWindowed, bCurrentStereo);
+		//	SetDlgItemInt(hDlg, IDC_SLIDER1, (int) pCMyApp->gammasetting, TRUE);
 
-        //	SetDlgItemInt(hDlg, IDC_SLIDER1, (int) pCMyApp->gammasetting, TRUE);
+		return TRUE;
+	} else if (WM_COMMAND == uiMsg) {
+		HWND hwndDevice = GetDlgItem(hDlg, IDC_DEVICE_COMBO);
+		HWND hwndMode = GetDlgItem(hDlg, IDC_MODE_COMBO);
+		HWND hwndWindowed = GetDlgItem(hDlg, IDC_WINDOWED_CHECKBOX);
+		HWND hwndStereo = GetDlgItem(hDlg, IDC_STEREO_CHECKBOX);
 
-        return TRUE;
-    }
-    else if (WM_COMMAND == uiMsg)
-    {
-        HWND hwndDevice = GetDlgItem(hDlg, IDC_DEVICE_COMBO);
-        HWND hwndMode = GetDlgItem(hDlg, IDC_MODE_COMBO);
-        HWND hwndWindowed = GetDlgItem(hDlg, IDC_WINDOWED_CHECKBOX);
-        HWND hwndStereo = GetDlgItem(hDlg, IDC_STEREO_CHECKBOX);
+		DWORD dwDevice = ComboBox_GetCurSel(hwndDevice);
+		DWORD dwModeItem = ComboBox_GetCurSel(hwndMode);
+		DWORD dwMode = ComboBox_GetItemData(hwndMode, dwModeItem);
+		BOOL bWindowed = hwndWindowed ? Button_GetCheck(hwndWindowed) : 0;
+		BOOL bStereo = hwndStereo ? Button_GetCheck(hwndStereo) : 0;
 
-        DWORD dwDevice = ComboBox_GetCurSel(hwndDevice);
-        DWORD dwModeItem = ComboBox_GetCurSel(hwndMode);
-        DWORD dwMode = ComboBox_GetItemData(hwndMode, dwModeItem);
-        BOOL bWindowed = hwndWindowed ? Button_GetCheck(hwndWindowed) : 0;
-        BOOL bStereo = hwndStereo ? Button_GetCheck(hwndStereo) : 0;
+		D3DEnum_DeviceInfo *pDevice = &pDeviceList[dwDevice];
 
-        D3DEnum_DeviceInfo* pDevice = &pDeviceList[dwDevice];
+		if (IDC_BUTTON1 == LOWORD(wParam)) {
+			hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
 
-        if (IDC_BUTTON1 == LOWORD(wParam))
-        {
-            hwndGamma = GetDlgItem(hDlg, IDC_SLIDER1);
+			pCMyApp->gammasetting = 1.0f;
+			SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
 
-            pCMyApp->gammasetting = 1.0f;
-            SendMessage(hwndGamma, TBM_SETRANGE, FALSE, MAKELPARAM(1, 1000));
+			SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL) true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
 
-            SendMessage(hwndGamma, TBM_SETPOS, (WPARAM)(BOOL)true, (LPARAM)(LONG)(pCMyApp->gammasetting * 100.0f));
+			pCMyApp->SetGamma();
+		}
 
-            pCMyApp->SetGamma();
-        }
+		if (IDOK == LOWORD(wParam)) {
+			// Handle the case when the user hits the OK button. Check if any
+			// of the options were changed
 
-        if (IDOK == LOWORD(wParam))
-        {
-            // Handle the case when the user hits the OK button. Check if any
-            // of the options were changed
+			if (pDevice != pCurrentDevice || dwMode != dwCurrentMode ||
+			    bWindowed != bCurrentWindowed || bStereo != bCurrentStereo) {
+				// Return the newly selected device and its new properties
+				(*ppDeviceArg) = pDevice;
+				pDevice->bWindowed = bWindowed;
+				pDevice->bStereo = bStereo;
+				pDevice->dwCurrentMode = dwMode;
+				pDevice->ddsdFullscreenMode = pDevice->pddsdModes[dwMode];
 
-            if (pDevice != pCurrentDevice || dwMode != dwCurrentMode ||
-                bWindowed != bCurrentWindowed || bStereo != bCurrentStereo)
-            {
-                // Return the newly selected device and its new properties
-                (*ppDeviceArg) = pDevice;
-                pDevice->bWindowed = bWindowed;
-                pDevice->bStereo = bStereo;
-                pDevice->dwCurrentMode = dwMode;
-                pDevice->ddsdFullscreenMode = pDevice->pddsdModes[dwMode];
+				pCMyApp->dsinix = pDevice->pddsdModes[dwMode].dwWidth;
+				pCMyApp->dsiniy = pDevice->pddsdModes[dwMode].dwHeight;
+				pCMyApp->SaveDSini();
 
-                pCMyApp->dsinix = pDevice->pddsdModes[dwMode].dwWidth;
-                pCMyApp->dsiniy = pDevice->pddsdModes[dwMode].dwHeight;
-                pCMyApp->SaveDSini();
+				EndDialog(hDlg, IDOK);
+			} else
+				EndDialog(hDlg, IDCANCEL);
 
-                EndDialog(hDlg, IDOK);
-            }
-            else
-                EndDialog(hDlg, IDCANCEL);
+			return TRUE;
+		} else if (IDCANCEL == LOWORD(wParam)) {
+			// Handle the case when the user hits the Cancel button
+			EndDialog(hDlg, IDCANCEL);
+			return TRUE;
+		} else if (CBN_SELENDOK == HIWORD(wParam)) {
+			if (LOWORD(wParam) == IDC_DEVICE_COMBO) {
+				// Handle the case when the user chooses the device combo
+				dwMode = pDeviceList[dwDevice].dwCurrentMode;
+				bWindowed = pDeviceList[dwDevice].bWindowed;
+				bStereo = pDeviceList[dwDevice].bStereo;
+			}
+		}
 
-            return TRUE;
-        }
-        else if (IDCANCEL == LOWORD(wParam))
-        {
-            // Handle the case when the user hits the Cancel button
-            EndDialog(hDlg, IDCANCEL);
-            return TRUE;
-        }
-        else if (CBN_SELENDOK == HIWORD(wParam))
-        {
-            if (LOWORD(wParam) == IDC_DEVICE_COMBO)
-            {
-                // Handle the case when the user chooses the device combo
-                dwMode = pDeviceList[dwDevice].dwCurrentMode;
-                bWindowed = pDeviceList[dwDevice].bWindowed;
-                bStereo = pDeviceList[dwDevice].bStereo;
-            }
-        }
+		// Keep the UI current
+		UpdateDialogControls(hDlg, &pDeviceList[dwDevice], dwMode, bWindowed, bStereo);
 
+		return TRUE;
+	}
 
-
-        // Keep the UI current
-        UpdateDialogControls(hDlg, &pDeviceList[dwDevice], dwMode, bWindowed, bStereo);
-
-
-        return TRUE;
-    }
-
-    return FALSE;
+	return FALSE;
 }
 
 //-----------------------------------------------------------------------------
 // Name: D3DEnum_UserChangeDevice()
 // Desc: Pops up a dialog which allows the user to select a new device.
 //-----------------------------------------------------------------------------
-HRESULT D3DEnum_UserChangeDevice(D3DEnum_DeviceInfo** ppDevice)
-{
-    if (IDOK == DialogBoxParam((HINSTANCE)GetModuleHandle(NULL),
-        MAKEINTRESOURCE(IDD_CHANGEDEVICE),
-        GetForegroundWindow(),
-        ChangeDeviceProc, (LPARAM)ppDevice))
+HRESULT D3DEnum_UserChangeDevice(D3DEnum_DeviceInfo **ppDevice) {
+	if (IDOK == DialogBoxParam((HINSTANCE)GetModuleHandle(NULL),
+	                           MAKEINTRESOURCE(IDD_CHANGEDEVICE),
+	                           GetForegroundWindow(),
+	                           ChangeDeviceProc, (LPARAM)ppDevice))
 
-        return S_OK;
+		return S_OK;
 
-    return E_FAIL;
+	return E_FAIL;
 }
 
 //-----------------------------------------------------------------------------
 // Name: D3DEnum_SelectDefaultDevice()
 // Desc: Pick a default device, preferably hardware and desktop compatible.
 //-----------------------------------------------------------------------------
-HRESULT D3DEnum_SelectDefaultDevice(D3DEnum_DeviceInfo** ppDevice,
-    DWORD dwFlags)
-{
-    // Check arguments
-    if (NULL == ppDevice)
-        return E_INVALIDARG;
+HRESULT D3DEnum_SelectDefaultDevice(D3DEnum_DeviceInfo **ppDevice,
+                                    DWORD dwFlags) {
+	// Check arguments
+	if (NULL == ppDevice)
+		return E_INVALIDARG;
 
-    // Get access to the enumerated device list
-    D3DEnum_DeviceInfo* pDeviceList;
-    DWORD dwNumDevices;
-    D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
+	// Get access to the enumerated device list
+	D3DEnum_DeviceInfo *pDeviceList;
+	DWORD dwNumDevices;
+	D3DEnum_GetDevices(&pDeviceList, &dwNumDevices);
 
-    // Look for windowable software, hardware, and hardware TnL devices
-    D3DEnum_DeviceInfo* pRefRastDevice = NULL;
-    D3DEnum_DeviceInfo* pSoftwareDevice = NULL;
-    D3DEnum_DeviceInfo* pHardwareDevice = NULL;
-    D3DEnum_DeviceInfo* pHardwareTnLDevice = NULL;
+	// Look for windowable software, hardware, and hardware TnL devices
+	D3DEnum_DeviceInfo *pRefRastDevice = NULL;
+	D3DEnum_DeviceInfo *pSoftwareDevice = NULL;
+	D3DEnum_DeviceInfo *pHardwareDevice = NULL;
+	D3DEnum_DeviceInfo *pHardwareTnLDevice = NULL;
 
-    for (DWORD i = 0; i < dwNumDevices; i++)
-    {
-        if (pDeviceList[i].bDesktopCompatible)
-        {
-            if (pDeviceList[i].bHardware)
-            {
-                if ((*pDeviceList[i].pDeviceGUID) == IID_IDirect3DTnLHalDevice)
-                    pHardwareTnLDevice = &pDeviceList[i];
-                else
-                    pHardwareDevice = &pDeviceList[i];
-            }
-            else
-            {
-                if ((*pDeviceList[i].pDeviceGUID) == IID_IDirect3DRefDevice)
-                    pRefRastDevice = &pDeviceList[i];
-                else
-                    pSoftwareDevice = &pDeviceList[i];
-            }
-        }
-    }
+	for (DWORD i = 0; i < dwNumDevices; i++) {
+		if (pDeviceList[i].bDesktopCompatible) {
+			if (pDeviceList[i].bHardware) {
+				if ((*pDeviceList[i].pDeviceGUID) == IID_IDirect3DTnLHalDevice)
+					pHardwareTnLDevice = &pDeviceList[i];
+				else
+					pHardwareDevice = &pDeviceList[i];
+			} else {
+				if ((*pDeviceList[i].pDeviceGUID) == IID_IDirect3DRefDevice)
+					pRefRastDevice = &pDeviceList[i];
+				else
+					pSoftwareDevice = &pDeviceList[i];
+			}
+		}
+	}
 
-    // Prefer a hardware TnL device first, then a non-TnL hardware device, and
-    // finally, a software device.
+	// Prefer a hardware TnL device first, then a non-TnL hardware device, and
+	// finally, a software device.
 
-    //switch these around
-    /*
-    if( 0 == ( dwFlags & D3DENUM_SOFTWAREONLY ) && pHardwareTnLDevice )
-        (*ppDevice) = pHardwareTnLDevice;
-    else if( 0 == ( dwFlags & D3DENUM_SOFTWAREONLY ) && pHardwareDevice )
-        (*ppDevice) = pHardwareDevice;
-    else if( pSoftwareDevice )
-        (*ppDevice) = pSoftwareDevice;
-    else if( pRefRastDevice )
-        (*ppDevice) = pRefRastDevice;
-    else
-        return D3DENUMERR_NOCOMPATIBLEDEVICES;
-    */
+	// switch these around
+	/*
+	if( 0 == ( dwFlags & D3DENUM_SOFTWAREONLY ) && pHardwareTnLDevice )
+	    (*ppDevice) = pHardwareTnLDevice;
+	else if( 0 == ( dwFlags & D3DENUM_SOFTWAREONLY ) && pHardwareDevice )
+	    (*ppDevice) = pHardwareDevice;
+	else if( pSoftwareDevice )
+	    (*ppDevice) = pSoftwareDevice;
+	else if( pRefRastDevice )
+	    (*ppDevice) = pRefRastDevice;
+	else
+	    return D3DENUMERR_NOCOMPATIBLEDEVICES;
+	*/
 
-    //direct3d hal first not t&l no good
+	// direct3d hal first not t&l no good
 
-    if (0 == (dwFlags & D3DENUM_SOFTWAREONLY) && pHardwareDevice)
-        (*ppDevice) = pHardwareDevice;
-    else if (0 == (dwFlags & D3DENUM_SOFTWAREONLY) && pHardwareTnLDevice)
-        (*ppDevice) = pHardwareTnLDevice;
-    else if (pSoftwareDevice)
-        (*ppDevice) = pSoftwareDevice;
-    else if (pRefRastDevice)
-        (*ppDevice) = pRefRastDevice;
-    else
-        return D3DENUMERR_NOCOMPATIBLEDEVICES;
+	if (0 == (dwFlags & D3DENUM_SOFTWAREONLY) && pHardwareDevice)
+		(*ppDevice) = pHardwareDevice;
+	else if (0 == (dwFlags & D3DENUM_SOFTWAREONLY) && pHardwareTnLDevice)
+		(*ppDevice) = pHardwareTnLDevice;
+	else if (pSoftwareDevice)
+		(*ppDevice) = pSoftwareDevice;
+	else if (pRefRastDevice)
+		(*ppDevice) = pRefRastDevice;
+	else
+		return D3DENUMERR_NOCOMPATIBLEDEVICES;
 
-    // Set the windowed state of the newly selected device
-    (*ppDevice)->bWindowed = TRUE;
+	// Set the windowed state of the newly selected device
+	(*ppDevice)->bWindowed = TRUE;
 
-    return S_OK;
+	return S_OK;
 }

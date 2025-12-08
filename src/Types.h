@@ -18,15 +18,15 @@
 //////////////////////////////////////////////////////////////////////
 // Basic mathematical macros
 #define sqr(x) ((x) * (x))
-#define dbl(x) ((x)*2)
+#define dbl(x) ((x) * 2)
 #define reciprocal(x) (1 / (x))
 #define rad(x) ((x) * (g_PI) / 180)
-#define deg(x) ((x) / (g_PI)*180)
+#define deg(x) ((x) / (g_PI) * 180)
 
 //////////////////////////////////////////////////////////////////////
 // Helper macros
-#define WallMeshVertices(x) (sqr(x))		// Obsolete
-#define WallMeshIndices(x) (sqr((x)-1) * 6) // Obsolete
+#define WallMeshVertices(x) (sqr(x))          // Obsolete
+#define WallMeshIndices(x) (sqr((x) - 1) * 6) // Obsolete
 
 //////////////////////////////////////////////////////////////////////
 // Type Definitions
@@ -36,7 +36,7 @@ typedef double FDOUBLE;
 //////////////////////////////////////////////////////////////////////
 // Constant definitions
 
-//#define INFINITY			1e+10
+// #define INFINITY			1e+10
 #define OFF 0
 #define ON 1
 
@@ -51,12 +51,12 @@ typedef double FDOUBLE;
 #define PLANE_XZ 2
 #define PLANE_YZ 3
 
-class Vector2D : public CTypeBase
-{
-public:
-	Vector2D() { Vector2D(0, 0); }
-	Vector2D(FPOINT _x, FPOINT _y)
-	{
+class Vector2D : public CTypeBase {
+  public:
+	Vector2D() {
+		Vector2D(0, 0);
+	}
+	Vector2D(FPOINT _x, FPOINT _y) {
 		x = _x;
 		y = _y;
 	}
@@ -66,17 +66,17 @@ public:
 
 class Vector3D : public CTypeBase // compatible to D3DVECTOR!
 {
-public:
-	Vector3D() { Vector3D(0, 0, 0); }
-	Vector3D(FPOINT _x, FPOINT _y, FPOINT _z)
-	{
+  public:
+	Vector3D() {
+		Vector3D(0, 0, 0);
+	}
+	Vector3D(FPOINT _x, FPOINT _y, FPOINT _z) {
 		x = _x;
 		y = _y;
 		z = _z;
 	}
 
-	D3DVECTOR GetD3DVector()
-	{
+	D3DVECTOR GetD3DVector() {
 		return D3DVECTOR(x, y, z);
 	}
 
@@ -93,17 +93,16 @@ public:
 #define Point3D Vector3D
 
 // The plane object represents a simple infinite plane in the 3D world
-class Plane : public CTypeBase
-{
-public:
-	Plane() { Plane(0, 0, 0, 0); }
-	Plane(FPOINT _a, FPOINT _b, FPOINT _c, FPOINT _d)
-	{
+class Plane : public CTypeBase {
+  public:
+	Plane() {
+		Plane(0, 0, 0, 0);
+	}
+	Plane(FPOINT _a, FPOINT _b, FPOINT _c, FPOINT _d) {
 		vNormal = Vector3D(_a, _b, _c);
 		d = _d;
 	}
-	Plane(Vector3D _vNormal, FPOINT _d)
-	{
+	Plane(Vector3D _vNormal, FPOINT _d) {
 		vNormal = _vNormal;
 		d = _d;
 	}
@@ -121,16 +120,13 @@ public:
 
 // 3D ray with origin and direction, but without end point - infinite on the
 // direction vector side
-class Ray3D : public CLineBase
-{
-public:
-	Ray3D()
-	{
+class Ray3D : public CLineBase {
+  public:
+	Ray3D() {
 		Ray3D(Vector3D(0, 0, 0), Vector3D(0, 0, 0));
 		nLineType = LINETYPE_RAY3D;
 	}
-	Ray3D(Vector3D _vOrigin, Vector3D _vDirection)
-	{
+	Ray3D(Vector3D _vOrigin, Vector3D _vDirection) {
 		vOrigin = _vOrigin;
 		vDirection = _vDirection;
 		nLineType = LINETYPE_RAY3D;
@@ -141,16 +137,13 @@ public:
 };
 
 // 3D line with start and end point, but completely infinite
-class Line3D : public CLineBase
-{
-public:
-	Line3D()
-	{
+class Line3D : public CLineBase {
+  public:
+	Line3D() {
 		Line3D(Vector3D(0, 0, 0), Vector3D(0, 0, 0));
 		nLineType = LINETYPE_LINE3D;
 	}
-	Line3D(Vector3D _v0, Vector3D _v1)
-	{
+	Line3D(Vector3D _v0, Vector3D _v1) {
 		v0 = _v0;
 		v1 = _v1;
 		nLineType = LINETYPE_LINE3D;
@@ -160,16 +153,13 @@ public:
 };
 
 // 3D segment which is not infinite at all - with start and end point
-class Segment3D : public CLineBase
-{
-public:
-	Segment3D()
-	{
+class Segment3D : public CLineBase {
+  public:
+	Segment3D() {
 		Segment3D(Vector3D(0, 0, 0), Vector3D(0, 0, 0));
 		nLineType = LINETYPE_SEGMENT3D;
 	}
-	Segment3D(Vector3D _v0, Vector3D _v1)
-	{
+	Segment3D(Vector3D _v0, Vector3D _v1) {
 		v0 = _v0;
 		v1 = _v1;
 		nLineType = LINETYPE_SEGMENT3D;
@@ -179,12 +169,12 @@ public:
 };
 
 // 2-Dimensional polygon (transformed)
-class Polygon2
-{
-public:
-	Polygon2() { Polygon2(Vector2D(0, 0), Vector2D(0, 0), Vector2D(0, 0)); }
-	Polygon2(Vector2D _v0, Vector2D _v1, Vector2D _v2)
-	{
+class Polygon2 {
+  public:
+	Polygon2() {
+		Polygon2(Vector2D(0, 0), Vector2D(0, 0), Vector2D(0, 0));
+	}
+	Polygon2(Vector2D _v0, Vector2D _v1, Vector2D _v2) {
 		v0 = _v0;
 		v1 = _v1;
 		v2 = _v2;
@@ -194,12 +184,12 @@ public:
 };
 
 // 3-Dimensional polygon
-class Polygon3
-{
-public:
-	Polygon3() { Polygon3(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(0, 0, 0)); }
-	Polygon3(Vector3D _v0, Vector3D _v1, Vector3D _v2)
-	{
+class Polygon3 {
+  public:
+	Polygon3() {
+		Polygon3(Vector3D(0, 0, 0), Vector3D(0, 0, 0), Vector3D(0, 0, 0));
+	}
+	Polygon3(Vector3D _v0, Vector3D _v1, Vector3D _v2) {
 		v0 = _v0;
 		v1 = _v1;
 		v2 = _v2;
@@ -208,46 +198,43 @@ public:
 	Vector3D v0, v1, v2;
 };
 
-class TRGBA
-{
-public:
-	TRGBA() {}
-	TRGBA(float _r, float _g, float _b, float _a)
-	{
+class TRGBA {
+  public:
+	TRGBA() {
+	}
+	TRGBA(float _r, float _g, float _b, float _a) {
 		r = _r;
 		g = _g;
 		b = _b;
 		a = _a;
 	}
-	TRGBA(DWORD dwColor)
-	{
+	TRGBA(DWORD dwColor) {
 		SplitColors(dwColor);
 	}
-	void SplitColors(DWORD dwColor)
-	{
+	void SplitColors(DWORD dwColor) {
 		r = (float)RGBA_GETRED(dwColor) / 255;
 		g = (float)RGBA_GETGREEN(dwColor) / 255;
 		b = (float)RGBA_GETBLUE(dwColor) / 255;
 		a = (float)RGBA_GETALPHA(dwColor) / 255;
 	}
-	bool equals(TRGBA t)
-	{
+	bool equals(TRGBA t) {
 		if (t.r == r && t.g == g && t.b == b && t.a == a)
 			return true;
 		else
 			return false;
 	}
-	bool IsSimilarTo(TRGBA t)
-	{
+	bool IsSimilarTo(TRGBA t) {
 		if (t.r >= r - 0.1 && t.r <= r + 0.1 &&
-			t.g >= g - 0.1 && t.g <= g + 0.1 &&
-			t.b >= b - 0.1 && t.b <= b + 0.1 &&
-			t.a >= a - 0.1 && t.a <= a + 0.1)
+		    t.g >= g - 0.1 && t.g <= g + 0.1 &&
+		    t.b >= b - 0.1 && t.b <= b + 0.1 &&
+		    t.a >= a - 0.1 && t.a <= a + 0.1)
 			return true;
 		else
 			return false;
 	}
-	D3DCOLOR GetColor() { return D3DRGBA(r, g, b, a); }
+	D3DCOLOR GetColor() {
+		return D3DRGBA(r, g, b, a);
+	}
 	float r, g, b, a;
 };
 

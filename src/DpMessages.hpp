@@ -59,7 +59,7 @@ typedef struct
 typedef struct
 {
 	DWORD dwType;
-	int seq; //current player seq;
+	int seq; // current player seq;
 	int id;
 } MSG_SEQ, *LPMSG_SEQ;
 
@@ -77,7 +77,7 @@ typedef struct
 	int hp;
 	int health;
 	int hd;
-	//DWORD RRnetID;
+	// DWORD RRnetID;
 
 } MSG_POS, *LPMSG_POS;
 
@@ -190,7 +190,7 @@ typedef struct
 
 	//	int seq;  //current player seq;
 	//	WORD	view_angle;
-	//DWORD RRnetID;
+	// DWORD RRnetID;
 
 } MSG_FIRE, *LPMSG_FIRE;
 
@@ -233,8 +233,7 @@ typedef struct
 
 } MSG_ACTIONNOINFO, *LPMSG_ACTIONNOINFO;
 
-struct GAMEMSG_GENERIC
-{
+struct GAMEMSG_GENERIC {
 	DWORD dwType;
 };
 HRESULT SendTreasure(DWORD RRnetID, float x, float y, float z, int gold, int modelid, int texture, int itemid, int itemcount, char name[80]);
@@ -242,11 +241,11 @@ HRESULT SendPlayer2(DWORD RRnetID, int modelid, int playernum);
 HRESULT SendItemInfo(DWORD RRnetID, int item, int itemlistcount);
 HRESULT SendSequenceMessageMonster(DWORD RRnetID, int seq, int id);
 HRESULT HandleAppMessages(HWND hDlg, GAMEMSG_GENERIC *pMsg, DWORD dwMsgSize,
-						  DPID idFrom, DPID idTo);
+                          DPID idFrom, DPID idTo);
 
 HRESULT SendLoadLevel(DWORD RRnetID, int level, char levelname[80]);
 HRESULT HandleSystemMessages(HWND hDlg, DPMSG_GENERIC *pMsg, DWORD dwMsgSize,
-							 DPID idFrom, DPID idTo);
+                             DPID idFrom, DPID idTo);
 
 HRESULT SendPositionMessage(DWORD RRnetID, float x, float y, float z, float view_angle, BOOL IsRunning);
 HRESULT SendGunInfo(DWORD RRnetID, int gunid);
@@ -265,7 +264,7 @@ HRESULT SendActionFlagMessage(DWORD RRnetID, BOOL action_flag, DWORD dwType);
 HRESULT SendActionWordMessage(DWORD RRnetID, int action_word, DWORD dwType);
 HRESULT SendChatMessage(DWORD RRnetID, char *pChatStr);
 HRESULT SendPlayerInfoMessage(DWORD player_id, BYTE player_num,
-							  char *player_name, BYTE num_players, DWORD dwType, int model_id, int skinid);
+                              char *player_name, BYTE num_players, DWORD dwType, int model_id, int skinid);
 
 HRESULT SendActionDWordMessage(DWORD RRnetID, DWORD action_dword, DWORD dwType, DWORD SendTo);
 HRESULT SendActionFloatMessage(DWORD RRnetID, float action_float, DWORD dwType, DWORD SendTo);
@@ -274,7 +273,7 @@ VOID DisplayNumberPlayersInGame(HWND hDlg);
 void ReadDpInfoFromRegistry();
 void WriteRegisteryInfo();
 BOOL CALLBACK UpdatePosCallBack(UINT uTimerID,
-								UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
+                                UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
 
 int GetPlayerNumber(DWORD dpid);
 void AddDpChatMessageToDisplay(char *msg);

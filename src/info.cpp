@@ -15,12 +15,11 @@
 #include "DungeonStomp.hpp"
 #include "d3dtextr.h"
 
-extern CMyD3DApplication* pCMyApp;
+extern CMyD3DApplication *pCMyApp;
 extern D3DAppTextureFormat ThisTextureFormat;
 extern char D3Ddevicename[256];
 
-void CMyD3DApplication::DisplayCredits(HWND hwnd)
-{
+void CMyD3DApplication::DisplayCredits(HWND hwnd) {
 	HDC hdc;
 	int sx1 = 15, sx2 = 200, sy = 70;
 	int nIndex;
@@ -61,8 +60,7 @@ void CMyD3DApplication::DisplayCredits(HWND hwnd)
 	ReleaseDC(hwnd, hdc);
 }
 
-void CMyD3DApplication::DisplayControls(HWND hwnd)
-{
+void CMyD3DApplication::DisplayControls(HWND hwnd) {
 	HDC hdc;
 	int sx1 = 15, sx2 = 200, sy = 70;
 	int nIndex;
@@ -181,8 +179,7 @@ void CMyD3DApplication::DisplayControls(HWND hwnd)
 	ReleaseDC(hwnd, hdc);
 }
 
-void CMyD3DApplication::DisplayRRStats(HWND hwnd)
-{
+void CMyD3DApplication::DisplayRRStats(HWND hwnd) {
 	HDC hdc;
 	int mem;
 	int sx1 = 15, sx2 = 320, sy = 70;
@@ -228,7 +225,7 @@ void CMyD3DApplication::DisplayRRStats(HWND hwnd)
 	TextOut(hdc, sx2, sy, buffer, strlen(buffer));
 	sy += 20;
 
-	hr = GetFramework()->GetDirectDraw()->QueryInterface(IID_IDirectDraw7, (void**)&lpDD7);
+	hr = GetFramework()->GetDirectDraw()->QueryInterface(IID_IDirectDraw7, (void **)&lpDD7);
 	if (FAILED(hr))
 		return;
 
@@ -313,8 +310,7 @@ void CMyD3DApplication::DisplayRRStats(HWND hwnd)
 	ReleaseDC(hwnd, hdc);
 }
 
-void CMyD3DApplication::DisplayLegalInfo(HWND hwnd)
-{
+void CMyD3DApplication::DisplayLegalInfo(HWND hwnd) {
 	HDC hdc;
 	int sx1 = 15, sx2 = 200, sy = 70;
 	int nIndex;
@@ -345,10 +341,8 @@ void CMyD3DApplication::DisplayLegalInfo(HWND hwnd)
 	ReleaseDC(hwnd, hdc);
 }
 
-BOOL FAR PASCAL AppAbout(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	switch (msg)
-	{
+BOOL FAR PASCAL AppAbout(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	switch (msg) {
 	case WM_INITDIALOG:
 		SetTimer(hwnd, 1, 100, NULL);
 		break;
@@ -365,8 +359,7 @@ BOOL FAR PASCAL AppAbout(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_COMMAND:
-		switch (LOWORD(wParam))
-		{
+		switch (LOWORD(wParam)) {
 		case IDOK:
 		case IDCANCEL:
 			EndDialog(hwnd, TRUE);

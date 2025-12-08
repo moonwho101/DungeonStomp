@@ -25,8 +25,7 @@ typedef float point_matrix[4];
 
 static point_matrix p;
 
-typedef struct Camera_typ
-{
+typedef struct Camera_typ {
 	float direction_x;
 	float direction_y;
 	float direction_z;
@@ -48,16 +47,14 @@ typedef struct Camera_typ
 
 } CAMERA, *Camera_ptr;
 
-typedef struct VPoint_typ
-{
+typedef struct VPoint_typ {
 	float x;
 	float y;
 	float z;
 
 } VPOINT, *VPoint_ptr;
 
-typedef struct editor_typ
-{
+typedef struct editor_typ {
 	VPOINT position;
 	BOOL update_flag;
 	BOOL scroll_bar_flag;

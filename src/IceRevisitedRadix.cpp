@@ -5,47 +5,46 @@
  *	\author		Pierre Terdiman
  *	\date		April, 4, 2000
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- /**
-  *	Revisited Radix Sort.
-  *	This is my new radix routine:
-  *  - it uses indices and doesn't recopy the values anymore, hence wasting less ram
-  *  - it creates all the histograms in one run instead of four
-  *  - it sorts words faster than dwords and bytes faster than words
-  *  - it correctly sorts negative floating-point values by patching the offsets
-  *  - it automatically takes advantage of temporal coherence
-  *  - multiple keys support is a side effect of temporal coherence
-  *  - it may be worth recoding in asm... (mainly to use FCOMI, FCMOV, etc)
-  *
-  *	History:
-  *	- 08.15.98: very first version
-  *	- 04.04.00: recoded for the radix article
-  *	- 12.xx.00: code lifting
-  *
-  *	\class		RadixSort
-  *	\author		Pierre Terdiman
-  *	\version	1.1
-  *	\date		August, 15, 1998
-  */
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *	Revisited Radix Sort.
+ *	This is my new radix routine:
+ *  - it uses indices and doesn't recopy the values anymore, hence wasting less ram
+ *  - it creates all the histograms in one run instead of four
+ *  - it sorts words faster than dwords and bytes faster than words
+ *  - it correctly sorts negative floating-point values by patching the offsets
+ *  - it automatically takes advantage of temporal coherence
+ *  - multiple keys support is a side effect of temporal coherence
+ *  - it may be worth recoding in asm... (mainly to use FCOMI, FCMOV, etc)
+ *
+ *	History:
+ *	- 08.15.98: very first version
+ *	- 04.04.00: recoded for the radix article
+ *	- 12.xx.00: code lifting
+ *
+ *	\class		RadixSort
+ *	\author		Pierre Terdiman
+ *	\version	1.1
+ *	\date		August, 15, 1998
+ */
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Precompiled Header
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Precompiled Header
 
 #include "prag.h"
 #include "Stdafx.h"
 
-//#include "IceRevisitedRadix.h"
+// #include "IceRevisitedRadix.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Constructor.
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RadixSort::RadixSort() : mIndices(null), mIndices2(null), mCurrentSize(0), mPreviousSize(0), mTotalCalls(0), mNbHits(0)
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RadixSort::RadixSort() : mIndices(null), mIndices2(null), mCurrentSize(0), mPreviousSize(0), mTotalCalls(0), mNbHits(0) {
 	// Allocate input-independent ram
 	mHistogram = new udword[256 * 4];
 	mOffset = new udword[256];
@@ -58,9 +57,8 @@ RadixSort::RadixSort() : mIndices(null), mIndices2(null), mCurrentSize(0), mPrev
 /**
  *	Destructor.
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RadixSort::~RadixSort()
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RadixSort::~RadixSort() {
 	// Release everything
 	DELETEARRAY(mOffset);
 	DELETEARRAY(mHistogram);
@@ -74,9 +72,8 @@ RadixSort::~RadixSort()
  *	\param		nb				[in] new size (number of dwords)
  *	\return		true if success
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool RadixSort::Resize(udword nb)
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool RadixSort::Resize(udword nb) {
 	// Free previously used ram
 	DELETEARRAY(mIndices2);
 	DELETEARRAY(mIndices);
@@ -95,8 +92,7 @@ bool RadixSort::Resize(udword nb)
 }
 
 #define CHECK_RESIZE(n)       \
-	if (n != mPreviousSize)   \
-	{                         \
+	if (n != mPreviousSize) { \
 		if (n > mCurrentSize) \
 			Resize(n);        \
 		else                  \
@@ -121,13 +117,11 @@ bool RadixSort::Resize(udword nb)
 	udword *h2 = &mHistogram[512]; /* Histogram for third pass			*/                    \
 	udword *h3 = &mHistogram[768]; /* Histogram for last pass (MSB)	*/                 \
                                                                                        \
-	while (p != pe)                                                                    \
-	{                                                                                  \
+	while (p != pe) {                                                                  \
 		/* Read input buffer in previous sorted order */                               \
 		type Val = (type)buffer[*Indices++];                                           \
 		/* Check whether already sorted or not */                                      \
-		if (Val < PrevVal)                                                             \
-		{                                                                              \
+		if (Val < PrevVal) {                                                           \
 			AlreadySorted = false;                                                     \
 			break;                                                                     \
 		} /* Early out */                                                              \
@@ -144,15 +138,13 @@ bool RadixSort::Resize(udword nb)
 	/* If all input values are already sorted, we just have to return and leave the */ \
 	/* previous list unchanged. That way the routine may take advantage of temporal */ \
 	/* coherence, for example when used to sort transparent faces.					*/              \
-	if (AlreadySorted)                                                                 \
-	{                                                                                  \
+	if (AlreadySorted) {                                                               \
 		mNbHits++;                                                                     \
 		return *this;                                                                  \
 	}                                                                                  \
                                                                                        \
 	/* Else there has been an early out and we must finish computing the histograms */ \
-	while (p != pe)                                                                    \
-	{                                                                                  \
+	while (p != pe) {                                                                  \
 		/* Create histograms without the previous overhead */                          \
 		h0[*p++]++;                                                                    \
 		h1[*p++]++;                                                                    \
@@ -169,15 +161,13 @@ bool RadixSort::Resize(udword nb)
                                                                                                 \
 	/* Check pass validity [some cycles are lost there in the generic case, */                  \
 	/* but that's ok, just a little loop] */                                                    \
-	for (udword i = 0; i < 256; i++)                                                            \
-	{                                                                                           \
+	for (udword i = 0; i < 256; i++) {                                                          \
 		/* If all values have the same byte, sorting is useless. */                             \
 		/* It may happen when sorting bytes or words instead of dwords. */                      \
 		/* This routine actually sorts words faster than dwords, and bytes */                   \
 		/* faster than words. Standard running time (O(4*n))is reduced to O(2*n) */             \
 		/* for words and O(n) for bytes. Running time for floats depends on actual values... */ \
-		if (CurCount[i] == nb)                                                                  \
-		{                                                                                       \
+		if (CurCount[i] == nb) {                                                                \
 			PerformPass = false;                                                                \
 			break;                                                                              \
 		}                                                                                       \
@@ -197,9 +187,8 @@ bool RadixSort::Resize(udword nb)
  *	\param		signedvalues	[in] true to handle negative values, false if you know your input buffer only contains positive values
  *	\return		Self-Reference
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RadixSort& RadixSort::Sort(const udword* input, udword nb, bool signedvalues)
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RadixSort &RadixSort::Sort(const udword *input, udword nb, bool signedvalues) {
 	// Checkings
 	if (!input || !nb)
 		return *this;
@@ -215,48 +204,39 @@ RadixSort& RadixSort::Sort(const udword* input, udword nb, bool signedvalues)
 	// Cons:	mHistogram is 4Kb instead of 1Kb
 	// We must take care of signed/unsigned values for temporal coherence.... I just
 	// have 2 code paths even if just a single opcode changes. Self-modifying code, someone?
-	if (!signedvalues)
-	{
+	if (!signedvalues) {
 		CREATE_HISTOGRAMS(udword, input);
-	}
-	else
-	{
+	} else {
 		CREATE_HISTOGRAMS(sdword, input);
 	}
 
 	// Compute #negative values involved if needed
 	udword NbNegativeValues = 0;
-	if (signedvalues)
-	{
+	if (signedvalues) {
 		// An efficient way to compute the number of negatives values we'll have to deal with is simply to sum the 128
 		// last values of the last histogram. Last histogram because that's the one for the Most Significant Byte,
 		// responsible for the sign. 128 last values because the 128 first ones are related to positive numbers.
-		udword* h3 = &mHistogram[768];
+		udword *h3 = &mHistogram[768];
 		for (udword i = 128; i < 256; i++)
 			NbNegativeValues += h3[i]; // 768 for last histogram, 128 for negative part
 	}
 
 	// Radix sort, j is the pass number (0=LSB, 3=MSB)
-	for (udword j = 0; j < 4; j++)
-	{
+	for (udword j = 0; j < 4; j++) {
 		CHECK_PASS_VALIDITY(j);
 
 		// Sometimes the fourth (negative) pass is skipped because all numbers are negative and the MSB is 0xFF (for example). This is
 		// not a problem, numbers are correctly sorted anyway.
-		if (PerformPass)
-		{
+		if (PerformPass) {
 			// Should we care about negative values?
-			if (j != 3 || !signedvalues)
-			{
+			if (j != 3 || !signedvalues) {
 				// Here we deal with positive values only
 
 				// Create offsets
 				mOffset[0] = 0;
 				for (udword i = 1; i < 256; i++)
 					mOffset[i] = mOffset[i - 1] + CurCount[i - 1];
-			}
-			else
-			{
+			} else {
 				// This is a special case to correctly handle negative integers. They're sorted in the right order but at the wrong place.
 
 				// Create biased offsets, in order for negative numbers to be sorted as well
@@ -271,18 +251,17 @@ RadixSort& RadixSort::Sort(const udword* input, udword nb, bool signedvalues)
 			}
 
 			// Perform Radix Sort
-			ubyte* InputBytes = (ubyte*)input;
-			udword* Indices = mIndices;
-			udword* IndicesEnd = &mIndices[nb];
+			ubyte *InputBytes = (ubyte *)input;
+			udword *Indices = mIndices;
+			udword *IndicesEnd = &mIndices[nb];
 			InputBytes += j;
-			while (Indices != IndicesEnd)
-			{
+			while (Indices != IndicesEnd) {
 				udword id = *Indices++;
 				mIndices2[mOffset[InputBytes[id << 2]]++] = id;
 			}
 
 			// Swap pointers for next pass. Valid indices - the most recent ones - are in mIndices after the swap.
-			udword* Tmp = mIndices;
+			udword *Tmp = mIndices;
 			mIndices = mIndices2;
 			mIndices2 = Tmp;
 		}
@@ -299,9 +278,8 @@ RadixSort& RadixSort::Sort(const udword* input, udword nb, bool signedvalues)
  *	\return		Self-Reference
  *	\warning	only sorts IEEE floating-point values
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RadixSort& RadixSort::Sort(const float* input2, udword nb)
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RadixSort &RadixSort::Sort(const float *input2, udword nb) {
 	// Checkings
 	if (!input2 || !nb)
 		return *this;
@@ -309,7 +287,7 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
 	// Stats
 	mTotalCalls++;
 
-	udword* input = (udword*)input2;
+	udword *input = (udword *)input2;
 
 	// Resize lists if needed
 	CHECK_RESIZE(nb);
@@ -331,20 +309,17 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
 	// An efficient way to compute the number of negatives values we'll have to deal with is simply to sum the 128
 	// last values of the last histogram. Last histogram because that's the one for the Most Significant Byte,
 	// responsible for the sign. 128 last values because the 128 first ones are related to positive numbers.
-	udword* h3 = &mHistogram[768];
+	udword *h3 = &mHistogram[768];
 	for (udword i = 128; i < 256; i++)
 		NbNegativeValues += h3[i]; // 768 for last histogram, 128 for negative part
 
 	// Radix sort, j is the pass number (0=LSB, 3=MSB)
-	for (udword j = 0; j < 4; j++)
-	{
+	for (udword j = 0; j < 4; j++) {
 		CHECK_PASS_VALIDITY(j);
 
-		if (PerformPass)
-		{
+		if (PerformPass) {
 			// Should we care about negative values?
-			if (j != 3)
-			{
+			if (j != 3) {
 				// Here we deal with positive values only
 
 				// Create offsets
@@ -353,18 +328,15 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
 					mOffset[i] = mOffset[i - 1] + CurCount[i - 1];
 
 				// Perform Radix Sort
-				ubyte* InputBytes = (ubyte*)input;
-				udword* Indices = mIndices;
-				udword* IndicesEnd = &mIndices[nb];
+				ubyte *InputBytes = (ubyte *)input;
+				udword *Indices = mIndices;
+				udword *IndicesEnd = &mIndices[nb];
 				InputBytes += j;
-				while (Indices != IndicesEnd)
-				{
+				while (Indices != IndicesEnd) {
 					udword id = *Indices++;
 					mIndices2[mOffset[InputBytes[id << 2]]++] = id;
 				}
-			}
-			else
-			{
+			} else {
 				// This is a special case to correctly handle negative values
 
 				// Create biased offsets, in order for negative numbers to be sorted as well
@@ -380,8 +352,7 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
 					mOffset[i] += CurCount[i]; // Fixing the wrong place for negative values
 
 				// Perform Radix Sort
-				for (int i = 0; i < (int)nb; i++)
-				{
+				for (int i = 0; i < (int)nb; i++) {
 					udword Radix = input[mIndices[i]] >> 24; // Radix byte, same as above. AND is useless here (udword).
 					// ### cmp to be killed. Not good. Later.
 					if (Radix < 128)
@@ -392,7 +363,7 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
 			}
 
 			// Swap pointers for next pass. Valid indices - the most recent ones - are in mIndices after the swap.
-			udword* Tmp = mIndices;
+			udword *Tmp = mIndices;
 			mIndices = mIndices2;
 			mIndices2 = Tmp;
 		}
@@ -405,9 +376,8 @@ RadixSort& RadixSort::Sort(const float* input2, udword nb)
  *	A method to reset the inner indices. After the call, mIndices is reset.
  *	\return		Self-Reference
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-RadixSort& RadixSort::ResetIndices()
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RadixSort &RadixSort::ResetIndices() {
 	for (udword i = 0; i < mCurrentSize; i++)
 		mIndices[i] = i;
 	return *this;
@@ -418,12 +388,11 @@ RadixSort& RadixSort::ResetIndices()
  *	A method to get the ram used.
  *	\return		memory used in bytes
  */
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-udword RadixSort::GetUsedRam() const
-{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+udword RadixSort::GetUsedRam() const {
 	udword UsedRam = 0;
-	UsedRam += 256 * 4 * sizeof(udword);		  // Histograms
-	UsedRam += 256 * sizeof(udword);			  // Offsets
+	UsedRam += 256 * 4 * sizeof(udword);          // Histograms
+	UsedRam += 256 * sizeof(udword);              // Offsets
 	UsedRam += 2 * mCurrentSize * sizeof(udword); // 2 lists of indices
 	return UsedRam;
 }
