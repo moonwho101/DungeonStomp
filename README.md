@@ -5,8 +5,12 @@
 ## Newer Versions
 * Dungeon Stomp for DirectX12 is here https://github.com/moonwho101/DungeonStompDirectX12
 * Dungeon Stomp for DirectX11 is here https://github.com/moonwho101/DungeonStompDirectX11PixelShader
+* Dungeon Stomp for Vulkan, a work in progress, is avaiable  [Dungeon Stomp Vulkan](https://github.com/moonwho101/DungeonStompVulkan).
 
 ## Dungeon Stomp DirectX7
+
+Run DungeonStomp.exe from the bin directory to try the game (will run under Windows 10 & 11).
+
 Dungeon Stomp is a DirectX 3D dungeon game that uses Direct3D, DirectInput and DirectSound.
 Dungeon Stomp was started it 2001.   The first beta was released in Aug of 2002.
 It is now 2021 - This is an updated version compiled with a more modern compiler.
@@ -14,7 +18,14 @@ The game still runs! It also lets you to see, in real time, your dice attack/dam
 
 It will compile using Microsoft Visual Studio 2019 community edition.
 
-Run DungeonStomp.exe from the bin directory to try the game.
+## Controls
+
+* WSAD to move, E to JUMP
+* SPACE to open doors
+* Q/Z to cycle weapons/spells
+* Left mouse button to attack, right mouse button to move forward
+* Maximize screen then press ALT+ENTER to enter FULLSCREEN mode
+* Press F2 to Load game, F3 to Save game
 
 ## Compile Notes
 * Confirm VC++ INCLUDE directory has ..\dx7asdk\include
