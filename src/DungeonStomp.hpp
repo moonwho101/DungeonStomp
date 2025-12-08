@@ -253,6 +253,11 @@ class CMyD3DApplication : public CD3DApplication {
 
 	void merchantnextitem();
 	void merchantprevitem();
+
+	
+	int GetNextFrame(int monsterId);
+	int GetNextFramePlayer();
+
 	D3DVALUE merchantangy;
 	int merchantlistcount;
 	int merchantmode;

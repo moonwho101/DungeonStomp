@@ -2485,6 +2485,8 @@ void CMyD3DApplication::AddPlayerLightSource(int player_num, float x, float y, f
 
 extern float gametimerAnimation;
 
+
+
 void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
@@ -2569,13 +2571,7 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			}
 
 			if (weapondrop == 1) {
-				x = tp->x + x_off;
-				z = tp->y + y_off;
-				y = (tp->z + z_off) - 40.0f;
-			} else {
-				x = tp->x + x_off;
-				z = tp->y + y_off;
-				y = (tp->z + z_off);
+				y -= 40.0f;
 			}
 
 			if (weapondrop == 0) {
@@ -7125,6 +7121,10 @@ void CMyD3DApplication::DrawPlayerGun() {
 				wz = GunTruesave.z;
 			}
 
+			//int nextFrame = GetNextFramePlayer();
+
+
+
 			PlayerToD3DVertList(ob_type,
 			                    current_frame,
 			                    angle,
@@ -7224,10 +7224,12 @@ void CMyD3DApplication::DrawMonsters() {
 					use_player_skins_flag = 0;
 					current_frame = monster_list[i].current_frame;
 
+					int nextFrame = GetNextFrame(i);
+
 					PlayerToD3DVertList(monster_list[i].model_id,
 					                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
 					                    monster_list[i].skin_tex_id,
-					                    USE_PLAYERS_SKIN);
+					                    USE_PLAYERS_SKIN, nextFrame);
 
 					for (int q = 0; q < countmodellist; q++) {
 
@@ -7242,7 +7244,7 @@ void CMyD3DApplication::DrawMonsters() {
 						PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
 						                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
 						                    FindGunTexture(model_list[getgunid].monsterweapon),
-						                    USE_PLAYERS_SKIN);
+						                    USE_PLAYERS_SKIN, nextFrame);
 					}
 				} else {
 				}
@@ -15191,6 +15193,47 @@ int CMyD3DApplication::LevelUp(int xp) {
 	}
 
 	return xp;
+}
+
+int CMyD3DApplication::GetNextFrame(int monsterId) {
+
+	int mod_id = monster_list[monsterId].model_id;
+	int curr_frame = monster_list[monsterId].current_frame;
+	int sequence = monster_list[monsterId].current_sequence;
+	int stop_frame = pmdata[mod_id].sequence_stop_frame[monster_list[monsterId].current_sequence];
+	int startframe = pmdata[mod_id].sequence_start_frame[monster_list[monsterId].current_sequence];
+	int nextFrame = 0;
+
+	if (monster_list[monsterId].bStopAnimating)
+		return -1;
+
+	if (curr_frame >= stop_frame) {
+
+		nextFrame = pmdata[mod_id].sequence_start_frame[sequence];
+
+	} else {
+		nextFrame = curr_frame + 1;
+	}
+
+	return nextFrame;
+}
+
+int CMyD3DApplication::GetNextFramePlayer() {
+
+	int mod_id = player_list[trueplayernum].model_id;
+	int curr_frame = player_list[trueplayernum].current_frame;
+	int stop_frame = pmdata[mod_id].sequence_stop_frame[player_list[trueplayernum].current_sequence];
+	int startframe = pmdata[mod_id].sequence_start_frame[player_list[trueplayernum].current_sequence];
+	int nextFrame = 0;
+
+	if (curr_frame >= stop_frame) {
+		int curr_seq = player_list[trueplayernum].current_sequence;
+		nextFrame = pmdata[mod_id].sequence_start_frame[curr_seq];
+		player_list[trueplayernum].animationdir = 1;
+	} else {
+		nextFrame = curr_frame + 1;
+	}
+	return nextFrame;
 }
 
 int CMyD3DApplication::FindModelID(char *p) {
