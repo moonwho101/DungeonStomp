@@ -4577,7 +4577,7 @@ HRESULT CMyD3DApplication::OneTimeSceneInit() {
 
 	return S_OK;
 }
-
+int movement = 1;
 //-----------------------------------------------------------------------------
 // Name: FrameMove()
 // Desc: Called once per frame, the call is the entry point for animating
@@ -4870,27 +4870,44 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey) {
 		}
 	}
 
+	//if (player_list[trueplayernum].current_sequence != 2) {
+	//	if (playermove == 0) {
+
+	//		if (savelastmove != playermove && jump == 0) {
+	//			if (playermovestrife == 0)
+	//				SetPlayerAnimationSequence(trueplayernum, 0);
+	//		}
+	//	} else {
+	//		if (savelastmove != playermove && jump == 0) {
+	//			SetPlayerAnimationSequence(trueplayernum, 1);
+	//		}
+	//	}
+
+	//	if (playermovestrife == 0) {
+	//		if (playermovestrife != savelaststrifemove && jump == 0) {
+	//			if (playermove == 0)
+	//				SetPlayerAnimationSequence(trueplayernum, 0);
+	//		}
+	//	} else {
+	//		if (playermovestrife != savelaststrifemove && jump == 0)
+	//			SetPlayerAnimationSequence(trueplayernum, 1);
+	//	}
+	//}
+
 	if (player_list[trueplayernum].current_sequence != 2) {
-		if (playermove == 0) {
 
-			if (savelastmove != playermove && jump == 0) {
-				if (playermovestrife == 0)
-					SetPlayerAnimationSequence(trueplayernum, 0);
-			}
-		} else {
+		if ((playermove == 1 || playermove == 4) && movement == 0) {
 			if (savelastmove != playermove && jump == 0) {
 				SetPlayerAnimationSequence(trueplayernum, 1);
 			}
-		}
 
-		if (playermovestrife == 0) {
-			if (playermovestrife != savelaststrifemove && jump == 0) {
-				if (playermove == 0)
-					SetPlayerAnimationSequence(trueplayernum, 0);
+			movement = 1;
+		} else if (playermove == 0 && movement == 1) {
+			if (savelastmove != playermove && jump == 0) {
+				SetPlayerAnimationSequence(trueplayernum, 0);
 			}
-		} else {
-			if (playermovestrife != savelaststrifemove && jump == 0)
-				SetPlayerAnimationSequence(trueplayernum, 1);
+
+			movement = 0;
 		}
 	}
 
@@ -7039,7 +7056,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 			} else {
 
 				wx = GunTruesave.x;
-				wy = GunTruesave.y;
+				wy = GunTruesave.y + 10.0f;
 				wz = GunTruesave.z;
 			}
 
