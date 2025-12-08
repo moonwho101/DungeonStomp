@@ -3,9 +3,9 @@
 ![Dungeon Stomp](../main/Textures/screenshot.jpg)
 
 ## Newer Versions
-* Dungeon Stomp for DirectX12 is here https://github.com/moonwho101/DungeonStompDirectX12
-* Dungeon Stomp for DirectX11 is here https://github.com/moonwho101/DungeonStompDirectX11PixelShader
-* Dungeon Stomp for Vulkan, a work in progress, is avaiable  [Dungeon Stomp Vulkan](https://github.com/moonwho101/DungeonStompVulkan).
+* Dungeon Stomp for DirectX12 is here [Dungeon Stomp DirectX12](https://github.com/moonwho101/DungeonStompDirectX12)
+* Dungeon Stomp for DirectX11 is here [Dungeon Stomp DirectX11](https://github.com/moonwho101/DungeonStompDirectX11PixelShader)
+* Dungeon Stomp for Vulkan, a work in progress, is avaiable  [Dungeon Stomp Vulkan](https://github.com/moonwho101/DungeonStompVulkan)
 
 ## Dungeon Stomp DirectX7
 
