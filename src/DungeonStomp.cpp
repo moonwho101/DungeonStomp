@@ -8368,12 +8368,8 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 					}
 				}
 
-				player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
 
-				if (player_list[i].current_frame == 183 || player_list[i].current_frame == 189 || player_list[i].current_frame == 197) {
-					// player is dead
-					player_list[i].bStopAnimating = TRUE;
-				}
+				player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
 
 				if (i == trueplayernum && curr_seq == 1 && runflag == 1) {
 				} else {
@@ -8427,6 +8423,13 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 			//	}
 			//}
 		}
+
+
+		if (player_list[i].current_frame == 183 || player_list[i].current_frame == 189 || player_list[i].current_frame == 197) {
+			// player is dead
+			player_list[i].bStopAnimating = TRUE;
+		}
+
 	}
 
 	GetItem();
