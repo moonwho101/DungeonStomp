@@ -1457,7 +1457,7 @@ LRESULT CMyD3DApplication::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 		if (wParam == ANIMATION_TIMER) {
 			if (GetFramework() && GetbActive() && GetbReady() && m_bWindowed) {
 
-				//if (IsRenderingOk == TRUE && dialogpause == 0)
+				// if (IsRenderingOk == TRUE && dialogpause == 0)
 				//	AnimateCharacters();
 			}
 		}
@@ -2485,8 +2485,6 @@ void CMyD3DApplication::AddPlayerLightSource(int player_num, float x, float y, f
 
 extern float gametimerAnimation;
 
-
-
 void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
@@ -2548,7 +2546,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 
 			tp = &pmdata[pmodel_id].w[curr_frame][v_index];
 
-			
 			float x, y, z;
 			if (nextFrame != -1) {
 				const vert_ptr tpNextFrame = &pmdata[pmodel_id].w[nextFrame][v_index];
@@ -3411,7 +3408,6 @@ void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_i
 	return;
 }
 
-
 int maingameloop3 = 0;
 float gametimerAnimation = 0;
 
@@ -3498,8 +3494,7 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 		return hr;
 	}
 
-
-		static LARGE_INTEGER frequency = { 0 };
+	static LARGE_INTEGER frequency = { 0 };
 	static LARGE_INTEGER lastTime = { 0 };
 	static float elapsedTime = 0.0f;
 	float kAnimationSpeed = 7.0f;
@@ -3534,7 +3529,6 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 	if (maingameloop3) {
 		AnimateCharacters();
 	}
-
 
 	if (gametimerdoor)
 		fTimeKeyscroll = DSTimer();
@@ -4930,7 +4924,7 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey) {
 		}
 	}
 
-	//if (player_list[trueplayernum].current_sequence != 2) {
+	// if (player_list[trueplayernum].current_sequence != 2) {
 	//	if (playermove == 0) {
 
 	//		if (savelastmove != playermove && jump == 0) {
@@ -7122,13 +7116,11 @@ void CMyD3DApplication::DrawPlayerGun() {
 
 			int nextFrame = GetNextFramePlayer();
 
-
-
 			PlayerToD3DVertList(ob_type,
 			                    current_frame,
 			                    angle,
 			                    player_list[trueplayernum].guntex,
-			                    USE_DEFAULT_MODEL_TEX,nextFrame);
+			                    USE_DEFAULT_MODEL_TEX, nextFrame);
 			fDot2 = 0.0f;
 			weapondrop = 0;
 
@@ -7466,10 +7458,18 @@ void CMyD3DApplication::DrawPlayers() {
 
 						int nextFrame = GetNextFramePlayer();
 
-						PlayerToD3DVertList(player_list[i].model_id,
-						                    player_list[i].current_frame, angle,
-						                    player_list[i].skin_tex_id,
-						                    USE_DEFAULT_MODEL_TEX,nextFrame);
+						if (player_list[i].bStopAnimating == TRUE) {
+							PlayerToD3DVertList(player_list[i].model_id,
+							                    player_list[i].current_frame, angle,
+							                    player_list[i].skin_tex_id,
+							                    USE_DEFAULT_MODEL_TEX);
+
+						} else {
+							PlayerToD3DVertList(player_list[i].model_id,
+							                    player_list[i].current_frame, angle,
+							                    player_list[i].skin_tex_id,
+							                    USE_DEFAULT_MODEL_TEX, nextFrame);
+						}
 
 						if (trueplayernum != i &&
 						    player_list[i].bIsPlayerAlive
@@ -7487,7 +7487,7 @@ void CMyD3DApplication::DrawPlayers() {
 							if (gun_angle < 0)
 								gun_angle = gun_angle + 360;
 
-
+							nextFrame = GetNextFramePlayer();
 
 							if (player_list[i].model_id != 0) {
 
@@ -7503,13 +7503,13 @@ void CMyD3DApplication::DrawPlayers() {
 									PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
 									                    player_list[i].current_frame, (int)gun_angle,
 									                    FindGunTexture(model_list[getgunid].monsterweapon),
-									                    USE_PLAYERS_SKIN,nextFrame);
+									                    USE_PLAYERS_SKIN, nextFrame);
 								}
 							} else {
 								PlayerToD3DVertList(player_list[i].gunid,
 								                    player_list[i].current_frame, gun_angle,
 								                    player_list[i].guntex,
-								                    USE_DEFAULT_MODEL_TEX,nextFrame);
+								                    USE_DEFAULT_MODEL_TEX, nextFrame);
 							}
 						}
 					}
@@ -8335,9 +8335,9 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 
 	// Only take damge from one swing
 	/*if (player_list[trueplayernum].current_frame == 52) {
-		for (i = 0; i < num_monsters; i++) {
-			monster_list[i].takedamageonce = 0;
-		}
+	    for (i = 0; i < num_monsters; i++) {
+	        monster_list[i].takedamageonce = 0;
+	    }
 	}*/
 
 	for (int i = 0; i < 1; i++) {
@@ -8371,7 +8371,6 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 						// SetPlayerAnimationSequence(i, 0);
 					}
 				}
-
 
 				player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
 
@@ -8428,12 +8427,10 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 			//}
 		}
 
-
 		if (player_list[i].current_frame == 183 || player_list[i].current_frame == 189 || player_list[i].current_frame == 197) {
 			// player is dead
 			player_list[i].bStopAnimating = TRUE;
 		}
-
 	}
 
 	GetItem();
@@ -10473,20 +10470,18 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 	current_frame = player_list[i].current_frame;
 	angle = 360 - (int)player_list[i].rot_angle + 90;
 
-
 	int nextFrame = GetNextFramePlayer();
-
 	// frame88
 	if (openingscreen == 3) {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    93, angle,
 		                    player_list[i].skin_tex_id,
-		                    USE_DEFAULT_MODEL_TEX,nextFrame);
+		                    USE_DEFAULT_MODEL_TEX, nextFrame);
 	} else {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    player_list[i].current_frame, angle,
 		                    player_list[i].skin_tex_id,
-		                    USE_DEFAULT_MODEL_TEX,nextFrame);
+		                    USE_DEFAULT_MODEL_TEX, nextFrame);
 	}
 
 	// DRAW YOUR GUN ///////////////////////////////////////////
