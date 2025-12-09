@@ -7464,10 +7464,12 @@ void CMyD3DApplication::DrawPlayers() {
 					if (perspectiveview == 1 && trueplayernum == i || trueplayernum == i && drawsphere) {
 					} else {
 
+						int nextFrame = GetNextFramePlayer();
+
 						PlayerToD3DVertList(player_list[i].model_id,
 						                    player_list[i].current_frame, angle,
 						                    player_list[i].skin_tex_id,
-						                    USE_DEFAULT_MODEL_TEX);
+						                    USE_DEFAULT_MODEL_TEX,nextFrame);
 
 						if (trueplayernum != i &&
 						    player_list[i].bIsPlayerAlive
@@ -7485,6 +7487,8 @@ void CMyD3DApplication::DrawPlayers() {
 							if (gun_angle < 0)
 								gun_angle = gun_angle + 360;
 
+
+
 							if (player_list[i].model_id != 0) {
 
 								for (int q = 0; q < countmodellist; q++) {
@@ -7499,13 +7503,13 @@ void CMyD3DApplication::DrawPlayers() {
 									PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
 									                    player_list[i].current_frame, (int)gun_angle,
 									                    FindGunTexture(model_list[getgunid].monsterweapon),
-									                    USE_PLAYERS_SKIN);
+									                    USE_PLAYERS_SKIN,nextFrame);
 								}
 							} else {
 								PlayerToD3DVertList(player_list[i].gunid,
 								                    player_list[i].current_frame, gun_angle,
 								                    player_list[i].guntex,
-								                    USE_DEFAULT_MODEL_TEX);
+								                    USE_DEFAULT_MODEL_TEX,nextFrame);
 							}
 						}
 					}
