@@ -1,6 +1,6 @@
 # Dungeon Stomp
 
-![Dungeon Stomp](../main/Textures/screenshot.jpg)
+![Dungeon Stomp](../main/Textures/screenshot01.jpg)
 
 ## Newer Versions
 * Dungeon Stomp for DirectX12 is here [Dungeon Stomp DirectX12](https://github.com/moonwho101/DungeonStompDirectX12)
