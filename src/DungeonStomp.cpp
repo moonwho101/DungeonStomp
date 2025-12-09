@@ -10468,17 +10468,21 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 	use_player_skins_flag = 1;
 	current_frame = player_list[i].current_frame;
 	angle = 360 - (int)player_list[i].rot_angle + 90;
+
+
+	int nextFrame = GetNextFramePlayer();
+
 	// frame88
 	if (openingscreen == 3) {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    93, angle,
 		                    player_list[i].skin_tex_id,
-		                    USE_DEFAULT_MODEL_TEX);
+		                    USE_DEFAULT_MODEL_TEX,nextFrame);
 	} else {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    player_list[i].current_frame, angle,
 		                    player_list[i].skin_tex_id,
-		                    USE_DEFAULT_MODEL_TEX);
+		                    USE_DEFAULT_MODEL_TEX,nextFrame);
 	}
 
 	// DRAW YOUR GUN ///////////////////////////////////////////
@@ -10499,7 +10503,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 			                    current_frame,
 			                    angle,
 			                    FindGunTexture(model_list[getgunid].monsterweapon),
-			                    USE_DEFAULT_MODEL_TEX);
+			                    USE_DEFAULT_MODEL_TEX, nextFrame);
 		}
 	}
 
