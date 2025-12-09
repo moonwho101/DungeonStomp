@@ -2496,7 +2496,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	int num_poly;
 	int i_count;
 	short v_index;
-	float x, y, z;
 	float rx, ry, rz;
 	float tx, ty;
 	int count_v;
@@ -7121,7 +7120,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 				wz = GunTruesave.z;
 			}
 
-			//int nextFrame = GetNextFramePlayer();
+			int nextFrame = GetNextFramePlayer();
 
 
 
@@ -7129,7 +7128,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 			                    current_frame,
 			                    angle,
 			                    player_list[trueplayernum].guntex,
-			                    USE_DEFAULT_MODEL_TEX);
+			                    USE_DEFAULT_MODEL_TEX,nextFrame);
 			fDot2 = 0.0f;
 			weapondrop = 0;
 
@@ -8326,95 +8325,107 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 	int curr_seq;
 	static LONGLONG fLastTimeRun = 0;
 	static LONGLONG fLastTimeRunLast = 0;
-	// 40-45
-	fLastTimeRun = DSTimer(); // Get current time in seconds
 
-	HandleTalkMode(diks);
+	// TODO:
+	int jump = 0;
 
-	if (float((fLastTimeRun - fLastTimeRunLast) * time_factor) > 0.3f && player_list[trueplayernum].current_frame >= 40 && player_list[trueplayernum].current_frame <= 45) {
-		fLastTimeRunLast = fLastTimeRun;
-		PlayWavSound(SoundID("walk"), 100);
-	}
+	// Only take damge from one swing
+	/*if (player_list[trueplayernum].current_frame == 52) {
+		for (i = 0; i < num_monsters; i++) {
+			monster_list[i].takedamageonce = 0;
+		}
+	}*/
 
-	for (i = 0; i < num_players; i++) {
-		mod_id = player_list[i].model_id;
+	for (int i = 0; i < 1; i++) {
+
+		int mod_id = player_list[i].model_id;
 		curr_frame = player_list[i].current_frame;
 		stop_frame = pmdata[mod_id].sequence_stop_frame[player_list[i].current_sequence];
 		startframe = pmdata[mod_id].sequence_start_frame[player_list[i].current_sequence];
 		if (player_list[i].bStopAnimating == FALSE) {
 
-			if (player_list[i].animationdir == 0) {
-				if (curr_frame >= stop_frame) {
-					curr_seq = player_list[i].current_sequence;
-					player_list[i].current_frame = pmdata[mod_id].sequence_stop_frame[curr_seq];
-					player_list[i].animationdir = 1;
+			// if (player_list[i].animationdir == 0)
+			//{
+			if (curr_frame >= stop_frame) {
+				curr_seq = player_list[i].current_sequence;
 
-					if (player_list[i].current_frame == 71) {
-						if (i == trueplayernum) {
-							// current player
-							jump = 0;
+				player_list[i].animationdir = 1;
 
-							if (runflag == 1 && jump == 0) {
-								SetPlayerAnimationSequence(i, 1);
-							} else if (runflag == 1 && jump == 1) {
+				if (player_list[i].current_frame == 71) {
+					if (i == trueplayernum) {
+						// current player
+						jump = 0;
+
+						if (runflag == 1 && jump == 0) {
+							SetPlayerAnimationSequence(i, 1);
+						} else if (runflag == 1 && jump == 1) {
+						} else {
+							SetPlayerAnimationSequence(i, 0);
+						}
+					} else {
+
+						// SetPlayerAnimationSequence(i, 0);
+					}
+				}
+
+				player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
+
+				if (player_list[i].current_frame == 183 || player_list[i].current_frame == 189 || player_list[i].current_frame == 197) {
+					// player is dead
+					player_list[i].bStopAnimating = TRUE;
+				}
+
+				if (i == trueplayernum && curr_seq == 1 && runflag == 1) {
+				} else {
+					if (curr_seq == 0 || curr_seq == 1 || curr_seq == 6) {
+						if (i == trueplayernum && curr_seq == 0 && jump == 0) {
+
+							// TODO:Remove
+							SetPlayerAnimationSequence(i, 0);
+
+							int raction = random_num(8);
+
+							// if (raction == 0)
+							//	SetPlayerAnimationSequence(i, 7);// flip
+							// else if (raction == 1)
+							//	SetPlayerAnimationSequence(i, 8);// Salute
+							// else if (raction == 2)
+							//	SetPlayerAnimationSequence(i, 9);// Taunt
+							// else if (raction == 3)
+							//	SetPlayerAnimationSequence(i, 10);// Wave
+							// else if (raction == 4)
+							//	SetPlayerAnimationSequence(i, 11); // Point
+							// else
+							//	SetPlayerAnimationSequence(i, 0);
+						}
+					} else {
+						if (runflag == 1 && i == trueplayernum && jump == 0) {
+							SetPlayerAnimationSequence(i, 1);
+						} else {
+							if (i == trueplayernum && jump == 1) {
 							} else {
 								SetPlayerAnimationSequence(i, 0);
 							}
-						} else {
-
-							SetPlayerAnimationSequence(i, 0);
 						}
 					}
-
-					if (player_list[i].current_frame == 183 || player_list[i].current_frame == 189 || player_list[i].current_frame == 197) {
-						// player is dead
-						player_list[i].bStopAnimating = TRUE;
-					}
-
-					if (i == trueplayernum && curr_seq == 1 && runflag == 1) {
-					} else {
-						if (curr_seq == 0 || curr_seq == 1 || curr_seq == 6) {
-							if (i == trueplayernum && curr_seq == 0 && jump == 0 && (perspectiveview == 0 || openingscreen == 1)) {
-								int raction = random_num(8);
-
-								if (raction == 0)
-									SetPlayerAnimationSequence(i, 7); // flip
-								else if (raction == 1)
-									SetPlayerAnimationSequence(i, 8); // Salute
-								else if (raction == 2)
-									SetPlayerAnimationSequence(i, 9); // Taunt
-								else if (raction == 3)
-									SetPlayerAnimationSequence(i, 10); // Wave
-								else if (raction == 4)
-									SetPlayerAnimationSequence(i, 11); // Point
-								else if (raction == 5 && openingscreen == 1) {
-									SetPlayerAnimationSequence(i, 2); // Attack - only on title screen for flash.
-								} else
-									SetPlayerAnimationSequence(i, 0);
-							}
-						} else {
-							if (runflag == 1 && i == trueplayernum && jump == 0) {
-								SetPlayerAnimationSequence(i, 1);
-							} else {
-
-								if (i == trueplayernum && jump == 1) {
-								} else
-									SetPlayerAnimationSequence(i, 0);
-							}
-						}
-					}
-				} else {
-					player_list[i].current_frame++;
 				}
 			} else {
-				if (curr_frame <= startframe) {
-					curr_seq = player_list[i].current_sequence;
-					player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
-					player_list[i].animationdir = 0;
-				} else {
-					player_list[i].current_frame--;
-				}
+				player_list[i].current_frame++;
 			}
+			//}
+			// else
+			//{
+			//	if (curr_frame <= startframe)
+			//	{
+			//		curr_seq = player_list[i].current_sequence;
+			//		player_list[i].current_frame = pmdata[mod_id].sequence_start_frame[curr_seq];
+			//		player_list[i].animationdir = 0;
+			//	}
+			//	else
+			//	{
+			//		player_list[i].current_frame--;
+			//	}
+			//}
 		}
 	}
 
@@ -8422,22 +8433,17 @@ HRESULT CMyD3DApplication::AnimateCharacters() {
 	MonsterHit();
 
 	for (i = 0; i < num_monsters; i++) {
-
-		mod_id = monster_list[i].model_id;
+		int mod_id = monster_list[i].model_id;
 		curr_frame = monster_list[i].current_frame;
 		stop_frame = pmdata[mod_id].sequence_stop_frame[monster_list[i].current_sequence];
 		startframe = pmdata[mod_id].sequence_start_frame[monster_list[i].current_sequence];
 		if (monster_list[i].bStopAnimating == FALSE) {
-
 			if (monster_list[i].animationdir == 0) {
-
 				if (curr_frame >= stop_frame) {
 					curr_seq = monster_list[i].current_sequence;
 					monster_list[i].current_frame = pmdata[mod_id].sequence_stop_frame[curr_seq];
-					monster_list[i].animationdir = 1;
-					if (curr_seq == 1) {
-					} else {
-					}
+					// monster_list[i].animationdir = 1;
+
 					SetMonsterAnimationSequence(i, 0);
 
 					if (monster_list[i].current_frame == 183 || monster_list[i].current_frame == 189 || monster_list[i].current_frame == 197) {
