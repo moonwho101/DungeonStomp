@@ -245,6 +245,11 @@ BOOL CLoadWorld::LoadWorldMap(HWND hwnd, char *filename) {
 				startpos[startposcounter].z = pCMyApp->oblist[object_count].z;
 			}
 		}
+		if (strcmp(s, "SHADOW") == 0) {
+			fscanf_s(fp, "%s", &p, 256);
+//			oblist[object_count].castshadow = (int)atoi(p);
+		}
+
 
 		if (strcmp(s, "ROT_ANGLE") == 0) {
 			float mid;
@@ -873,6 +878,15 @@ BOOL CLoadWorld::LoadObjectData(HWND hwnd, char *filename) {
 		if (strcmp(s, "SCALE") == 0) {
 			fscanf_s(fp, "%s", &p, 256);
 			dat_scale = (float)atof(p);
+			command_error = FALSE;
+		}
+
+	if (strcmp(s, "SHADOW") == 0) {
+			fscanf_s(fp, "%s", &p, 256);
+			int shadow = (int)atoi(p);
+
+			//obdata[object_id].shadow = shadow;
+
 			command_error = FALSE;
 		}
 
