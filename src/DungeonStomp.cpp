@@ -10732,15 +10732,15 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 
 	float adjust = 200.0f;
 
-	m_DisplayMessage[0].sy = (FLOAT)210;
+	m_DisplayMessage[0].sy = (FLOAT)410;
 	m_DisplayMessage[1].sy = (FLOAT)60;
-	m_DisplayMessage[2].sy = (FLOAT)210;
+	m_DisplayMessage[2].sy = (FLOAT)410;
 	m_DisplayMessage[3].sy = (FLOAT)60;
 
-	m_DisplayMessage[0].sx = (FLOAT)viewportwidth / 2 - 150;
-	m_DisplayMessage[1].sx = (FLOAT)viewportwidth / 2 - 150;
-	m_DisplayMessage[2].sx = (FLOAT)viewportwidth / 2 + 150;
-	m_DisplayMessage[3].sx = (FLOAT)viewportwidth / 2 + 150;
+	m_DisplayMessage[0].sx = (FLOAT)viewportwidth / 2 - 350;
+	m_DisplayMessage[1].sx = (FLOAT)viewportwidth / 2 - 350;
+	m_DisplayMessage[2].sx = (FLOAT)viewportwidth / 2 + 350;
+	m_DisplayMessage[3].sx = (FLOAT)viewportwidth / 2 + 350;
 
 	m_DisplayMessage[0].tu = 0.0f;
 	m_DisplayMessage[0].tv = 1.0f;
