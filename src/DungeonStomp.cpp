@@ -2484,6 +2484,19 @@ void CMyD3DApplication::AddPlayerLightSource(int player_num, float x, float y, f
 }
 
 extern float gametimerAnimation;
+const int MAX_VERTS_PER_POLY = 256;
+const int MAX_TRIANGLE_LIST_VERTS = MAX_VERTS_PER_POLY * 3;
+
+struct SimpleVertex {
+	D3DVECTOR position;
+	float tu;
+	float tv;
+};
+
+SimpleVertex originalVerts[MAX_VERTS_PER_POLY];
+SimpleVertex triangleListVerts[MAX_TRIANGLE_LIST_VERTS];
+D3DVECTOR triangleListNormals[MAX_TRIANGLE_LIST_VERTS];
+
 
 void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
 
@@ -2501,18 +2514,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	DWORD r, g, b;
 	D3DPRIMITIVETYPE p_command;
 
-	const int MAX_VERTS_PER_POLY = 256;
-	const int MAX_TRIANGLE_LIST_VERTS = MAX_VERTS_PER_POLY * 3;
-
-	struct SimpleVertex {
-		D3DVECTOR position;
-		float tu;
-		float tv;
-	};
-
-	SimpleVertex originalVerts[MAX_VERTS_PER_POLY];
-	SimpleVertex triangleListVerts[MAX_TRIANGLE_LIST_VERTS];
-	D3DVECTOR triangleListNormals[MAX_TRIANGLE_LIST_VERTS];
 
 	if (angle >= 360)
 		angle = angle - 360;
