@@ -2671,9 +2671,9 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			D3DVECTOR edge2 = c - a;
 			D3DVECTOR normal = CrossProduct(edge1, edge2);
 			normal = Normalize(normal);
-			if (Magnitude(normal) < 0.1f) {
+	/*		if (Magnitude(normal) < 0.1f) {
 				normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
-			}
+			}*/
 			triangleListNormals[v] = normal;
 			triangleListNormals[v + 1] = normal;
 			triangleListNormals[v + 2] = normal;
