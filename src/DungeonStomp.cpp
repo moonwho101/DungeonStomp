@@ -2496,18 +2496,23 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	short v_index;
 	float rx, ry, rz;
 	float tx, ty;
-	int count_v;
 
 	vert_ptr tp;
 	DWORD r, g, b;
 	D3DPRIMITIVETYPE p_command;
-	BOOL error = TRUE;
-	float mx[224];
-	float my[224];
-	float mz[224];
 
-	D3DVECTOR v1, v2, vw1, vw2, vw3, vw4, vDiff2, vDiff3, vw5;
-	float workx, worky, workz;
+	const int MAX_VERTS_PER_POLY = 256;
+	const int MAX_TRIANGLE_LIST_VERTS = MAX_VERTS_PER_POLY * 3;
+
+	struct SimpleVertex {
+		D3DVECTOR position;
+		float tu;
+		float tv;
+	};
+
+	SimpleVertex originalVerts[MAX_VERTS_PER_POLY];
+	SimpleVertex triangleListVerts[MAX_TRIANGLE_LIST_VERTS];
+	D3DVECTOR triangleListNormals[MAX_TRIANGLE_LIST_VERTS];
 
 	if (angle >= 360)
 		angle = angle - 360;
@@ -2537,9 +2542,9 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 		p_command = pmdata[pmodel_id].poly_cmd[i];
 		num_verts_per_poly = pmdata[pmodel_id].num_vert[i];
 
-		count_v = 0;
-
 		psort[number_of_polys_per_frame].srcstart = cnt;
+
+		int originalVertexCount = 0;
 
 		for (j = 0; j < num_verts_per_poly; j++) {
 			v_index = pmdata[pmodel_id].f[i_count];
@@ -2581,13 +2586,9 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			}
 
 			if (weapondrop == 1) {
-				// pitch
-
-				float newx, newy, newz;
-
-				newx = x;
-				newy = y;
-				newz = z;
+				float newx = x;
+				float newy = y;
+				float newz = z;
 
 				rx = (newy * sinf(fDot2 * k) + newx * cosf(fDot2 * k));
 				ry = (newy * cosf(fDot2 * k) - newx * sinf(fDot2 * k));
@@ -2607,12 +2608,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 				rx = newx;
 				ry = (newy * cosf(0.0f * k) - newz * sinf(0.0f * k));
 				rz = (newy * sinf(0.0f * k) + newz * cosf(0.0f * k));
-
-				D3DMATRIX matW;
-				D3DMATRIX matPoint;
-				D3DMATRIX matRotateX;
-				D3DMATRIX matRotateY;
-				D3DMATRIX matRotateZ;
 			} else {
 				rx = (x * cosine - z * sine);
 				ry = y;
@@ -2631,74 +2626,80 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			g = 0;
 			b = 0;
 
-			src_v[cnt].x = D3DVAL(rx);
-			src_v[cnt].y = D3DVAL(ry);
-			src_v[cnt].z = D3DVAL(rz);
-			src_v[cnt].tu = D3DVAL(tx);
-			src_v[cnt].tv = D3DVAL(ty);
-
-			src_collide[cnt] = 1;
-
-			mx[j] = D3DVAL(rx);
-			my[j] = D3DVAL(ry);
-			mz[j] = D3DVAL(rz);
-
-			if (j == 2) {
-				vw1.x = D3DVAL(mx[j - 2]);
-				vw1.y = D3DVAL(my[j - 2]);
-				vw1.z = D3DVAL(mz[j - 2]);
-
-				vw2.x = D3DVAL(mx[j - 1]);
-				vw2.y = D3DVAL(my[j - 1]);
-				vw2.z = D3DVAL(mz[j - 1]);
-
-				vw3.x = D3DVAL(mx[j]);
-				vw3.y = D3DVAL(my[j]);
-				vw3.z = D3DVAL(mz[j]);
-
-				// calculate the NORMAL for the road using the CrossProduct <-important!
-
-				D3DVECTOR vDiff = vw1 - vw2;
-				vDiff2 = vw3 - vw2;
-
-				D3DVECTOR vCross = CrossProduct(vDiff, vDiff2);
-
-				D3DVECTOR final = Normalize(vCross);
-
-				if (Magnitude(final) < 0.1f)
-					final = D3DVECTOR(0.0f, 0.0f, 0.0f);
-
-				workx = (-final.x);
-				worky = (-final.y);
-				workz = (-final.z);
-
-				src_v[cnt - 2].nx = workx;
-				src_v[cnt - 2].ny = worky;
-				src_v[cnt - 2].nz = workz;
-
-				src_v[cnt - 1].nx = workx;
-				src_v[cnt - 1].ny = worky;
-				src_v[cnt - 1].nz = workz;
-
-				src_v[cnt].nx = workx;
-				src_v[cnt].ny = worky;
-				src_v[cnt].nz = workz;
-			}
-
-			if (j >= 2) {
-
-				src_v[cnt].nx = workx;
-				src_v[cnt].ny = worky;
-				src_v[cnt].nz = workz;
-			}
-
-			cnt++;
+			originalVerts[originalVertexCount].position = D3DVECTOR(D3DVAL(rx), D3DVAL(ry), D3DVAL(rz));
+			originalVerts[originalVertexCount].tu = D3DVAL(tx);
+			originalVerts[originalVertexCount].tv = D3DVAL(ty);
+			originalVertexCount++;
 			i_count++;
 		}
 
-		float centroidx = (mx[0] + mx[1] + mx[2]) * 0.3333333333333f;
-		float centroidy = (my[0] + my[1] + my[2]) * 0.3333333333333f;
-		float centroidz = (mz[0] + mz[1] + mz[2]) * 0.3333333333333f;
+		int triangleVertexCount = 0;
+
+		if (p_command == D3DPT_TRIANGLELIST) {
+			for (int v = 0; v < originalVertexCount; v++) {
+				triangleListVerts[triangleVertexCount++] = originalVerts[v];
+			}
+		} else if (p_command == D3DPT_TRIANGLEFAN) {
+			for (int v = 1; v < originalVertexCount - 1; v++) {
+				triangleListVerts[triangleVertexCount++] = originalVerts[0];
+				triangleListVerts[triangleVertexCount++] = originalVerts[v];
+				triangleListVerts[triangleVertexCount++] = originalVerts[v + 1];
+			}
+		} else if (p_command == D3DPT_TRIANGLESTRIP) {
+			for (int v = 0; v < originalVertexCount - 2; v++) {
+				if ((v & 1) == 0) {
+					triangleListVerts[triangleVertexCount++] = originalVerts[v];
+					triangleListVerts[triangleVertexCount++] = originalVerts[v + 1];
+					triangleListVerts[triangleVertexCount++] = originalVerts[v + 2];
+				} else {
+					triangleListVerts[triangleVertexCount++] = originalVerts[v + 1];
+					triangleListVerts[triangleVertexCount++] = originalVerts[v];
+					triangleListVerts[triangleVertexCount++] = originalVerts[v + 2];
+				}
+			}
+		} else {
+			for (int v = 0; v < originalVertexCount; v++) {
+				triangleListVerts[triangleVertexCount++] = originalVerts[v];
+			}
+		}
+
+		for (int v = 0; (v + 2) < triangleVertexCount; v += 3) {
+			const D3DVECTOR &a = triangleListVerts[v].position;
+			const D3DVECTOR &b = triangleListVerts[v + 1].position;
+			const D3DVECTOR &c = triangleListVerts[v + 2].position;
+			D3DVECTOR edge1 = b - a;
+			D3DVECTOR edge2 = c - a;
+			D3DVECTOR normal = CrossProduct(edge1, edge2);
+			normal = Normalize(normal);
+			if (Magnitude(normal) < 0.1f) {
+				normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
+			}
+			triangleListNormals[v] = normal;
+			triangleListNormals[v + 1] = normal;
+			triangleListNormals[v + 2] = normal;
+		}
+
+		for (int v = 0; v < triangleVertexCount; v++) {
+			src_v[cnt].x = triangleListVerts[v].position.x;
+			src_v[cnt].y = triangleListVerts[v].position.y;
+			src_v[cnt].z = triangleListVerts[v].position.z;
+			src_v[cnt].tu = triangleListVerts[v].tu;
+			src_v[cnt].tv = triangleListVerts[v].tv;
+			src_v[cnt].nx = triangleListNormals[v].x;
+			src_v[cnt].ny = triangleListNormals[v].y;
+			src_v[cnt].nz = triangleListNormals[v].z;
+			src_collide[cnt] = 1;
+			cnt++;
+		}
+
+		float centroidx = 0.0f;
+		float centroidy = 0.0f;
+		float centroidz = 0.0f;
+		if (triangleVertexCount >= 3) {
+			centroidx = (triangleListVerts[0].position.x + triangleListVerts[1].position.x + triangleListVerts[2].position.x) * 0.3333333333333f;
+			centroidy = (triangleListVerts[0].position.y + triangleListVerts[1].position.y + triangleListVerts[2].position.y) * 0.3333333333333f;
+			centroidz = (triangleListVerts[0].position.z + triangleListVerts[1].position.z + triangleListVerts[2].position.z) * 0.3333333333333f;
+		}
 
 		qdist = FastDistance(
 		    m_vEyePt.x - centroidx,
@@ -2708,19 +2709,16 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 		psort[number_of_polys_per_frame].vert_index = number_of_polys_per_frame;
 		psort[number_of_polys_per_frame].dist = qdist;
 		psort[number_of_polys_per_frame].texture = texture_alias;
-		psort[number_of_polys_per_frame].vertsperpoly = num_verts_per_poly;
+		psort[number_of_polys_per_frame].vertsperpoly = triangleVertexCount;
 
-		verts_per_poly[number_of_polys_per_frame] = num_verts_per_poly;
+		verts_per_poly[number_of_polys_per_frame] = triangleVertexCount;
 		dp_command_index_mode[number_of_polys_per_frame] = USE_NON_INDEXED_DP;
-		dp_commands[number_of_polys_per_frame] = p_command;
+		dp_commands[number_of_polys_per_frame] = D3DPT_TRIANGLELIST;
 
-		if ((p_command == D3DPT_TRIANGLESTRIP) || (p_command == D3DPT_TRIANGLEFAN))
-			num_triangles_in_scene += (num_verts_per_poly - 2);
+		if (triangleVertexCount >= 3)
+			num_triangles_in_scene += triangleVertexCount / 3;
 
-		if (p_command == D3DPT_TRIANGLELIST)
-			num_triangles_in_scene += (num_verts_per_poly / 3);
-
-		num_verts_in_scene += num_verts_per_poly;
+		num_verts_in_scene += triangleVertexCount;
 		num_dp_commands_in_scene++;
 
 		if (tex_flag == USE_PLAYERS_SKIN)
