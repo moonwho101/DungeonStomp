@@ -2516,7 +2516,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	D3DPRIMITIVETYPE p_command;
 	const int srcVertStart = cnt;
 
-
 	if (angle >= 360)
 		angle = angle - 360;
 	if (angle < 0)
@@ -2674,9 +2673,9 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 			D3DVECTOR edge2 = c - a;
 			D3DVECTOR normal = CrossProduct(edge1, edge2);
 			normal = Normalize(normal);
-	/*		if (Magnitude(normal) < 0.1f) {
-				normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
-			}*/
+			/*		if (Magnitude(normal) < 0.1f) {
+			            normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
+			        }*/
 			triangleListNormals[v] = normal;
 			triangleListNormals[v + 1] = normal;
 			triangleListNormals[v + 2] = normal;
@@ -2735,8 +2734,54 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 
 	} // end for vert_cnt
 
+	const int newVertCount = cnt - srcVertStart;
+	if (newVertCount > 0) {
+		std::vector<D3DVECTOR> smoothedNormals(newVertCount);
+		const float normalShareEpsilon = 0.0005f;
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			float nx = src_v[vertIndex].nx;
+			float ny = src_v[vertIndex].ny;
+			float nz = src_v[vertIndex].nz;
+			const float vx = src_v[vertIndex].x;
+			const float vy = src_v[vertIndex].y;
+			const float vz = src_v[vertIndex].z;
+			for (int j = 0; j < newVertCount; ++j) {
+				if (i == j)
+					continue;
+				const int otherIndex = srcVertStart + j;
+				if (fabsf(vx - src_v[otherIndex].x) < normalShareEpsilon &&
+				    fabsf(vy - src_v[otherIndex].y) < normalShareEpsilon &&
+				    fabsf(vz - src_v[otherIndex].z) < normalShareEpsilon) {
+					nx += src_v[otherIndex].nx;
+					ny += src_v[otherIndex].ny;
+					nz += src_v[otherIndex].nz;
+				}
+			}
+			float lenSq = nx * nx + ny * ny + nz * nz;
+			if (lenSq > 0.000001f) {
+				float invLen = 1.0f / sqrtf(lenSq);
+				nx *= invLen;
+				ny *= invLen;
+				nz *= invLen;
+			} else {
+				nx = 0.0f;
+				ny = 0.0f;
+				nz = 0.0f;
+			}
+			smoothedNormals[i] = D3DVECTOR(nx, ny, nz);
+		}
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			src_v[vertIndex].nx = smoothedNormals[i].x;
+			src_v[vertIndex].ny = smoothedNormals[i].y;
+			src_v[vertIndex].nz = smoothedNormals[i].z;
+		}
+	}
+
 	return;
 }
+
 
 void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag) {
 
@@ -6266,7 +6311,10 @@ HRESULT CMyD3DApplication::Render() {
 			ap_cnt++;
 		} else {
 			SetTexture(last_texture_number, lpDDsurface);
+
+			// draw objects.dat
 			DrawNonIndexed(i, vert_index, last_texture_number);
+			// draw 3ds
 			DrawIndexed(i, lsort, last_texture_number, vert_index);
 		}
 
