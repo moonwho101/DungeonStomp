@@ -406,7 +406,7 @@ int menuflares = 1;
 int showdebug = 0;
 int showdebugfps = 0;
 int numnormals;
-int normalon = 0;
+int normalon = 1;
 
 extern HMENU gmenuhandle;
 extern HMENU gmenuhandle2;
@@ -2735,51 +2735,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 
 	} // end for vert_cnt
 
-	const int newVertCount = cnt - srcVertStart;
-	if (newVertCount > 0) {
-		std::vector<D3DVECTOR> smoothedNormals(newVertCount);
-		const float normalShareEpsilon = 0.0005f;
-		for (int i = 0; i < newVertCount; ++i) {
-			const int vertIndex = srcVertStart + i;
-			float nx = src_v[vertIndex].nx;
-			float ny = src_v[vertIndex].ny;
-			float nz = src_v[vertIndex].nz;
-			const float vx = src_v[vertIndex].x;
-			const float vy = src_v[vertIndex].y;
-			const float vz = src_v[vertIndex].z;
-			for (int j = 0; j < newVertCount; ++j) {
-				if (i == j)
-					continue;
-				const int otherIndex = srcVertStart + j;
-				if (fabsf(vx - src_v[otherIndex].x) < normalShareEpsilon &&
-				    fabsf(vy - src_v[otherIndex].y) < normalShareEpsilon &&
-				    fabsf(vz - src_v[otherIndex].z) < normalShareEpsilon) {
-					nx += src_v[otherIndex].nx;
-					ny += src_v[otherIndex].ny;
-					nz += src_v[otherIndex].nz;
-				}
-			}
-			float lenSq = nx * nx + ny * ny + nz * nz;
-			if (lenSq > 0.000001f) {
-				float invLen = 1.0f / sqrtf(lenSq);
-				nx *= invLen;
-				ny *= invLen;
-				nz *= invLen;
-			} else {
-				nx = 0.0f;
-				ny = 0.0f;
-				nz = 0.0f;
-			}
-			smoothedNormals[i] = D3DVECTOR(nx, ny, nz);
-		}
-		for (int i = 0; i < newVertCount; ++i) {
-			const int vertIndex = srcVertStart + i;
-			src_v[vertIndex].nx = smoothedNormals[i].x;
-			src_v[vertIndex].ny = smoothedNormals[i].y;
-			src_v[vertIndex].nz = smoothedNormals[i].z;
-		}
-	}
-
 	return;
 }
 
@@ -2802,6 +2757,7 @@ void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame
 	float mz[6000];
 
 	D3DVECTOR v1, v2, vw1, vw2, vw3, vw4, vDiff2, vDiff3, vw5;
+	const int srcVertStart = cnt;
 
 	x_off = 0;
 	y_off = 0;
@@ -2967,6 +2923,51 @@ void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame
 		number_of_polys_per_frame++;
 
 	} // end for vert_cnt
+
+	/*const int newVertCount = cnt - srcVertStart;
+	if (newVertCount > 0) {
+		std::vector<D3DVECTOR> smoothedNormals(newVertCount);
+		const float normalShareEpsilon = 0.0005f;
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			float nx = src_v[vertIndex].nx;
+			float ny = src_v[vertIndex].ny;
+			float nz = src_v[vertIndex].nz;
+			const float vx = src_v[vertIndex].x;
+			const float vy = src_v[vertIndex].y;
+			const float vz = src_v[vertIndex].z;
+			for (int j = 0; j < newVertCount; ++j) {
+				if (i == j)
+					continue;
+				const int otherIndex = srcVertStart + j;
+				if (fabsf(vx - src_v[otherIndex].x) < normalShareEpsilon &&
+				    fabsf(vy - src_v[otherIndex].y) < normalShareEpsilon &&
+				    fabsf(vz - src_v[otherIndex].z) < normalShareEpsilon) {
+					nx += src_v[otherIndex].nx;
+					ny += src_v[otherIndex].ny;
+					nz += src_v[otherIndex].nz;
+				}
+			}
+			float lenSq = nx * nx + ny * ny + nz * nz;
+			if (lenSq > 0.000001f) {
+				float invLen = 1.0f / sqrtf(lenSq);
+				nx *= invLen;
+				ny *= invLen;
+				nz *= invLen;
+			} else {
+				nx = 0.0f;
+				ny = 0.0f;
+				nz = 0.0f;
+			}
+			smoothedNormals[i] = D3DVECTOR(nx, ny, nz);
+		}
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			src_v[vertIndex].nx = smoothedNormals[i].x;
+			src_v[vertIndex].ny = smoothedNormals[i].y;
+			src_v[vertIndex].nz = smoothedNormals[i].z;
+		}
+	}*/
 
 	if (rendering_first_frame == TRUE) {
 		fprintf(fp, " \n\n");
@@ -6868,7 +6869,52 @@ void CMyD3DApplication::DrawIndexed(int i, int fakel, int &last_texture_number, 
 			temp_v[t].ny = worky;
 			temp_v[t].nz = workz;
 
-			if (normalon) {
+		}
+
+		if (dwIndexCount > 0) {
+			// Average normals for shared vertices so lighting stays smooth
+			std::vector<D3DVECTOR> smoothedNormals(dwIndexCount);
+			const float normalShareEpsilon = 0.0005f;
+			for (int v = 0; v < (int)dwIndexCount; ++v) {
+				float nx = temp_v[v].nx;
+				float ny = temp_v[v].ny;
+				float nz = temp_v[v].nz;
+				const float vx = temp_v[v].x;
+				const float vy = temp_v[v].y;
+				const float vz = temp_v[v].z;
+				for (int u = 0; u < (int)dwIndexCount; ++u) {
+					if (u == v)
+						continue;
+					if (fabsf(vx - temp_v[u].x) < normalShareEpsilon &&
+					    fabsf(vy - temp_v[u].y) < normalShareEpsilon &&
+					    fabsf(vz - temp_v[u].z) < normalShareEpsilon) {
+						nx += temp_v[u].nx;
+						ny += temp_v[u].ny;
+						nz += temp_v[u].nz;
+					}
+				}
+				float lenSq = nx * nx + ny * ny + nz * nz;
+				if (lenSq > 0.000001f) {
+					float invLen = 1.0f / sqrtf(lenSq);
+					nx *= invLen;
+					ny *= invLen;
+					nz *= invLen;
+				} else {
+					nx = 0.0f;
+					ny = 0.0f;
+					nz = 0.0f;
+				}
+				smoothedNormals[v] = D3DVECTOR(nx, ny, nz);
+			}
+			for (int v = 0; v < (int)dwIndexCount; ++v) {
+				temp_v[v].nx = smoothedNormals[v].x;
+				temp_v[v].ny = smoothedNormals[v].y;
+				temp_v[v].nz = smoothedNormals[v].z;
+			}
+		}
+
+		if (normalon) {
+			for (int t = 0; t < (int)dwIndexCount; t++) {
 				numnormals = 0;
 				normal_line[numnormals].x = temp_v[t].x;
 				normal_line[numnormals].y = temp_v[t].y;
