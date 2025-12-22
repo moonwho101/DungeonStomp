@@ -12,6 +12,7 @@
 #include <math.h>
 #include <time.h>
 #include <stdio.h>
+#include <vector>
 #include <dinput.h>
 #include <dplobby.h>
 #include <dplay.h>
@@ -2513,6 +2514,7 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	vert_ptr tp;
 	DWORD r, g, b;
 	D3DPRIMITIVETYPE p_command;
+	const int srcVertStart = cnt;
 
 
 	if (angle >= 360)
@@ -2732,6 +2734,51 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 		number_of_polys_per_frame++;
 
 	} // end for vert_cnt
+
+	const int newVertCount = cnt - srcVertStart;
+	if (newVertCount > 0) {
+		std::vector<D3DVECTOR> smoothedNormals(newVertCount);
+		const float normalShareEpsilon = 0.0005f;
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			float nx = src_v[vertIndex].nx;
+			float ny = src_v[vertIndex].ny;
+			float nz = src_v[vertIndex].nz;
+			const float vx = src_v[vertIndex].x;
+			const float vy = src_v[vertIndex].y;
+			const float vz = src_v[vertIndex].z;
+			for (int j = 0; j < newVertCount; ++j) {
+				if (i == j)
+					continue;
+				const int otherIndex = srcVertStart + j;
+				if (fabsf(vx - src_v[otherIndex].x) < normalShareEpsilon &&
+				    fabsf(vy - src_v[otherIndex].y) < normalShareEpsilon &&
+				    fabsf(vz - src_v[otherIndex].z) < normalShareEpsilon) {
+					nx += src_v[otherIndex].nx;
+					ny += src_v[otherIndex].ny;
+					nz += src_v[otherIndex].nz;
+				}
+			}
+			float lenSq = nx * nx + ny * ny + nz * nz;
+			if (lenSq > 0.000001f) {
+				float invLen = 1.0f / sqrtf(lenSq);
+				nx *= invLen;
+				ny *= invLen;
+				nz *= invLen;
+			} else {
+				nx = 0.0f;
+				ny = 0.0f;
+				nz = 0.0f;
+			}
+			smoothedNormals[i] = D3DVECTOR(nx, ny, nz);
+		}
+		for (int i = 0; i < newVertCount; ++i) {
+			const int vertIndex = srcVertStart + i;
+			src_v[vertIndex].nx = smoothedNormals[i].x;
+			src_v[vertIndex].ny = smoothedNormals[i].y;
+			src_v[vertIndex].nz = smoothedNormals[i].z;
+		}
+	}
 
 	return;
 }
