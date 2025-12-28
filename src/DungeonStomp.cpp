@@ -7804,7 +7804,7 @@ void CMyD3DApplication::DetermineItem(int icnt, int &cell_x, int &cell_z, D3DVIE
 								objectscroll = 1;
 							}
 
-							angle = (int)oblist[oblist_index].rot_angle;
+							angle = oblist[oblist_index].rot_angle;
 							ob_type = oblist[oblist_index].type;
 
 							int displayobject = 1;
@@ -9893,18 +9893,18 @@ void CMyD3DApplication::FirePlayerMissle(float x, float y, float z, float angy, 
 	D3DVECTOR MissleVelocity;
 	int misslecount = 0;
 	int misslespot = 0;
-	int gun_angle;
+	float gun_angle;
 
 	if (shoot == 0) {
-		gun_angle = -(int)angy + (int)90;
+		gun_angle = -angy + 90.0f;
 
-		if (gun_angle >= 360)
-			gun_angle = gun_angle - 360;
+		if (gun_angle >= 360.0f)
+			gun_angle = gun_angle - 360.0f;
 		if (gun_angle < 0)
-			gun_angle = gun_angle + 360;
+			gun_angle = gun_angle + 360.0f;
 	} else {
 
-		gun_angle = (int)angy;
+		gun_angle = angy;
 	}
 
 	if (your_gun[current_gun].x_offset <= 0) {
@@ -10202,7 +10202,7 @@ int CMyD3DApplication::DisplayDamage(float x, float y, float z, int owner, int i
 	D3DVECTOR MissleVelocity;
 	int misslecount = 0;
 	int misslespot = 0;
-	int gun_angle = 0;
+	float gun_angle = 0;
 
 	MissleVelocity.x = 0.0f;
 	MissleVelocity.y = 0.0f;
@@ -13164,10 +13164,10 @@ void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, float
 
 	D3DVECTOR v1, v2, vw1, vw2, vw3, vw4, vDiff2, vDiff3, vw5;
 
-	if (angle >= 360)
-		angle = angle - 360;
+	if (angle >= 360.0f)
+		angle = angle - 360.0f;
 	if (angle < 0)
-		angle += 360;
+		angle += 360.0f;
 
 	cosine = (float)cos(angle * k);
 	sine = (float)sin(angle * k);
