@@ -2497,7 +2497,6 @@ SimpleVertex originalVerts[MAX_VERTS_PER_POLY];
 SimpleVertex triangleListVerts[MAX_TRIANGLE_LIST_VERTS];
 D3DVECTOR triangleListNormals[MAX_TRIANGLE_LIST_VERTS];
 
-
 void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, float angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
@@ -2513,7 +2512,6 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, float
 	vert_ptr tp;
 	DWORD r, g, b;
 	D3DPRIMITIVETYPE p_command;
-
 
 	if (angle >= 360)
 		angle = angle - 360;
@@ -2672,9 +2670,9 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, float
 			D3DVECTOR edge2 = c - a;
 			D3DVECTOR normal = CrossProduct(edge1, edge2);
 			normal = Normalize(normal);
-	/*		if (Magnitude(normal) < 0.1f) {
-				normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
-			}*/
+			/*		if (Magnitude(normal) < 0.1f) {
+			            normal = D3DVECTOR(0.0f, 0.0f, 0.0f);
+			        }*/
 			triangleListNormals[v] = normal;
 			triangleListNormals[v + 1] = normal;
 			triangleListNormals[v + 2] = normal;
@@ -3619,11 +3617,11 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 	// FrameMove (animate) the scene
 	turnoffscreentext = 1;
 
-	if (maingameloop) {
-		rotateprop += .005f;
-		if (rotateprop > 3.14f * 2.0f)
-			rotateprop = 0;
-	}
+	float rotateSpeed = (.25f / 2.0f) * elapsegametimersave;
+	rotateprop +=  rotateSpeed;
+
+	if (rotateprop > 3.14f * 2.0f)
+		rotateprop = 0;
 
 	ScanMod();
 	ActivateSwitch();
@@ -7247,7 +7245,7 @@ void CMyD3DApplication::DrawItems() {
 	BOOL use_player_skins_flag = false;
 	int cullflag = 0;
 
-	float rotateSpeed = 700.0f * elapsegametimersave;
+	float rotateSpeed = 100.0f * elapsegametimersave;
 
 	for (int i = 0; i < itemlistcount; i++) {
 
@@ -7288,16 +7286,14 @@ void CMyD3DApplication::DrawItems() {
 
 					if (strcmp(item_list[i].rname, "COIN") == 0) {
 
-						if (maingameloop)
-							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
+						item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
 						PlayerToD3DVertList(item_list[i].model_id,
 						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
 						                    USE_DEFAULT_MODEL_TEX);
 					} else if (strcmp(item_list[i].rname, "KEY2") == 0) {
 
-						if (maingameloop)
-							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
+						item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
 						PlayerToD3DVertList(item_list[i].model_id,
 						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
