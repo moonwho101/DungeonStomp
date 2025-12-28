@@ -7246,6 +7246,9 @@ void CMyD3DApplication::DrawMonsters() {
 void CMyD3DApplication::DrawItems() {
 	BOOL use_player_skins_flag = false;
 	int cullflag = 0;
+
+	float rotateSpeed = 700.0f * elapsegametimersave;
+
 	for (int i = 0; i < itemlistcount; i++) {
 
 		if (item_list[i].bIsPlayerValid == TRUE) {
@@ -7286,7 +7289,7 @@ void CMyD3DApplication::DrawItems() {
 					if (strcmp(item_list[i].rname, "COIN") == 0) {
 
 						if (maingameloop)
-							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, +10.0f);
+							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
 						PlayerToD3DVertList(item_list[i].model_id,
 						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
@@ -7294,7 +7297,7 @@ void CMyD3DApplication::DrawItems() {
 					} else if (strcmp(item_list[i].rname, "KEY2") == 0) {
 
 						if (maingameloop)
-							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, +10.0f);
+							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, rotateSpeed);
 						PlayerToD3DVertList(item_list[i].model_id,
 						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
