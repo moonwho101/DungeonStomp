@@ -2529,8 +2529,8 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 		return;
 	}
 
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	if (curr_frame >= pmdata[pmodel_id].num_frames)
 		curr_frame = 0;
@@ -2764,8 +2764,8 @@ void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame
 		curr_frame = 0;
 
 	curr_frame = 0;
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	i_count = 0;
 	face_i_count = 0;
@@ -3133,8 +3133,8 @@ void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_i
 	if (bSkipThisCell == TRUE)
 		return;
 
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	ob_vert_count = 0;
 	poly = num_polys_per_object[ob_type];
@@ -3218,8 +3218,8 @@ void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_i
 				fDot = 180.0f + (180.0f - fDot);
 			}
 
-			cosine = cos_table[(int)fDot];
-			sine = sin_table[(int)fDot];
+			cosine = (float)cos(fDot * k);
+			sine = (float)sin(fDot * k);
 		}
 
 		for (vert_cnt = 0; vert_cnt < num_vert; vert_cnt++) {
@@ -12950,8 +12950,8 @@ void CMyD3DApplication::PlayerIndexedBox(int pmodel_id, int curr_frame, int angl
 		curr_frame = 0;
 
 	curr_frame = 0;
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	i_count = 0;
 	face_i_count = 0;
@@ -13169,8 +13169,8 @@ void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, int a
 	if (angle < 0)
 		angle += 360;
 
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	if (curr_frame >= pmdata[pmodel_id].num_frames)
 		curr_frame = 0;
@@ -14282,8 +14282,8 @@ int CMyD3DApplication::SceneInBox(D3DVECTOR point) {
 
 	angle = (int)360 - (int)angy;
 
-	cosine = cos_table[angle];
-	sine = sin_table[angle];
+	cosine = (float)cos(angle * k);
+	sine = (float)sin(angle * k);
 
 	// left side of me
 	xp[0] = eyex - 1100.0f;
