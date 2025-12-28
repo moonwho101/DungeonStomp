@@ -7450,7 +7450,7 @@ void CMyD3DApplication::DrawPlayers() {
 				current_frame = player_list[i].current_frame;
 
 				if (player_list[i].bIsPlayerInWalkMode == TRUE) {
-					float angle = 360.0f - (int)player_list[i].rot_angle + 90.0f;
+					float angle = 360.0f - player_list[i].rot_angle + 90.0f;
 
 					if (perspectiveview == 1 && trueplayernum == i || trueplayernum == i && drawsphere) {
 					} else {
@@ -7548,7 +7548,7 @@ void CMyD3DApplication::MonsterInRange() {
 
 					monstertype[monstercount] = 5;
 					monsterobject[monstercount] = player_list[i].model_id;
-					monsterangle[monstercount] = (int)player_list[i].rot_angle;
+					monsterangle[monstercount] = player_list[i].rot_angle;
 					monstercull[monstercount] = (int)i + (int)999;
 					monstercount++;
 				}
@@ -7694,7 +7694,7 @@ void CMyD3DApplication::WakeUpMonsters() {
 						if (monsteron) {
 							monstertype[monstercount] = 1;
 							monsterobject[monstercount] = player_list2[montry].model_id;
-							monsterangle[monstercount] = (int)player_list2[montry].rot_angle;
+							monsterangle[monstercount] = player_list2[montry].rot_angle;
 							monstercull[monstercount] = oblist[q].monsterid;
 							monstercount++;
 						}
@@ -12857,7 +12857,7 @@ void CMyD3DApplication::MakeBoundingBox() {
 						wy = player_list[i].y;
 						wz = player_list[i].z;
 
-						PlayerNonIndexedBox(0, 0, (int)player_list[i].rot_angle);
+						PlayerNonIndexedBox(0, 0, player_list[i].rot_angle);
 						monsterheight[cullloop] = objectheight;
 						monsterx[cullloop] = objectx;
 						monsterz[cullloop] = objectz;
@@ -12877,7 +12877,7 @@ void CMyD3DApplication::MakeBoundingBox() {
 					wy = player_list2[i].y;
 					wz = player_list2[i].z;
 
-					PlayerIndexedBox(monsterobject[cullloop], 0, (int)player_list2[i].rot_angle);
+					PlayerIndexedBox(monsterobject[cullloop], 0, player_list2[i].rot_angle);
 
 					monsterheight[cullloop] = objectheight;
 					monsterx[cullloop] = objectx;
