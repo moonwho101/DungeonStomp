@@ -1765,7 +1765,8 @@ void CMyD3DApplication::ScanMod() {
 
 					ScanModJump(pCMyApp->levelmodify[counter].jump);
 					if (player_list2[j].y - levelmodify[counter].currentheight <= atoi(levelmodify[counter].Text1)) {
-						player_list2[j].y++;
+						// portcullis speed
+						player_list2[j].y = player_list2[j].y + (50.0f * elapsegametimersave);
 						qdist = FastDistance(
 						    player_list[trueplayernum].x - player_list2[j].x,
 						    player_list[trueplayernum].y - player_list2[j].y,

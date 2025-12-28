@@ -15423,11 +15423,12 @@ int CMyD3DApplication::OpenDoor(int doornum, float dist) {
 			if (door[i].open == -99) {
 				float up;
 				up = 10.0f;
-				if (maingameloop) {
+				// Moveup - door goes upward
+				up = (125.0f * elapsegametimersave);
 
-					oblist[doornum].y = oblist[doornum].y + up;
-					door[i].up += up;
-				}
+				oblist[doornum].y = oblist[doornum].y + up;
+				door[i].up += up;
+				
 				if (door[i].up > 160.0f) {
 
 					senddoorinfo = 0;
