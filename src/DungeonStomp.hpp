@@ -186,10 +186,10 @@ class CMyD3DApplication : public CD3DApplication {
 	void ResetMainPlayer();
 	void ResetDeadPlayer();
 	void FirePlayerMissle(float x, float y, float z, float angy, int owner, int shoot, D3DVECTOR velocity, float lookangy);
-	void PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame = -1);
-	void PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag);
-	void ObjectToD3DVertList(int ob_type, int angle, int oblist_index);
-	void SetMapLights(int ob_type, int angle, int oblist_index);
+	void PlayerToD3DVertList(int pmodel_id, int curr_frame, float angle, int texture_alias, int tex_flag, int nextFrame = -1);
+	void PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, float angle, int texture_alias, int tex_flag);
+	void ObjectToD3DVertList(int ob_type, float angle, int oblist_index);
+	void SetMapLights(int ob_type, float angle, int oblist_index);
 	void calculate_block_location();
 	void AddPlayer(float x, float y, float z, float rot_angle, float monsterid, float monstertexture, float monnum, int ability);
 	void AddMonster(float x, float y, float z, float rot_angle, float monsterid, float monstertexture, float monnum, int s1, int s2, int s3, int s4, int ac, int hd, char damage[80], int thaco, char name[80], float speed, int ability);
@@ -206,8 +206,8 @@ class CMyD3DApplication : public CD3DApplication {
 	void MonsterHit();
 	void GiveWeapons();
 	void GetItem();
-	void PlayerIndexedBox(int pmodel_id, int curr_frame, int angle);
-	void PlayerNonIndexedBox(int pmodel_id, int curr_frame, int angle);
+	void PlayerIndexedBox(int pmodel_id, int curr_frame, float angle);
+	void PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle);
 	void MakeBoundingBox();
 	void PlayWavSound(int id, int volume);
 	void LoadSound();
