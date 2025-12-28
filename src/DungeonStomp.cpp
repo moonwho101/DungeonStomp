@@ -2498,7 +2498,7 @@ SimpleVertex triangleListVerts[MAX_TRIANGLE_LIST_VERTS];
 D3DVECTOR triangleListNormals[MAX_TRIANGLE_LIST_VERTS];
 
 
-void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag, int nextFrame) {
+void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, float angle, int texture_alias, int tex_flag, int nextFrame) {
 
 	float qdist = 0;
 
@@ -2736,7 +2736,7 @@ void CMyD3DApplication::PlayerToD3DVertList(int pmodel_id, int curr_frame, int a
 	return;
 }
 
-void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, int angle, int texture_alias, int tex_flag) {
+void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame, float angle, int texture_alias, int tex_flag) {
 
 	float qdist = 0;
 	int i, j;
@@ -2929,7 +2929,7 @@ void CMyD3DApplication::PlayerToD3DIndexedVertList(int pmodel_id, int curr_frame
 	return;
 }
 
-void CMyD3DApplication::ObjectToD3DVertList(int ob_type, int angle, int oblist_index) {
+void CMyD3DApplication::ObjectToD3DVertList(int ob_type, float angle, int oblist_index) {
 
 	int ob_vert_count = 0;
 	int poly;
@@ -7049,7 +7049,7 @@ void CMyD3DApplication::DrawMissles() {
 
 			PlayerToD3DVertList(bloodmodel,
 			                    0,
-			                    (int)fixangle(fDot, 180),
+			                    fixangle(fDot, 180),
 			                    tex,
 			                    USE_PLAYERS_SKIN);
 
@@ -7093,7 +7093,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 
 			ob_type = player_list[trueplayernum].gunid;
 			current_frame = player_list[trueplayernum].current_frame;
-			angle = (int)player_list[trueplayernum].gunangle;
+			angle = player_list[trueplayernum].gunangle;
 
 			if (perspectiveview == 1) {
 				weapondrop = 1;
@@ -7131,7 +7131,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 
 		ob_type = player_list[trueplayernum].gunid;
 		current_frame = player_list[trueplayernum].current_frame;
-		angle = (int)player_list[trueplayernum].gunangle;
+		angle = player_list[trueplayernum].gunangle;
 		if (perspectiveview == 1) {
 			weapondrop = 1;
 			fDot2 = look_up_ang;
@@ -7217,7 +7217,7 @@ void CMyD3DApplication::DrawMonsters() {
 					int nextFrame = GetNextFrame(i);
 
 					PlayerToD3DVertList(monster_list[i].model_id,
-					                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
+					                    monster_list[i].current_frame, monster_list[i].rot_angle,
 					                    monster_list[i].skin_tex_id,
 					                    USE_PLAYERS_SKIN, nextFrame);
 
@@ -7232,7 +7232,7 @@ void CMyD3DApplication::DrawMonsters() {
 					if (strcmp(model_list[getgunid].monsterweapon, "NONE") != 0 && monster_list[i].bIsPlayerAlive == TRUE) {
 
 						PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
-						                    monster_list[i].current_frame, (int)monster_list[i].rot_angle,
+						                    monster_list[i].current_frame, monster_list[i].rot_angle,
 						                    FindGunTexture(model_list[getgunid].monsterweapon),
 						                    USE_PLAYERS_SKIN, nextFrame);
 					}
@@ -7288,7 +7288,7 @@ void CMyD3DApplication::DrawItems() {
 						if (maingameloop)
 							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, +10.0f);
 						PlayerToD3DVertList(item_list[i].model_id,
-						                    item_list[i].current_frame, (int)item_list[i].rot_angle,
+						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
 						                    USE_DEFAULT_MODEL_TEX);
 					} else if (strcmp(item_list[i].rname, "KEY2") == 0) {
@@ -7296,7 +7296,7 @@ void CMyD3DApplication::DrawItems() {
 						if (maingameloop)
 							item_list[i].rot_angle = fixangle(item_list[i].rot_angle, +10.0f);
 						PlayerToD3DVertList(item_list[i].model_id,
-						                    item_list[i].current_frame, (int)item_list[i].rot_angle,
+						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
 						                    USE_DEFAULT_MODEL_TEX);
 					} else if (strcmp(item_list[i].rname, "AXE") == 0 ||
@@ -7315,13 +7315,13 @@ void CMyD3DApplication::DrawItems() {
 						mtexlookup = pCMyApp->FindGunTexture(item_list[i].rname);
 
 						PlayerToD3DVertList(item_list[i].model_id,
-						                    item_list[i].current_frame, (int)item_list[i].rot_angle,
+						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    mtexlookup,
 						                    USE_DEFAULT_MODEL_TEX);
 					} else if (strcmp(item_list[i].rname, "POTION") == 0) {
 
 						PlayerToD3DVertList(item_list[i].model_id,
-						                    item_list[i].current_frame, (int)item_list[i].rot_angle,
+						                    item_list[i].current_frame, item_list[i].rot_angle,
 						                    1,
 						                    USE_DEFAULT_MODEL_TEX);
 					} else {
@@ -7333,7 +7333,7 @@ void CMyD3DApplication::DrawItems() {
 						if (displayitem == 1) {
 
 							PlayerToD3DVertList(item_list[i].model_id,
-							                    item_list[i].current_frame, (int)item_list[i].rot_angle,
+							                    item_list[i].current_frame, item_list[i].rot_angle,
 							                    1,
 							                    USE_DEFAULT_MODEL_TEX);
 						}
@@ -7414,7 +7414,7 @@ void CMyD3DApplication::OpenChest() {
 					}
 
 					PlayerToD3DVertList(player_list2[i].model_id,
-					                    player_list2[i].current_frame, (int)player_list2[i].rot_angle,
+					                    player_list2[i].current_frame, player_list2[i].rot_angle,
 					                    player_list2[i].skin_tex_id,
 					                    USE_DEFAULT_MODEL_TEX);
 				}
@@ -7450,7 +7450,7 @@ void CMyD3DApplication::DrawPlayers() {
 				current_frame = player_list[i].current_frame;
 
 				if (player_list[i].bIsPlayerInWalkMode == TRUE) {
-					int angle = 360 - (int)player_list[i].rot_angle + 90;
+					float angle = 360.0f - (int)player_list[i].rot_angle + 90.0f;
 
 					if (perspectiveview == 1 && trueplayernum == i || trueplayernum == i && drawsphere) {
 					} else {
@@ -7478,13 +7478,13 @@ void CMyD3DApplication::DrawPlayers() {
 							wy = player_list[i].y;
 							wz = player_list[i].z;
 
-							int gun_angle;
-							gun_angle = -(int)player_list[i].rot_angle + (int)90;
+							float gun_angle;
+							gun_angle = -player_list[i].rot_angle + 90.0f;
 
-							if (gun_angle >= 360)
-								gun_angle = gun_angle - 360;
+							if (gun_angle >= 360.0f)
+								gun_angle = gun_angle - 360.0f;
 							if (gun_angle < 0)
-								gun_angle = gun_angle + 360;
+								gun_angle = gun_angle + 360.0f;
 
 							nextFrame = GetNextFramePlayer();
 
@@ -7500,7 +7500,7 @@ void CMyD3DApplication::DrawPlayers() {
 								if (strcmp(model_list[getgunid].monsterweapon, "NONE") != 0 && player_list[i].bIsPlayerAlive == TRUE) {
 
 									PlayerToD3DVertList(FindModelID(model_list[getgunid].monsterweapon),
-									                    player_list[i].current_frame, (int)gun_angle,
+									                    player_list[i].current_frame, gun_angle,
 									                    FindGunTexture(model_list[getgunid].monsterweapon),
 									                    USE_PLAYERS_SKIN, nextFrame);
 								}
@@ -7718,7 +7718,7 @@ void CMyD3DApplication::DrawMissle() {
 
 			ob_type = your_missle[misslecount].model_id;
 			current_frame = your_missle[misslecount].current_frame;
-			int angle = (int)your_missle[misslecount].rot_angle;
+			float angle = your_missle[misslecount].rot_angle;
 
 			PlayerToD3DVertList(ob_type,
 			                    current_frame,
@@ -10365,7 +10365,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 	float workx, worky, workz;
 
 	int i, j, t;
-	int angle;
+	float angle;
 	int last_texture_number;
 
 	int vert_index;
@@ -10467,7 +10467,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 	drawthistri = 1;
 	use_player_skins_flag = 1;
 	current_frame = player_list[i].current_frame;
-	angle = 360 - (int)player_list[i].rot_angle + 90;
+	angle = 360.0f - player_list[i].rot_angle + 90.0f;
 
 	int nextFrame = GetNextFramePlayer();
 	// frame88
@@ -10491,7 +10491,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 
 	int ob_type = player_list[i].gunid;
 	current_frame = player_list[i].current_frame;
-	angle = (int)player_list[i].gunangle;
+	angle = player_list[i].gunangle;
 
 	int getgunid = currentmodellist;
 
@@ -12918,7 +12918,7 @@ void CMyD3DApplication::MakeBoundingBox() {
 		}
 }
 
-void CMyD3DApplication::PlayerIndexedBox(int pmodel_id, int curr_frame, int angle) {
+void CMyD3DApplication::PlayerIndexedBox(int pmodel_id, int curr_frame, float angle) {
 	int i, j;
 	int num_verts_per_poly;
 	int num_faces_per_poly;
@@ -13132,7 +13132,7 @@ void CMyD3DApplication::PlayerIndexedBox(int pmodel_id, int curr_frame, int angl
 	return;
 }
 
-void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, int angle) {
+void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle) {
 	int i, j;
 	int num_verts_per_poly;
 	int num_poly;
