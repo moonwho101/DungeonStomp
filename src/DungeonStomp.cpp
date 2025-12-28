@@ -7078,7 +7078,7 @@ void CMyD3DApplication::DrawPlayerGun() {
 	int i = 0;
 	float skx, sky;
 	int ob_type;
-	int angle;
+	float angle;
 
 	if (player_list[trueplayernum].model_id == 0 &&
 	    player_list[trueplayernum].bIsPlayerAlive &&
@@ -7561,7 +7561,7 @@ void CMyD3DApplication::WakeUpMonsters() {
 	int ob_type = 0;
 	int monsteron = 0;
 	float qdist = 0.0f;
-	int angle = 0;
+	float angle = 0;
 
 	for (int q = 0; q < pCMyApp->oblist_length; q++) {
 
@@ -7569,7 +7569,7 @@ void CMyD3DApplication::WakeUpMonsters() {
 		wy = oblist[q].y;
 		wz = oblist[q].z;
 
-		angle = (int)oblist[q].rot_angle;
+		angle = oblist[q].rot_angle;
 		ob_type = oblist[q].type;
 
 		if (ob_type == 6) {
@@ -7733,7 +7733,7 @@ void CMyD3DApplication::DetermineItem(int icnt, int &cell_x, int &cell_z, D3DVIE
 	int oblist_index = 0;
 	float qdist = 0;
 	int ob_type = 0;
-	int angle = 0;
+	float angle = 0;
 
 	number_of_polys_per_frame = 0;
 	cnt = 0;
@@ -9369,13 +9369,13 @@ void CMyD3DApplication::UpdateMainPlayer() {
 
 	int i;
 
-	int gun_angle;
-	gun_angle = -(int)angy + (int)90;
+	float gun_angle;
+	gun_angle = -angy + 90.0f;
 
-	if (gun_angle >= 360)
-		gun_angle = gun_angle - 360;
-	if (gun_angle < 0)
-		gun_angle = gun_angle + 360;
+	if (gun_angle >= 360.0f)
+		gun_angle = gun_angle - 360.0f;
+	if (gun_angle < 0.0f)
+		gun_angle = gun_angle + 360.0f;
 
 	if (pCMyApp->multiplay_flag) {
 
@@ -14278,9 +14278,9 @@ int CMyD3DApplication::SceneInBox(D3DVECTOR point) {
 	eyex = 0;
 	eyez = 0;
 
-	int angle = 0;
+	float angle = 0;
 
-	angle = (int)360 - (int)angy;
+	angle = 360.0f - angy;
 
 	cosine = (float)cos(angle * k);
 	sine = (float)sin(angle * k);
