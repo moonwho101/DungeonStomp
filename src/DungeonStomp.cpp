@@ -13489,10 +13489,15 @@ void CMyD3DApplication::GetItem() {
 						junk[strlen(junk) - 1] = '\0';
 
 						if (your_gun[q].model_id == item_list[i].model_id ||
-						    strstr(your_gun[q].gunname, junk) != NULL &&
-						        strstr(your_gun[q].gunname, "SCROLL") != NULL) {
-							your_gun[q].active = 1;
-							your_gun[q].x_offset = your_gun[q].x_offset + 1;
+						    strcmp(your_gun[q].gunname, junk) == 0) {
+							if (strstr(your_gun[q].gunname, "SCROLL") != NULL) {
+								your_gun[q].active = 1;
+								your_gun[q].x_offset = your_gun[q].x_offset + 1;
+							} else {
+								// Switch to this wepaon if it is better
+								your_gun[q].active = 1;
+								SwitchGun(q);
+							}
 						}
 					}
 				} else if (strcmp(item_list[i].rname, "POTION") == 0) {
