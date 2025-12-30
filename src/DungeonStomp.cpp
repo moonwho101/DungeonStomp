@@ -13496,7 +13496,10 @@ void CMyD3DApplication::GetItem() {
 							} else {
 								// Switch to this wepaon if it is better
 								your_gun[q].active = 1;
-								SwitchGun(q);
+
+								if (q > current_gun) {
+									SwitchGun(q);
+								}
 							}
 						}
 					}
