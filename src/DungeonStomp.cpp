@@ -10474,7 +10474,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    93, angle,
 		                    player_list[i].skin_tex_id,
-		                    USE_DEFAULT_MODEL_TEX, nextFrame);
+		                    USE_DEFAULT_MODEL_TEX);
 	} else {
 		PlayerToD3DVertList(player_list[i].model_id,
 		                    player_list[i].current_frame, angle,
