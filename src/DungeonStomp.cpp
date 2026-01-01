@@ -9456,6 +9456,7 @@ void CMyD3DApplication::OnKeyDown(WPARAM wParam) {
 				if (save_game("")) {
 					strcpy_s(gActionMessage, "Saving game...");
 					UpdateScrollList(0, 245, 255);
+					return;
 				} else {
 					strcpy_s(gActionMessage, "Saving game aborted...");
 					UpdateScrollList(0, 245, 255);
@@ -9486,11 +9487,13 @@ void CMyD3DApplication::OnKeyDown(WPARAM wParam) {
 			if (load_game("")) {
 				strcpy_s(gActionMessage, "Loading game...");
 				UpdateScrollList(0, 245, 255);
+				return;
 			} else {
 				strcpy_s(gActionMessage, "Load game aborted...");
 				UpdateScrollList(0, 245, 255);
 			}
 		}
+
 		listendoor = 0;
 		if (!bInTalkMode) {
 			if (wParam == 'x' || wParam == 'X') {
