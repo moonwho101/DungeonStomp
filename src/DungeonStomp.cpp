@@ -104,6 +104,8 @@ int currentmonstercollisionid = -1;
 float collisiondist = 4190.0f;
 BOOL foundcollision = 0;
 
+int gravityon = 1;
+
 extern void loadcollisionmap(D3DVECTOR eyeball, D3DVECTOR v, D3DVECTOR spheresize);
 extern void checkTriangle(CollisionPacket *colPackage, VECTOR p1, VECTOR p2, VECTOR p3);
 
@@ -1162,8 +1164,8 @@ VOID CMyD3DApplication::UpdateControls() {
 			Controls.bRight = diks[DIK_D] && 0x80;
 			Controls.bForward = diks[DIK_W] && 0x80;
 			Controls.bBackward = diks[DIK_S] && 0x80;
-			// Controls.bUp = diks[DIK_NUMPADPLUS] && 0x80;
-			// Controls.bDown = diks[DIK_NUMPADMINUS] && 0x80;
+			Controls.bUp = diks[DIK_NUMPADPLUS] && 0x80;
+			Controls.bDown = diks[DIK_NUMPADMINUS] && 0x80;
 			Controls.bHeadUp = diks[DIK_PGUP] && 0x80;
 			Controls.bHeadDown = diks[DIK_PGDN] && 0x80;
 			Controls.bStepLeft = diks[DIK_COMMA] && 0x80;
@@ -5013,6 +5015,8 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey) {
 		gravityvector.y = -50.0f;
 	}
 
+	if (gravityon == 0) {
+	
 	if (lastcollide == 1) {
 		gravitytime = gravitytime + fTimeKey;
 	}
@@ -5088,6 +5092,7 @@ HRESULT CMyD3DApplication::FrameMove(FLOAT fTimeKey) {
 		nojumpallow = 0;
 		gravitydropcount = 0;
 	}
+}
 
 	modellocation = m_vEyePt;
 
