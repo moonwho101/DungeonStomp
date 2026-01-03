@@ -6327,12 +6327,22 @@ void CMyD3DApplication::SortLights() {
 
 	int sort[200];
 	float dist[200];
-	int type[200];
+	int lightIndex[200];
 
 	int temp;
 	int dcount = 0;
-	for (int i = 0; i < num_light_sources; i++) {
+
+	const int MAX_POINT_LIGHTS = 6;
+	const int MAX_SPOT_LIGHTS = 8;
+
+
+	for (int i = 0; i < 255; i++) {
 		m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+	}
+
+	// point lights
+	for (int i = 0; i < num_light_sources; i++) {
+		//m_pd3dDevice->LightEnable((DWORD)i, FALSE);
 		m_pd3dDevice->GetLight(i, &light);
 
 		// Find lights
@@ -6340,15 +6350,12 @@ void CMyD3DApplication::SortLights() {
 		                           m_vEyePt.y - light.dvPosition.y,
 		                           m_vEyePt.z - light.dvPosition.z);
 
-
 		if (light.dltType == D3DLIGHT_POINT) {
 			dist[dcount] = qdist;
 			sort[dcount] = dcount;
-			type[dcount] = light.dltType;
-
+			lightIndex[dcount] = i;
 			dcount++;
 		}
-
 	}
 
 	for (int i = 0; i < dcount; i++) {
@@ -6361,26 +6368,25 @@ void CMyD3DApplication::SortLights() {
 		}
 	}
 
-	if (dcount > 16) {
-		dcount = 16;
+	int activeCount = dcount;
+	if (activeCount > MAX_POINT_LIGHTS) {
+		activeCount = MAX_POINT_LIGHTS;
 	}
 
-	for (int i = 0; i < dcount; i++) {
-		int q = sort[i];
-		float dist2 = dist[sort[i]];
-
-		if (dcount < 16) {
-			m_pd3dDevice->LightEnable((DWORD)q, TRUE);
-		} else {
-			m_pd3dDevice->LightEnable((DWORD)q, FALSE);
-		}
+	for (int i = 0; i < activeCount; i++) {
+		int candidateIndex = sort[i];
+		int slot = lightIndex[candidateIndex];
+		m_pd3dDevice->LightEnable((DWORD)slot, TRUE);
 	}
 
+	dcount = 0;
+
+	 //spot lights
 	for (int i = 0; i < num_light_sources; i++) {
-		m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+
 		m_pd3dDevice->GetLight(i, &light);
 
-		// Find lights
+		 //Find lights
 		float qdist = FastDistance(m_vEyePt.x - light.dvPosition.x,
 		                           m_vEyePt.y - light.dvPosition.y,
 		                           m_vEyePt.z - light.dvPosition.z);
@@ -6388,8 +6394,7 @@ void CMyD3DApplication::SortLights() {
 		if (light.dltType == D3DLIGHT_SPOT) {
 			dist[dcount] = qdist;
 			sort[dcount] = dcount;
-			type[dcount] = light.dltType;
-
+			lightIndex[dcount] = i;
 			dcount++;
 		}
 	}
@@ -6404,19 +6409,15 @@ void CMyD3DApplication::SortLights() {
 		}
 	}
 
-	if (dcount > 16) {
-		dcount = 16;
+	activeCount = dcount;
+	if (activeCount > MAX_SPOT_LIGHTS) {
+		activeCount = MAX_SPOT_LIGHTS;
 	}
 
-	for (int i = 0; i < dcount; i++) {
-		int q = sort[i];
-		float dist2 = dist[sort[i]];
-
-		if (dcount < 16) {
-			m_pd3dDevice->LightEnable((DWORD)q, TRUE);
-		} else {
-			m_pd3dDevice->LightEnable((DWORD)q, FALSE);
-		}
+	for (int i = 0; i < activeCount; i++) {
+		int candidateIndex = sort[i];
+		int slot = lightIndex[candidateIndex];
+		m_pd3dDevice->LightEnable((DWORD)slot, TRUE);
 	}
 
 }
