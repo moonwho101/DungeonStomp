@@ -6129,6 +6129,7 @@ HRESULT CMyD3DApplication::Render() {
 	MakeBoundingBox();
 	DrawPlayerGun();
 	DrawMissles();
+	SortLights();
 
 	tempvcounter = 0;
 
@@ -6318,6 +6319,108 @@ HRESULT CMyD3DApplication::Render() {
 
 	return S_OK;
 }
+
+
+void CMyD3DApplication::SortLights() {
+
+	D3DLIGHT7 light;
+
+	int sort[200];
+	float dist[200];
+	int type[200];
+
+	int temp;
+	int dcount = 0;
+	for (int i = 0; i < num_light_sources; i++) {
+		m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+		m_pd3dDevice->GetLight(i, &light);
+
+		// Find lights
+		float qdist = FastDistance(m_vEyePt.x - light.dvPosition.x,
+		                           m_vEyePt.y - light.dvPosition.y,
+		                           m_vEyePt.z - light.dvPosition.z);
+
+
+		if (light.dltType == D3DLIGHT_POINT) {
+			dist[dcount] = qdist;
+			sort[dcount] = dcount;
+			type[dcount] = light.dltType;
+
+			dcount++;
+		}
+
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		for (int j = i + 1; j < dcount; j++) {
+			if (dist[sort[i]] > dist[sort[j]]) {
+				temp = sort[i];
+				sort[i] = sort[j];
+				sort[j] = temp;
+			}
+		}
+	}
+
+	if (dcount > 16) {
+		dcount = 16;
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		int q = sort[i];
+		float dist2 = dist[sort[i]];
+
+		if (dcount < 16) {
+			m_pd3dDevice->LightEnable((DWORD)q, TRUE);
+		} else {
+			m_pd3dDevice->LightEnable((DWORD)q, FALSE);
+		}
+	}
+
+	for (int i = 0; i < num_light_sources; i++) {
+		m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+		m_pd3dDevice->GetLight(i, &light);
+
+		// Find lights
+		float qdist = FastDistance(m_vEyePt.x - light.dvPosition.x,
+		                           m_vEyePt.y - light.dvPosition.y,
+		                           m_vEyePt.z - light.dvPosition.z);
+
+		if (light.dltType == D3DLIGHT_SPOT) {
+			dist[dcount] = qdist;
+			sort[dcount] = dcount;
+			type[dcount] = light.dltType;
+
+			dcount++;
+		}
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		for (int j = i + 1; j < dcount; j++) {
+			if (dist[sort[i]] > dist[sort[j]]) {
+				temp = sort[i];
+				sort[i] = sort[j];
+				sort[j] = temp;
+			}
+		}
+	}
+
+	if (dcount > 16) {
+		dcount = 16;
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		int q = sort[i];
+		float dist2 = dist[sort[i]];
+
+		if (dcount < 16) {
+			m_pd3dDevice->LightEnable((DWORD)q, TRUE);
+		} else {
+			m_pd3dDevice->LightEnable((DWORD)q, FALSE);
+		}
+	}
+
+}
+
 
 void CMyD3DApplication::SetTextureStage() {
 	if (filtertype == 0) {
