@@ -6134,6 +6134,7 @@ HRESULT CMyD3DApplication::Render() {
 	MakeBoundingBox();
 	DrawPlayerGun();
 	DrawMissles();
+	SortLights();
 
 	tempvcounter = 0;
 
@@ -6323,6 +6324,109 @@ HRESULT CMyD3DApplication::Render() {
 
 	return S_OK;
 }
+
+
+void CMyD3DApplication::SortLights() {
+
+	D3DLIGHT7 light;
+
+	int sort[200];
+	float dist[200];
+	int lightIndex[200];
+
+	int temp;
+	int dcount = 0;
+
+	const int MAX_POINT_LIGHTS = 6;
+	const int MAX_SPOT_LIGHTS = 8;
+
+
+	for (int i = 0; i < 255; i++) {
+		m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+	}
+
+	// point lights
+	for (int i = 0; i < num_light_sources; i++) {
+		//m_pd3dDevice->LightEnable((DWORD)i, FALSE);
+		m_pd3dDevice->GetLight(i, &light);
+
+		// Find lights
+		float qdist = FastDistance(m_vEyePt.x - light.dvPosition.x,
+		                           m_vEyePt.y - light.dvPosition.y,
+		                           m_vEyePt.z - light.dvPosition.z);
+
+		if (light.dltType == D3DLIGHT_POINT) {
+			dist[dcount] = qdist;
+			sort[dcount] = dcount;
+			lightIndex[dcount] = i;
+			dcount++;
+		}
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		for (int j = i + 1; j < dcount; j++) {
+			if (dist[sort[i]] > dist[sort[j]]) {
+				temp = sort[i];
+				sort[i] = sort[j];
+				sort[j] = temp;
+			}
+		}
+	}
+
+	int activeCount = dcount;
+	if (activeCount > MAX_POINT_LIGHTS) {
+		activeCount = MAX_POINT_LIGHTS;
+	}
+
+	for (int i = 0; i < activeCount; i++) {
+		int candidateIndex = sort[i];
+		int slot = lightIndex[candidateIndex];
+		m_pd3dDevice->LightEnable((DWORD)slot, TRUE);
+	}
+
+	dcount = 0;
+
+	 //spot lights
+	for (int i = 0; i < num_light_sources; i++) {
+
+		m_pd3dDevice->GetLight(i, &light);
+
+		 //Find lights
+		float qdist = FastDistance(m_vEyePt.x - light.dvPosition.x,
+		                           m_vEyePt.y - light.dvPosition.y,
+		                           m_vEyePt.z - light.dvPosition.z);
+
+		if (light.dltType == D3DLIGHT_SPOT) {
+			dist[dcount] = qdist;
+			sort[dcount] = dcount;
+			lightIndex[dcount] = i;
+			dcount++;
+		}
+	}
+
+	for (int i = 0; i < dcount; i++) {
+		for (int j = i + 1; j < dcount; j++) {
+			if (dist[sort[i]] > dist[sort[j]]) {
+				temp = sort[i];
+				sort[i] = sort[j];
+				sort[j] = temp;
+			}
+		}
+	}
+
+	activeCount = dcount;
+	if (activeCount > MAX_SPOT_LIGHTS) {
+		activeCount = MAX_SPOT_LIGHTS;
+	}
+
+	for (int i = 0; i < activeCount; i++) {
+		int candidateIndex = sort[i];
+		int slot = lightIndex[candidateIndex];
+		m_pd3dDevice->LightEnable((DWORD)slot, TRUE);
+	}
+
+}
+
 
 void CMyD3DApplication::SetTextureStage() {
 	if (filtertype == 0) {

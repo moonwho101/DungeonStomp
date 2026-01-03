@@ -69,6 +69,7 @@ class CMyD3DApplication : public CD3DApplication {
 	void MonsterInRange();
 	void WakeUpMonsters();
 	void DrawMissle();
+	void SortLights();
 	void DetermineItem(int icnt, int &cell_x, int &cell_z, D3DVIEWPORT7 &vp);
 	void ComputeCells(int lookside, int &icnt, int cell_x, int cell_z);
 	HRESULT RenderOpeningScreen();
