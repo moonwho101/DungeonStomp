@@ -104,7 +104,7 @@ int currentmonstercollisionid = -1;
 float collisiondist = 4190.0f;
 BOOL foundcollision = 0;
 
-int gravityon = 1;
+int gravityon = 0;
 
 extern void loadcollisionmap(D3DVECTOR eyeball, D3DVECTOR v, D3DVECTOR spheresize);
 extern void checkTriangle(CollisionPacket *colPackage, VECTOR p1, VECTOR p2, VECTOR p3);
@@ -6337,8 +6337,8 @@ void CMyD3DApplication::SortLights() {
 	int temp;
 	int dcount = 0;
 
-	const int MAX_POINT_LIGHTS = 6;
-	const int MAX_SPOT_LIGHTS = 8;
+	const int MAX_POINT_LIGHTS = 5;
+	const int MAX_SPOT_LIGHTS = 3;
 
 
 	for (int i = 0; i < 255; i++) {
