@@ -5457,10 +5457,13 @@ HRESULT CMyD3DApplication::FrameMove2(FLOAT fTimeKey) {
 
 	if (player_list[trueplayernum].current_sequence != 2) {
 		if (playermove == 0) {
-
 			if (savelastmove != playermove && jump == 0) {
-				if (playermovestrife == 0)
-					SetPlayerAnimationSequence(trueplayernum, 0);
+				if (playermovestrife == 0) {
+					if (player_list[trueplayernum].current_sequence != 0) {
+
+						SetPlayerAnimationSequence(trueplayernum, 0);
+					}
+				}
 			}
 		} else {
 			if (savelastmove != playermove && jump == 0) {
