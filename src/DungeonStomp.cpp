@@ -3618,7 +3618,7 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 	turnoffscreentext = 1;
 
 	float rotateSpeed = (.25f / 2.0f) * elapsegametimersave;
-	rotateprop +=  rotateSpeed;
+	rotateprop += rotateSpeed;
 
 	if (rotateprop > 3.14f * 2.0f)
 		rotateprop = 0;
@@ -5457,14 +5457,19 @@ HRESULT CMyD3DApplication::FrameMove2(FLOAT fTimeKey) {
 
 	if (player_list[trueplayernum].current_sequence != 2) {
 		if (playermove == 0) {
-
 			if (savelastmove != playermove && jump == 0) {
-				if (playermovestrife == 0)
-					SetPlayerAnimationSequence(trueplayernum, 0);
+				if (playermovestrife == 0) {
+					if (player_list[trueplayernum].current_sequence != 0) {
+
+						SetPlayerAnimationSequence(trueplayernum, 0);
+					}
+				}
 			}
 		} else {
 			if (savelastmove != playermove && jump == 0) {
-				SetPlayerAnimationSequence(trueplayernum, 1);
+				if (playermove == 1 || playermove == 4) {
+					SetPlayerAnimationSequence(trueplayernum, 1);
+				}
 			}
 		}
 
@@ -5608,6 +5613,12 @@ HRESULT CMyD3DApplication::FrameMove2(FLOAT fTimeKey) {
 	modellocation = m_vLookatPt;
 
 	// CAMERA
+
+	if (look_up_ang < -89.3f)
+		look_up_ang = -89.3f;
+
+	if (look_up_ang > 89.3f)
+		look_up_ang = 89.3f;
 
 	eRadius = D3DVECTOR(10.0f, 10.0f, 10.0f);
 	gvelocity.x = 0;
@@ -15439,7 +15450,7 @@ int CMyD3DApplication::OpenDoor(int doornum, float dist) {
 
 				oblist[doornum].y = oblist[doornum].y + up;
 				door[i].up += up;
-				
+
 				if (door[i].up > 160.0f) {
 
 					senddoorinfo = 0;
