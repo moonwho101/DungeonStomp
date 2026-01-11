@@ -207,7 +207,7 @@ class CMyD3DApplication : public CD3DApplication {
 	void GiveWeapons();
 	void GetItem();
 	void PlayerIndexedBox(int pmodel_id, int curr_frame, float angle);
-	void PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle);
+	void PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle, int monsterid);
 	void MakeBoundingBox();
 	void PlayWavSound(int id, int volume);
 	void LoadSound();
