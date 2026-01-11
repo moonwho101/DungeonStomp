@@ -284,6 +284,7 @@ typedef struct player_typ {
 	int firespeed;
 	int attackspeed;
 	int applydamageonce;
+	float captionheight;
 
 } PLAYER, *player_ptr;
 

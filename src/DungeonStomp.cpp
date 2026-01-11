@@ -12297,7 +12297,8 @@ void CMyD3DApplication::DisplayPlayerCaption() {
 					flag = 0;
 
 				x = monster_list[j].x;
-				y = monster_list[j].y + 28.0f - yadjust;
+				//y = monster_list[j].y + 28.0f - yadjust;
+				y = (monster_list[j].y + monster_list[j].captionheight) - 70.0f - yadjust;
 				z = monster_list[j].z;
 
 				yadjust += 6.0f;
@@ -12979,7 +12980,7 @@ void CMyD3DApplication::MakeBoundingBox() {
 						wy = player_list[i].y;
 						wz = player_list[i].z;
 
-						PlayerNonIndexedBox(0, 0, player_list[i].rot_angle);
+						PlayerNonIndexedBox(0, 0, player_list[i].rot_angle,i);
 						monsterheight[cullloop] = objectheight;
 						monsterx[cullloop] = objectx;
 						monsterz[cullloop] = objectz;
@@ -13027,7 +13028,7 @@ void CMyD3DApplication::MakeBoundingBox() {
 							wy = monster_list[i].y;
 							wz = monster_list[i].z;
 
-							PlayerNonIndexedBox(monsterobject[cullloop], 0, (int)monster_list[i].rot_angle);
+							PlayerNonIndexedBox(monsterobject[cullloop], 0, (int)monster_list[i].rot_angle,i);
 							monstertrueheight[cullloop] = objecttrueheight;
 							monsterheight[cullloop] = objectheight;
 							monsterx[cullloop] = objectx;
@@ -13254,7 +13255,7 @@ void CMyD3DApplication::PlayerIndexedBox(int pmodel_id, int curr_frame, float an
 	return;
 }
 
-void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle) {
+void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, float angle, int monsterid) {
 	int i, j;
 	int num_verts_per_poly;
 	int num_poly;
@@ -13486,6 +13487,8 @@ void CMyD3DApplication::PlayerNonIndexedBox(int pmodel_id, int curr_frame, float
 	boundingbox[countboundingbox].y = min_y;
 	boundingbox[countboundingbox].z = min_z;
 	countboundingbox++;
+
+	monster_list[monsterid].captionheight = objecttrueheight;
 
 	return;
 }
