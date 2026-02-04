@@ -44,6 +44,7 @@ Enter one of the following commands:
 
 ## Dungeon Stomp Keymaker by ACME gods
 In 2005 Dungeon Stomp was cracked by the group ACME gods by DELiGHT.  I have included it in the bin directory because it's just awesome!
+A tiny slice of warez‑scene history preserved for posterity.
 
 ![Dungeon Stomp ACME god Keymakers](../main/Textures/acme2005.jpg)
 
