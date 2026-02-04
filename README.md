@@ -43,7 +43,7 @@ Enter one of the following commands:
 * -bigmoney This will give you a bunch of gold.
 
 ## Dungeon Stomp Keymaker by ACME gods
-In 2005 Dungeon Stomp was cracked by the group ACME gods by delight.  I have included it in the bin directory because it's just awesome!
+In 2005 Dungeon Stomp was cracked by the group ACME gods by DELiGHT.  I have included it in the bin directory because it's just awesome!
 
 ![Dungeon Stomp ACME god Keymakers](../main/Textures/acme2005.jpg)
 
