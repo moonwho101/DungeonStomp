@@ -30,10 +30,6 @@ It will compile using Microsoft Visual Studio 2019 community edition.
 * Confirm VC++ INCLUDE directory has ..\dx7asdk\include
 * Confirm VC++ LIB directory has ..\dx7asdk\lib
 
-## Contact
-If you have any questions email me at mlongo@aptisense.com or visit www.aptisense.com to download game installer.
-Happy Dungeon Stomping - Breeyark!
-
 ## Secret Commands
 To execute a secret command press the / key and the chat will open.
 Enter one of the following commands:
