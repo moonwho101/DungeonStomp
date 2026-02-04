@@ -42,6 +42,11 @@ Enter one of the following commands:
 * -yyz This will give your player all weapons and spells (RUSH YYZ!).
 * -bigmoney This will give you a bunch of gold.
 
+## Dungeon Stomp Keymaker by ACME gods
+In 2005 Dungeon Stomp was cracked by the group ACME gods by delight.  I have included it in the bin directory because it's just awesome!
+
+![Dungeon Stomp ACME god Keymakers](../main/Textures/acme2005.jpg)
+
 ## MD2 Models
 Dungeon Stomp would not have been possible without the amazing MD2 models made by the following authors (if I have missed anyone, let me know.):
 
