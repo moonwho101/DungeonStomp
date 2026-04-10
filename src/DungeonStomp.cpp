@@ -103,6 +103,7 @@ int foundcollisiontrue = 0;
 int currentmonstercollisionid = -1;
 float collisiondist = 4190.0f;
 BOOL foundcollision = 0;
+static VECTOR firstSlideNormal; // stored on first collision to detect crease jitter
 
 extern void loadcollisionmap(D3DVECTOR eyeball, D3DVECTOR v, D3DVECTOR spheresize);
 extern void checkTriangle(CollisionPacket *colPackage, VECTOR p1, VECTOR p2, VECTOR p3);
@@ -9313,20 +9314,14 @@ D3DVECTOR CMyD3DApplication::collideWithWorld(D3DVECTOR position, D3DVECTOR velo
 
 	// silencer ver 2.0 - i think it fixed it can u believe it 2 years and these 5 lines did it.
 	float factor;
-
 	V.SetLength(veryCloseDistance);
-
 	factor = veryCloseDistance / (V.x * slidePlaneNormal.x + V.y * slidePlaneNormal.y + V.z * slidePlaneNormal.z);
-
-	// VECTOR V2;
-	// V2.SetLength(1);
-	// V=V2;
 
 	V.SetLength(1);
 
 	VECTOR displacementVector = V * veryCloseDistance * factor;
 
-	if ((V.x * slidePlaneNormal.x + V.y * slidePlaneNormal.y + V.z * slidePlaneNormal.z) != 0.0f) {
+	if (fabs(V.x * slidePlaneNormal.x + V.y * slidePlaneNormal.y + V.z * slidePlaneNormal.z) > 1e-6f) {
 		newSourcePoint = newSourcePoint + displacementVector;
 		collisionPackage.intersectionPoint = collisionPackage.intersectionPoint + displacementVector;
 	}
@@ -9344,6 +9339,23 @@ D3DVECTOR CMyD3DApplication::collideWithWorld(D3DVECTOR position, D3DVECTOR velo
 	// velocity vector for the next iteration
 
 	VECTOR newVelocityVector = newDestinationPoint - collisionPackage.intersectionPoint;
+
+			// Anti-jitter: when a second collision is detected, the two slide
+	// planes can fight each other causing oscillation.  Constrain the
+	// remaining velocity to the crease (intersection line) of the two
+	// planes so the player slides cleanly along corners.
+	if (collisionRecursionDepth == 0) {
+		firstSlideNormal = slidePlaneNormal;
+	} else {
+		VECTOR crease = firstSlideNormal.cross(slidePlaneNormal);
+		float creaseLen = crease.length();
+		if (creaseLen > 1e-6f) {
+			crease = crease * (1.0f / creaseLen);
+			float proj = newVelocityVector.dot(crease);
+			newVelocityVector = crease * proj;
+		}
+	}
+
 
 	// Recurse:
 	// dont recurse if the new velocity is very small
