@@ -3843,7 +3843,7 @@ HRESULT CMyD3DApplication::Render3DEnvironment() {
 
 	char junk3[255];
 	if (strstr(your_gun[current_gun].gunname, "SCROLL-MAGICMISSLE") != NULL) {
-		strcpy_s(junk3, "MAGIC MISSLE");
+		strcpy_s(junk3, "MAGIC MISSILE");
 		sprintf_s(junk, "%s: %d", junk3, (int)your_gun[current_gun].x_offset);
 	} else if (strstr(your_gun[current_gun].gunname, "SCROLL-FIREBALL") != NULL) {
 		strcpy_s(junk3, "FIREBALL");
@@ -10925,7 +10925,7 @@ HRESULT CMyD3DApplication::RenderOpeningScreen() {
 
 		char junk3[255];
 		if (strstr(your_gun[current_gun].gunname, "SCROLL-MAGICMISSLE") != NULL) {
-			strcpy_s(junk3, "MAGIC MISSLE");
+			strcpy_s(junk3, "MAGIC MISSILE");
 			sprintf_s(junk, "%s: %d", junk3, (int)your_gun[current_gun].x_offset);
 		} else if (strstr(your_gun[current_gun].gunname, "SCROLL-FIREBALL") != NULL) {
 			strcpy_s(junk3, "FIREBALL");
@@ -13481,7 +13481,7 @@ void CMyD3DApplication::GetItem() {
 					if (strstr(item_list[i].rname, "SCROLL") != NULL) {
 
 						if (strstr(item_list[i].rname, "SCROLL-MAGICMISSLE") != NULL) {
-							sprintf_s(gActionMessage, "You found a scroll of magic missle");
+							sprintf_s(gActionMessage, "You found a scroll of magic missile");
 						} else if (strstr(item_list[i].rname, "SCROLL-FIREBALL") != NULL) {
 							sprintf_s(gActionMessage, "You found a scroll of fireball");
 						} else if (strstr(item_list[i].rname, "SCROLL-LIGHTNING") != NULL) {
